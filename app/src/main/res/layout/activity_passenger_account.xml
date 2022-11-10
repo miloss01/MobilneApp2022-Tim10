@@ -94,7 +94,7 @@
                 android:layout_weight="1"
                 android:text="$16.4"
                 android:textAlignment="textEnd"
-                android:textSize="20sp"
+                android:textSize="22sp"
 
                 />
 
@@ -116,7 +116,7 @@
             android:text="Update balance"
             android:textAlignment="center"
             android:drawableLeft="@android:drawable/ic_input_add"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:padding="8dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/cardview_dark_background"
