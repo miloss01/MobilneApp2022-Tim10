@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:src="@android:drawable/ic_menu_edit"
-            android:background=""/>
+            android:background="@color/white"/>
 
         <ImageView
             android:id="@+id/imagePassengerAcc"
