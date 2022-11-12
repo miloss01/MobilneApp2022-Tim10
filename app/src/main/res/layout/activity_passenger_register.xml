@@ -19,40 +19,45 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/last_name"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:layout_marginTop="15dp"/>
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/phone"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:layout_marginTop="15dp"/>
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/email"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:layout_marginTop="15dp"/>
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:layout_marginTop="15dp"/>
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/repeat_password"
         android:inputType="textPassword"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:layout_marginTop="15dp"/>
 
     <Button
         android:id="@+id/register_summbit_btn"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:text="@string/submit" />
 
 </LinearLayout>

@@ -1,14 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DriverReportFragment">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context=".fragments.DriverReportFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:paddingTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextDate"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:autofillHints="11.11.2022."
+            android:ems="10"
+            android:hint="Date from"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/editTextDate2"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:ems="10"
+            android:hint="Date to"
+            android:inputType="date" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generate report" />
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Kilometers driven"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/produce_monthly_crop"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp"
+            android:contentDescription="TODO" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Total: 329911 km"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Average: 232 km"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Executed rides"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/produce_monthly_crop"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Total: 3299"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Average: 23"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

@@ -13,14 +13,19 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".DriverAccountActivity"
-            android:exported="false">
+            android:name=".activities.DriverAccountActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".OneMessageActivity"
+            android:name=".activities.OneMessageActivity"
             android:exported="false"
             android:label="@string/title_activity_one_message"
             android:theme="@style/Theme.MyApplication.NoActionBar">
@@ -29,7 +34,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".PassengerRegisterActivity"
+            android:name=".activities.PassengerRegisterActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -45,13 +50,9 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".PassengerInboxActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".activities.PassengerInboxActivity"
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
