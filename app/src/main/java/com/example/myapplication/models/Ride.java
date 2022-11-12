@@ -1,5 +1,6 @@
 package com.example.myapplication.models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Ride {
@@ -15,6 +16,13 @@ public class Ride {
     // vehicletype
     // payment
     // route
+
+    public Ride() {}
+
+    public Ride(double price, LocalDateTime start, LocalDateTime end) {
+        this.price = price;
+        this.time = new TimeSlot(start, end);
+    }
 
     public double getPrice() {
         return price;

@@ -6,6 +6,15 @@ public class TimeSlot{
     private LocalDateTime start;
     private LocalDateTime end;
 
+    public TimeSlot() {
+
+    }
+
+    public TimeSlot(LocalDateTime start, LocalDateTime end) {
+        this.start = start;
+        this.end = end;
+    }
+
     public LocalDateTime getStart() {
         return start;
     }
