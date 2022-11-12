@@ -2,6 +2,7 @@ package com.example.myapplication.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,29 +37,33 @@ public class PassengerInboxAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View vi = view;
+
         Message message = InboxMokap.getMessages().get(i);
 
         if(view == null)
-            vi = activity.getLayoutInflater().inflate(R.layout.message_list, null);
-        //vi = inflter.inflate(R.layout.message_list, null);
+            view = activity.getLayoutInflater().inflate(R.layout.message_list, null);
+        //view = inflter.inflate(R.layout.message_list, null);
 
-        TextView name = (TextView)vi.findViewById(R.id.name);
-        TextView description = (TextView)vi.findViewById(R.id.description);
-        ImageView image = (ImageView)vi.findViewById(R.id.item_icon);
+        TextView name = (TextView)view.findViewById(R.id.name);
+        TextView description = (TextView)view.findViewById(R.id.description);
+        TextView type = (TextView)view.findViewById(R.id.type);
+        ImageView image = (ImageView)view.findViewById(R.id.item_icon);
+        View layout = view.findViewById(R.id.list_item_pass_inbox);
+
 
         name.setText(message.getHeader());
         description.setText(message.getDate().toString());
+        type.setText(message.getMType().toString());
 
         if (message.getAvatar()==1){
-            vi.setBackgroundColor(500005);
+            layout.setBackgroundColor(Color.LTGRAY);
         }
         if (message.getAvatar()==2){
-            vi.setBackgroundColor(500002);
+            layout.setBackgroundColor(Color.GRAY);
         }
         if (message.getAvatar()==3){
-            vi.setBackgroundColor(500004);
+            layout.setBackgroundColor(Color.red(1));
         }
-        return vi;
+        return view;
     }
 }
