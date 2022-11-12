@@ -1,13 +1,18 @@
 package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.PassengerRideAdapter;
+import com.example.myapplication.fragments.RideDetailsFragment;
 import com.example.myapplication.models.Ride;
+import com.example.myapplication.tools.FragmentTransition;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,6 +31,7 @@ public class PassengerRideHistoryActivity extends AppCompatActivity {
 
         setupData();
         setupList();
+        setupOnclickListener();
 
     }
 
@@ -45,7 +51,14 @@ public class PassengerRideHistoryActivity extends AppCompatActivity {
      }
 
     private void setupOnclickListener() {
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                FragmentTransition.to((Fragment) RideDetailsFragment.newInstance(ridesList.get(position)),
+                        PassengerRideHistoryActivity.this, true,
+                        R.id.passenger_rides_rellay);
+            }
+        });
     }
 
 }

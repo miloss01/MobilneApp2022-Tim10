@@ -1,5 +1,8 @@
 package com.example.myapplication.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -79,4 +82,6 @@ public class Ride {
     public void setSplitFareFlag(boolean splitFareFlag) {
         this.splitFareFlag = splitFareFlag;
     }
+
+
 }

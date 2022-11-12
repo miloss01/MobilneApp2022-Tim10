@@ -45,7 +45,6 @@ public class PassengerRideAdapter extends ArrayAdapter<Ride> {
         String price = "$" + String.format("%,.2f", ride.getPrice());
         tvPrice.setText(price);
 
-        //return super.getView(position, convertView, parent);
         return convertView;
     }
 }
