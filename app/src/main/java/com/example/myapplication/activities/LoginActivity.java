@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
+import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends Activity {
 
@@ -17,18 +18,18 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button btn = findViewById(R.id.button);
+        Button btn = findViewById(R.id.login_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Snackbar.make(view, "Logged in", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-//                Intent i = new Intent(LoginActivity.this, DriverMainActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(LoginActivity.this, DriverMainActivity.class);
+                startActivity(i);
             }
         });
 
-        Button btn2 = findViewById(R.id.button2);
+        Button btn2 = findViewById(R.id.login_reg_button);
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -105,6 +105,18 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true"
+            android:label="LoginScreenActivity">
+        </activity>
+        <activity
+            android:name=".activities.DriverMainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="DriverMain">
+        </activity>
+
     </application>
 
 </manifest>
