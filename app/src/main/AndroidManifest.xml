@@ -94,6 +94,41 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+            android:name=".activities.SplashScreenActivity"
+            android:exported="true"
+            android:label="Spashscreen"
+            android:theme="@style/Theme.MyApplication.NoActionBar" >
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true"
+            android:label="LoginScreenActivity">
+        </activity>
+        <activity
+            android:name=".activities.DriverMainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="DriverMain">
+        </activity>
+        <activity
+            android:name=".activities.DriverRideHistoryActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="DriverRideHistory">
+        </activity>
+        <activity
+            android:name=".activities.RideDetailsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="RideDetails">
+        </activity>
+
     </application>
 
 </manifest>
