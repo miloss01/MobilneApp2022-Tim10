@@ -26,8 +26,8 @@ public class DriverRideHistoryActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent = new Intent(DriverRideHistoryActivity.this, RideDetailsActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(DriverRideHistoryActivity.this, RideDetailsActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -122,6 +122,12 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="DriverRideHistory">
         </activity>
+        <activity
+            android:name=".activities.RideDetailsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="RideDetails">
+        </activity>
 
     </application>
 
