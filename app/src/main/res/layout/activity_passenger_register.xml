@@ -51,13 +51,19 @@
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:layout_marginTop="15dp"/>
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:id="@+id/notification_for_registry"/>
 
     <Button
         android:id="@+id/register_summbit_btn"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:text="@string/submit" />
 
 </LinearLayout>
