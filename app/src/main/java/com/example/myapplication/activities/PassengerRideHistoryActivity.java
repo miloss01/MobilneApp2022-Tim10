@@ -58,7 +58,6 @@ public class PassengerRideHistoryActivity extends AppCompatActivity {
         PassengerRideAdapter adapter = new PassengerRideAdapter(getApplicationContext(),
                 R.layout.passenger_ride_cell, ridesList);
         listView.setAdapter(adapter);
-
      }
 
     private void setupOnclickListener() {

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.DriverAccountFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+
+        android:layout_marginBottom="400dp">
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="80dp"
+            android:src="@drawable/profilephoto1"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:text="Change profile picture"
+            android:textSize="10dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            />
+        <EditText
+            android:id="@+id/et_passacc_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:layout_marginTop="15dp"/>
+
+        <EditText
+            android:id="@+id/et_passacc_lastname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/last_name"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/et_passacc_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/phone"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/et_passacc_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            android:minHeight="48dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_gravity="center"
+            android:text="Save changes"/>
+
+    </LinearLayout>
+
+</LinearLayout>
