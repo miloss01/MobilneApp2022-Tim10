@@ -1,14 +1,16 @@
 package com.example.myapplication.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
 
-public class OneMessageActivity extends AppCompatActivity {
+public class OneMessageActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

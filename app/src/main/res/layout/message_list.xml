@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/list_item_pass_inbox">
     <ImageView
         android:id="@+id/item_icon"
         android:layout_width="40dp"
@@ -13,7 +14,7 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:gravity="center_vertical"
@@ -29,5 +30,15 @@
         android:layout_below="@+id/name"
         android:layout_toEndOf="@+id/item_icon"
         android:padding="5dp"/>
+    <TextView android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toEndOf="@+id/name"
+        android:padding="5dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
 </RelativeLayout>
