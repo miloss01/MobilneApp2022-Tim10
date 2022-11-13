@@ -18,7 +18,7 @@ public class DriverRideHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ride_history);
+        setContentView(R.layout.driver_ride_history);
 
         RideAdapter adapter = new RideAdapter(this);
         ListView list = findViewById(R.id.driver_ride_history_list);

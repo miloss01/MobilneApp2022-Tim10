@@ -14,7 +14,7 @@ public class RideDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ride_details);
+        setContentView(R.layout.driver_ride_details);
 
         Toolbar toolbar = findViewById(R.id.driver_ride_details_toolbar);
         setSupportActionBar(toolbar);
