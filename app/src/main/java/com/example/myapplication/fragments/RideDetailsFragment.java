@@ -45,7 +45,7 @@ public class RideDetailsFragment extends Fragment {
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         TextView tvStartTime = (TextView) view.findViewById(R.id.textview_ridedetails_starttime);
-        tvStartTime.setText(ride.getTime().getStart().format(format).toString());
+        tvStartTime.setText(ride.getTime().getStart().format(format));
 
         TextView tvPrice = (TextView) view.findViewById(R.id.textview_ridedetails_price);
         String price = "$" + String.format("%,.2f", ride.getPrice());
