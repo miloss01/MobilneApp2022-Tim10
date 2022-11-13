@@ -33,4 +33,5 @@
     <string name="balance">Balance</string>
     <string name="fav_routes">Favourite routes</string>
     <string name="ride_stats">Ride stats</string>
+    <string name="inbox">Inbox</string>
 </resources>

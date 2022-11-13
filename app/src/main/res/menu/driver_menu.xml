@@ -2,17 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/driver_menu_history"
-        android:title="📜"
+        android:title="Ride history"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item android:id="@+id/driver_menu_inbox"
-        android:title="✉"
+        android:title="Inbox"
+        android:iconTint="@color/white"
         android:orderInCategory="200"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item android:id="@+id/driver_menu_account"
-        android:title="👤"
+        android:title="Account"
         android:orderInCategory="300"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>

@@ -9,7 +9,9 @@
         android:id="@+id/driver_main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" >
+        android:background="@color/black"
+        app:theme="@style/ToolbarColored"
+        app:titleTextColor="@color/white">
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
