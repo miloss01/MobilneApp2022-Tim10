@@ -13,7 +13,7 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/splash_title"
             android:layout_width="match_parent"
             android:layout_height="365dp"
             android:fontFamily="sans-serif"
@@ -23,10 +23,10 @@
             android:textSize="70sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/splash_subtitle"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:layout_below="@id/textView"
+            android:layout_below="@id/splash_title"
             android:gravity="center"
             android:text="go wherever you want whenever you want"
             android:textColor="@color/white"/>
