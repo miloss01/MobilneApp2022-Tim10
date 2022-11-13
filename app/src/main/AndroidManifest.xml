@@ -116,6 +116,12 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="DriverMain">
         </activity>
+        <activity
+            android:name=".activities.DriverRideHistoryActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="DriverRideHistory">
+        </activity>
 
     </application>
 

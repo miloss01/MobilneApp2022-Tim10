@@ -58,11 +58,11 @@ public class DriverMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-//        if (id == R.id.history) {
-//            Intent intent1 = new Intent(this, DriverRideHistoryActivity.class);
-//            this.startActivity(intent1);
-//            return true;
-//        }
+        if (id == R.id.driver_menu_history) {
+            Intent intent1 = new Intent(this, DriverRideHistoryActivity.class);
+            this.startActivity(intent1);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
