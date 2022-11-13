@@ -9,4 +9,28 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="ride_history">Ride history</string>
+    <string name="account">Account</string>
+
+    <string name="title_activity_passenger_register">PassengerRegisterActivity</string>
+
+    <string name="name">Name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="submit">Submit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_one_message">OneMessageActivity</string>
+    <string name="rating">Rating</string>
+    <string name="passengers">Passengers</string>
+    <string name="contact_driver">Contact driver</string>
+    <string name="update_balance">Update balance</string>\
+    <string name="balance">Balance</string>
+    <string name="fav_routes">Favourite routes</string>
+    <string name="ride_stats">Ride stats</string>
 </resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.DriverStatisticFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <RadioGroup
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/radio_day_stat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="Day"
+                />
+
+            <RadioButton
+                android:id="@+id/radio_month_stat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="Month" />
+            <RadioButton
+                android:id="@+id/radio_year_stat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Year" />
+        </RadioGroup>
+
+        <ImageView
+            android:layout_width="290dp"
+            android:layout_height="200dp"
+            android:src="@drawable/pie_chart"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp"
+            android:contentDescription="TODO" />
+
+
+        <TextView
+            android:id="@+id/acceptance"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Acceptance rate 80%"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:id="@+id/working_h"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Working hours 80%"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:id="@+id/incoome"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Income 80%"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+
+    </LinearLayout>
+
+</FrameLayout>
