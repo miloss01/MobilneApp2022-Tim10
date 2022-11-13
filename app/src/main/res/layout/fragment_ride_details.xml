@@ -8,10 +8,42 @@
     android:orientation="vertical"
     tools:context=".fragments.RideDetailsFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"/>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="213dp"
         android:src="@drawable/examplemap" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_ridedetails_addfav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to Favorite"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:padding="5dp"
+            android:backgroundTint="@color/cardview_dark_background"/>
+        <Button
+            android:id="@+id/btn_ridedetails_startnew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start new ride"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:padding="5dp"
+            android:backgroundTint="@color/cardview_dark_background"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
