@@ -2,6 +2,7 @@ package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ public class PassengerRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_register);
+        PassengerRegisterActivity view2 = this;
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         Button button = (Button) findViewById(R.id.register_summbit_btn);
@@ -26,8 +28,8 @@ public class PassengerRegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Please confirm registration on your email", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-//                TextView name = (TextView)view.findViewById(R.id.notification_for_registry);
-//                name.setText("Please confirm registration on your email");
+                Intent intent = new Intent(view2, PassengerMainActivity.class);
+                startActivity(intent);
             }
         });
 
