@@ -2,6 +2,7 @@ package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.PassengerAccountAdapter;
+import com.example.myapplication.fragments.RideDetailsFragment;
+import com.example.myapplication.fragments.RideStatsFragment;
+import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.UsersMokap;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -34,10 +38,14 @@ public class PassengerAccountActivity extends AppCompatActivity {
             }
         });
 
+        PassengerAccountActivity thisView = this;
         Button button = (Button) findViewById(R.id.btn_passacc_stats);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                
+                toolbar.setTitle("Ride stats");
+                FragmentTransition.to((Fragment) RideStatsFragment.newInstance(thisView),
+                        thisView, true,
+                        R.id.passacc_rellay);
             }
         });
 

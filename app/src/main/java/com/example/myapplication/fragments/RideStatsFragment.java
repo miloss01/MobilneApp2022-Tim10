@@ -3,6 +3,7 @@ package com.example.myapplication.fragments;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,57 +12,27 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.PassengerAccountActivity;
+import com.example.myapplication.models.Ride;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RideStatsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RideStatsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static PassengerAccountActivity view;
 
     public RideStatsFragment() {
         // Required empty public constructor
     }
 
-    public static RideStatsFragment newInstance() {
+    public static RideStatsFragment newInstance(PassengerAccountActivity view) {
+        RideStatsFragment.view = view;
         return new RideStatsFragment();
     }
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RideStatsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RideStatsFragment newInstance(String param1, String param2) {
-        RideStatsFragment fragment = new RideStatsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -74,18 +45,19 @@ public class RideStatsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Toast.makeText(getActivity(), "onAttach() RideStatsFragment", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDestroyView() {
+        Toolbar tb = view.findViewById(R.id.passenger_account_toolbar);
+        tb.setTitle("Account");
         super.onDestroyView();
-        Toast.makeText(getActivity(), "onDestroyView() RideStatsFragment", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDetach() {
+        Toolbar tb = view.findViewById(R.id.passenger_account_toolbar);
+        tb.setTitle("Account");
         super.onDetach();
-        Toast.makeText(getActivity(), "onDeatach() RideStatsFragment", Toast.LENGTH_SHORT).show();
     }
 }
