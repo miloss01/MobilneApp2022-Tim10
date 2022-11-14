@@ -9,37 +9,38 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.PassengerAccountActivity;
-import com.example.myapplication.models.Ride;
+import com.example.myapplication.adapters.FavRoutesAdapter;
+import com.example.myapplication.adapters.PassengerRideAdapter;
 
-public class RideStatsFragment extends Fragment {
+import java.util.List;
+
+public class FavoriteRoutesFragment extends Fragment {
 
     private static PassengerAccountActivity view;
 
-    public RideStatsFragment() {
-        // Required empty public constructor
+    public FavoriteRoutesFragment() {
     }
 
-    public static RideStatsFragment newInstance(PassengerAccountActivity view) {
-        RideStatsFragment.view = view;
-        return new RideStatsFragment();
+    public static FavoriteRoutesFragment newInstance(PassengerAccountActivity view) {
+        FavoriteRoutesFragment fragment = new FavoriteRoutesFragment();
+        FavoriteRoutesFragment.view = view;
+        return fragment;
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setupList();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ride_stats, container, false);
+        return inflater.inflate(R.layout.fragment_favorite_routes, container, false);
     }
 
     @Override
@@ -60,4 +61,11 @@ public class RideStatsFragment extends Fragment {
         tb.setTitle("Account");
         super.onDetach();
     }
+
+//    private void setupList() {
+//        ListView listView = (ListView) view.findViewById(R.id.favroutes_listview);
+//        FavRoutesAdapter adapter = new FavRoutesAdapter(view, R.layout.fav_route_cell);
+//        listView.setAdapter(adapter);
+//    }
+
 }

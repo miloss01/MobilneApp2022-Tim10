@@ -34,4 +34,6 @@
     <string name="fav_routes">Favourite routes</string>
     <string name="ride_stats">Ride stats</string>
     <string name="inbox">Inbox</string>
+    <string name="add_to_favorite">Add to Favorite</string>
+    <string name="start_new_ride">Start new ride</string>
 </resources>
