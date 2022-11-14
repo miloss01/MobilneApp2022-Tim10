@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PassengerAccountActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/passenger_account_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"
+        app:theme="@style/ToolbarColored"
+        app:titleTextColor="@color/white">
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passacc_rellay"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/passacc_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            >
+
+            <ImageButton
+                android:id="@+id/btn_passacc_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:src="@android:drawable/ic_menu_edit"
+                android:background="@color/white"/>
+
+            <ImageView
+                android:id="@+id/img_passacc_profile"
+                android:layout_width="150dp"
+                android:layout_height="143dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:src="@drawable/profilephoto1" />
+
+            <TextView
+                android:id="@+id/textview_passacc_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="First Last"
+                />
+
+            <TextView
+                android:id="@+id/textview_passacc_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="15sp"
+                android:text="email@emeamail.snail"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:text="@string/balance"
+                    android:layout_weight="9"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="$16.4"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_passacc_updatebalance"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/update_balance"
+                android:textAlignment="center"
+                android:drawableLeft="@android:drawable/ic_input_add"
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/cardview_dark_background"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/darker_gray"/>
+
+
+        <Button
+            android:id="@+id/btn_passacc_favroutes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/fav_routes"
+            android:textAlignment="textStart"
+            android:background="@android:color/transparent"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:textSize="24sp"/>
+
+        <Button
+            android:id="@+id/btn_passacc_stats"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/ride_stats"
+            android:textAlignment="textStart"
+            android:background="@android:color/transparent"
+            android:textColor="@color/black"
+            android:textAllCaps="false"
+            android:textSize="24sp"/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
