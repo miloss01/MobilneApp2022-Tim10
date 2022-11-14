@@ -26,7 +26,7 @@ public class DriverMainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Welcome driver");
+        getSupportActionBar().setTitle("Uber");
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -60,6 +60,16 @@ public class DriverMainActivity extends AppCompatActivity {
 
         if (id == R.id.driver_menu_history) {
             Intent intent1 = new Intent(this, DriverRideHistoryActivity.class);
+            this.startActivity(intent1);
+            return true;
+        }
+        if (id == R.id.driver_menu_account) {
+            Intent intent1 = new Intent(this, DriverAccountActivity.class);
+            this.startActivity(intent1);
+            return true;
+        }
+        if (id == R.id.driver_menu_inbox) {
+            Intent intent1 = new Intent(this, DriverInboxActivity.class);
             this.startActivity(intent1);
             return true;
         }

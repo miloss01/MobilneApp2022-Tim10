@@ -1,6 +1,7 @@
 package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -27,7 +28,17 @@ public class PassengerRideHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_ride_history);
 
-        //toolbar.setTitle("Your previous rides")
+        Toolbar toolbar = findViewById(R.id.passenger_ridehistory_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Ride history");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
         setupData();
         setupList();
@@ -47,7 +58,6 @@ public class PassengerRideHistoryActivity extends AppCompatActivity {
         PassengerRideAdapter adapter = new PassengerRideAdapter(getApplicationContext(),
                 R.layout.passenger_ride_cell, ridesList);
         listView.setAdapter(adapter);
-
      }
 
     private void setupOnclickListener() {

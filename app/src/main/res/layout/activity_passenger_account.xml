@@ -4,7 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.PassengerAccountActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/passenger_account_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"
+        app:theme="@style/ToolbarColored"
+        app:titleTextColor="@color/white">
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passacc_rellay"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/passacc_view"
@@ -148,6 +166,8 @@
             android:textColor="@color/black"
             android:textAllCaps="false"
             android:textSize="24sp"/>
+
+
 
     </LinearLayout>
 

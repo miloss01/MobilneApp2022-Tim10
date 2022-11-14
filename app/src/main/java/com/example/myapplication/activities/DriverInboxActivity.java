@@ -1,8 +1,10 @@
 package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import com.example.myapplication.R;
@@ -24,6 +26,18 @@ public class DriverInboxActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_inbox);
+
+        Toolbar toolbar = findViewById(R.id.driver_inbox_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Inbox");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         setupData();
         setupList();
         //setupOnclickListener();

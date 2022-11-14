@@ -1,6 +1,7 @@
 package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -19,7 +20,7 @@ import com.example.myapplication.fragments.PassengerInboxFragment;
 import com.example.myapplication.tools.FragmentTransition;
 import com.google.android.material.snackbar.Snackbar;
 
-public class PassengerInboxActivity extends Activity {
+public class PassengerInboxActivity extends AppCompatActivity {
     ListView simpleList;
 
 
@@ -47,5 +48,17 @@ public class PassengerInboxActivity extends Activity {
                 getResources().getStringArray(R.array.spiner_pass_inbox_options));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
+
+        Toolbar toolbar = findViewById(R.id.passenger_inbox_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Inbox");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
     }
 }

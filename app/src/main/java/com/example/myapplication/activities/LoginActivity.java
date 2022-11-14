@@ -33,7 +33,7 @@ public class LoginActivity extends Activity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, SplashScreenActivity.class);
+                Intent i = new Intent(LoginActivity.this, PassengerRegisterActivity.class);
                 startActivity(i);
             }
         });
