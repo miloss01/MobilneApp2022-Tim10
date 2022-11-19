@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapplication.activities.LoginActivity;
+import com.example.myapplication.activities.PassengerInboxActivity;
 import com.example.myapplication.activities.SplashScreenActivity;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, PassengerInboxActivity.class));
 
 
     }

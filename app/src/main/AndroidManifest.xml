@@ -132,6 +132,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="RideDetails">
         </activity>
+        
+        <service android:name=".service.PassengerInboxService"/>
 
     </application>
 
