@@ -36,4 +36,8 @@
     <string name="inbox">Inbox</string>
     <string name="add_to_favorite">Add to Favorite</string>
     <string name="start_new_ride">Start new ride</string>
+    <string name="beginning_location">Beginning location</string>
+    <string name="destination">Destination</string>
+    <string name="find_optimal">FIND OPTIMAL</string>
+    <string name="make_reservation">Make reservation</string>
 </resources>
