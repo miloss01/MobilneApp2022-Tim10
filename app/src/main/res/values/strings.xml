@@ -40,4 +40,13 @@
     <string name="destination">Destination</string>
     <string name="find_optimal">FIND OPTIMAL</string>
     <string name="make_reservation">Make reservation</string>
+    <string name="icon">icon</string>
+    <string name="pick_time">Pick time</string>
+    <string name="pet_friendly">Pet friendly</string>
+    <string name="children_friendly">Children friendly</string>
+
+    <array name="stepper_details">
+        <item>Location and time</item>
+        <item>Additional preferences</item>
+    </array>
 </resources>

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -39,6 +40,14 @@ public class PassengerMainActivity extends AppCompatActivity {
 //                createAddLocationDialog();
 //            }
 //        });
+        Button rideCreation = this.findViewById(R.id.open_ride_creation);
+        rideCreation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PassengerMainActivity.this, RideCreationActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

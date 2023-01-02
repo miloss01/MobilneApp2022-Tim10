@@ -6,4 +6,11 @@
         <item>Support</item>
         <item>Panic</item>
     </string-array>
+
+    <string-array name="spiner_vehicle_type">
+        <item>Pick vehicle type</item>
+        <item>Standard</item>
+        <item>Luxury</item>
+        <item>ne ynam pogledaj</item>
+    </string-array>
 </resources>
