@@ -35,7 +35,7 @@ public class RideCreationActivity extends AppCompatActivity {
                 .animationType(StepView.ANIMATION_CIRCLE)
                 .selectedCircleColor(ContextCompat.getColor(this, R.color.black))
                 .selectedCircleRadius(getResources().getDimensionPixelSize(R.dimen.fab_margin))
-                .selectedStepNumberColor(ContextCompat.getColor(this, com.google.android.material.R.color.m3_ref_palette_white))
+                .selectedStepNumberColor(ContextCompat.getColor(this, R.color.white))
 
                 .animationDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
                 .stepLineWidth(getResources().getDimensionPixelSize(R.dimen.fab_margin))
