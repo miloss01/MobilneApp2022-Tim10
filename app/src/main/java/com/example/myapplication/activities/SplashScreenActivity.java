@@ -9,8 +9,10 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.auth0.android.jwt.JWT;
+import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.services.AuthService;
+import com.example.myapplication.tools.Retrofit;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,8 +35,12 @@ public class SplashScreenActivity extends Activity {
 
                 System.out.println(authService.getUserData());
 
+                Retrofit.sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
+
                 if (!authService.isLoggedIn())
                     startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                else
+                    authService.redirect();
 
                 finish(); // da nebi mogao da ode back na splash
             }

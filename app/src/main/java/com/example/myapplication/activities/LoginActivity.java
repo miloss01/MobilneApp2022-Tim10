@@ -15,11 +15,11 @@ import com.example.myapplication.dto.TokenResponseDTO;
 import com.example.myapplication.dto.LoginDTO;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.ILoginService;
+import com.example.myapplication.tools.Retrofit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class LoginActivity extends Activity {
@@ -38,12 +38,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.baseUrl)
-                    .addConverterFactory(JacksonConverterFactory.create())
-                    .build();
-
-                ILoginService loginService = retrofit.create(ILoginService.class);
+                ILoginService loginService = Retrofit.retrofit.create(ILoginService.class);
                 TextView emailTextView = findViewById(R.id.login_edit_email);
                 TextView passwordTextView = findViewById(R.id.login_edit_password);
 
