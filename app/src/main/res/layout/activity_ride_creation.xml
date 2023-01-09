@@ -146,7 +146,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="160dp"
             android:contentDescription="@string/icon"
-            android:src="@drawable/ic_play_circle"
+            android:src="@drawable/ic_baseline_directions_car_24"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
