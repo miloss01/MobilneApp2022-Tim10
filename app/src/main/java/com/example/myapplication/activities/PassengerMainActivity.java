@@ -16,6 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.myapplication.R;
+import com.example.myapplication.fragments.DriverStatisticFragment;
+import com.example.myapplication.services.AuthService;
+import com.example.myapplication.tools.FragmentTransition;
+
+import java.util.zip.Inflater;
 
 public class PassengerMainActivity extends AppCompatActivity {
 
@@ -24,11 +29,14 @@ public class PassengerMainActivity extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private EditText new_location;
     private Button add_location_btn, cancel_location_btn;
+    private AuthService authService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
+
+        authService = new AuthService(this);
 
         Toolbar toolbar = findViewById(R.id.passenger_main_toolbar);
         setSupportActionBar(toolbar);
@@ -72,6 +80,10 @@ public class PassengerMainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_passenger_inbox) {
             this.startActivity(new Intent(this, PassengerInboxActivity.class));
+            return true;
+        }
+        if (id == R.id.action_passenger_logout) {
+            authService.logout();
             return true;
         }
         return super.onOptionsItemSelected(item);
