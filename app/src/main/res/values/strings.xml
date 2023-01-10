@@ -40,4 +40,5 @@
     <string name="location_disabled_message">Location is disabled</string>
     <string name="sure">Sure</string>
     <string name="no">No</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
 </resources>

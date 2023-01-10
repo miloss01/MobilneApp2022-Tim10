@@ -5,27 +5,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.myapplication.services.AuthService;
 
 public class LoginActivity extends Activity {
+
+    private AuthService authService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        authService = new AuthService(this);
+
         Button btn = findViewById(R.id.login_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Logged in", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                Intent i = new Intent(LoginActivity.this, DriverMainActivity.class);
-                startActivity(i);
+
+                TextView emailTextView = findViewById(R.id.login_edit_email);
+                TextView passwordTextView = findViewById(R.id.login_edit_password);
+
+                authService.login(emailTextView.getText().toString(), passwordTextView.getText().toString());
+
+                finish();
+
             }
         });
 
@@ -34,6 +43,16 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, PassengerRegisterActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        Button btn3 = findViewById(R.id.login_forgot_password_button);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, ResetPasswordActivity.class);
                 startActivity(i);
             }
         });
