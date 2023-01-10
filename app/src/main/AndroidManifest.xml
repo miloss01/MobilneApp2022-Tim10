@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,11 +13,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="31" >
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".activities.ResetPasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activities.DriverInboxActivity"
-            android:theme="@style/Theme.MyApplication.NoActionBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -29,8 +40,8 @@
         </activity>
         <activity
             android:name=".activities.PassengerMainActivity"
-            android:theme="@style/Theme.MyApplication.NoActionBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -78,14 +89,14 @@
             android:name=".activities.OneMessageActivity"
             android:exported="false"
             android:label="@string/title_activity_one_message"
-            android:theme="@style/Theme.MyApplication.NoActionBar" >
+            android:theme="@style/Theme.MyApplication.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".activities.PassengerRegisterActivity"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -93,18 +104,16 @@
         <activity
             android:name=".activities.PassengerInboxActivity"
             android:exported="false"
-            android:theme="@style/Theme.MyApplication.NoActionBar" >
+            android:theme="@style/Theme.MyApplication.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true"
             android:label="Spashscreen"
-            android:theme="@style/Theme.MyApplication.NoActionBar" >
-
+            android:theme="@style/Theme.MyApplication.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -112,27 +121,22 @@
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true"
-            android:label="LoginScreenActivity">
-        </activity>
+            android:label="LoginScreenActivity"></activity>
         <activity
             android:name=".activities.DriverMainActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:label="DriverMain">
-        </activity>
+            android:label="DriverMain"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".activities.DriverRideHistoryActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:label="DriverRideHistory">
-        </activity>
+            android:label="DriverRideHistory"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".activities.RideDetailsActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:label="RideDetails">
-        </activity>
-
+            android:label="RideDetails"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -108,11 +108,25 @@
             android:textColor="@color/black"
             android:layout_marginLeft="26sp"
             android:layout_marginTop="15sp"
-            android:textSize="10sp"
+            android:textSize="12sp"
             style="?android:attr/borderlessButtonStyle"
             android:layout_marginRight="26sp"
             android:layout_height="wrap_content"
             android:text="Don't have an account? Register now." />
+
+        <Button
+            android:id="@+id/login_forgot_password_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_reg_button"
+            android:layout_marginLeft="26sp"
+            android:layout_marginTop="5sp"
+            android:layout_marginRight="26sp"
+            android:background="@color/white"
+            android:text="Forgot password? Reset now."
+            android:textColor="#2C2C2C"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

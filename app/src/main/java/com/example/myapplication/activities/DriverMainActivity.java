@@ -14,13 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.R;
+import com.example.myapplication.services.AuthService;
 
 public class DriverMainActivity extends AppCompatActivity {
+
+    private AuthService authService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_main);
+
+        authService = new AuthService(this);
 
         Toolbar toolbar = findViewById(R.id.driver_main_toolbar);
         setSupportActionBar(toolbar);
@@ -71,6 +76,11 @@ public class DriverMainActivity extends AppCompatActivity {
         if (id == R.id.driver_menu_inbox) {
             Intent intent1 = new Intent(this, DriverInboxActivity.class);
             this.startActivity(intent1);
+            return true;
+        }
+        if (id == R.id.driver_logout_account) {
+            authService.logout();
+            finish();
             return true;
         }
 
