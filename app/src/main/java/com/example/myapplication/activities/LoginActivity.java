@@ -9,18 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.example.myapplication.Constants;
 import com.example.myapplication.R;
-import com.example.myapplication.dto.TokenResponseDTO;
-import com.example.myapplication.dto.LoginDTO;
 import com.example.myapplication.services.AuthService;
-import com.example.myapplication.services.ILoginService;
-import com.example.myapplication.tools.Retrofit;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class LoginActivity extends Activity {
 

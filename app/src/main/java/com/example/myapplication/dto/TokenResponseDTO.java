@@ -5,6 +5,13 @@ public class TokenResponseDTO {
     private String accessToken;
     private String refreshToken;
 
+    public TokenResponseDTO() {}
+
+    public TokenResponseDTO(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
