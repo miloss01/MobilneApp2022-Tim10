@@ -15,7 +15,7 @@ public class JwtInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        String token = Retrofit.sharedPreferences.getString("user_jwt", "asd");
+        String token = Retrofit.sharedPreferences.getString("user_jwt", null);
 
         Request newRequest  = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer " + token)
