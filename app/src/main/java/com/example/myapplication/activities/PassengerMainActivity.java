@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.fragments.DriverStatisticFragment;
+import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.tools.FragmentTransition;
 
@@ -50,6 +51,9 @@ public class PassengerMainActivity extends AppCompatActivity {
                 createAddLocationDialog();
             }
         });
+
+        FragmentTransition.to(MapFragment.newInstance(), this, false, R.id.passenger_map_container);
+
 
     }
 

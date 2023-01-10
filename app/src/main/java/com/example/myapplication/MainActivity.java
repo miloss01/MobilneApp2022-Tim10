@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapplication.activities.LoginActivity;
+import com.example.myapplication.activities.PassengerInboxActivity;
 import com.example.myapplication.activities.SplashScreenActivity;
+import com.example.myapplication.fragments.MapFragment;
+import com.example.myapplication.tools.FragmentTransition;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;

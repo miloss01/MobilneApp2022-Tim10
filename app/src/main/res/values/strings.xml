@@ -36,5 +36,9 @@
     <string name="inbox">Inbox</string>
     <string name="add_to_favorite">Add to Favorite</string>
     <string name="start_new_ride">Start new ride</string>
+    <string name="oops" />
+    <string name="location_disabled_message">Location is disabled</string>
+    <string name="sure">Sure</string>
+    <string name="no">No</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
 </resources>
