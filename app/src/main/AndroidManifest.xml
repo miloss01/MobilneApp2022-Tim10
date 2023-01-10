@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,7 +18,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="32">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+<!--        <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="MAPS_API_KEY" />-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${googleMapApiKey}"/>
+
         <activity
             android:name=".activities.RideCreationActivity"
             android:exported="false">
@@ -22,6 +38,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
 
         <activity
             android:name=".activities.DriverInboxActivity"
@@ -121,22 +138,32 @@
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true"
-            android:label="LoginScreenActivity"></activity>
+            android:label="LoginScreenActivity">
+
+        </activity>
         <activity
             android:name=".activities.DriverMainActivity"
             android:exported="true"
             android:label="DriverMain"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
         <activity
             android:name=".activities.DriverRideHistoryActivity"
             android:exported="true"
             android:label="DriverRideHistory"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
         <activity
             android:name=".activities.RideDetailsActivity"
             android:exported="true"
             android:label="RideDetails"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+
+        <service android:name=".service.PassengerInboxService"/>
     </application>
 
 </manifest>

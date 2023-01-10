@@ -149,7 +149,7 @@ public class RideCreationActivity extends AppCompatActivity {
         EditText departure = findViewById(R.id.reservation_departure);
         EditText destination = findViewById(R.id.reservation_destination);
         TextView startTextView = (TextView) findViewById(R.id.time_text);
-        String startTime = startTextView.getText().toString().substring(selectTime.length());
+        String startTime = startTextView.getText().toString().substring(selectTime.length());  //TODO ako je prazan string puca
         Spinner spinner = findViewById(R.id.sppiner_vehicle_type);
         String vehicleType = spinner.getSelectedItem().toString().toLowerCase(Locale.ROOT);
         CheckBox petCheckBox = findViewById(R.id.pet_checkbox);
