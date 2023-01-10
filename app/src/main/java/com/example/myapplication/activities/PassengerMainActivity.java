@@ -78,6 +78,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_passenger_logout) {
             authService.logout();
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

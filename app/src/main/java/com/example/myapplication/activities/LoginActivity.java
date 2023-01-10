@@ -38,24 +38,12 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                ILoginService loginService = Retrofit.retrofit.create(ILoginService.class);
                 TextView emailTextView = findViewById(R.id.login_edit_email);
                 TextView passwordTextView = findViewById(R.id.login_edit_password);
 
-                Call<TokenResponseDTO> jwtResponseCall = loginService.login(new LoginDTO(emailTextView.getText().toString(), passwordTextView.getText().toString()));
+                authService.login(emailTextView.getText().toString(), passwordTextView.getText().toString());
 
-                jwtResponseCall.enqueue(new Callback<TokenResponseDTO>() {
-                    @Override
-                    public void onResponse(Call<TokenResponseDTO> call, Response<TokenResponseDTO> response) {
-                        System.out.println(response.body());
-                        authService.login(response.body().getAccessToken());
-                    }
-
-                    @Override
-                    public void onFailure(Call<TokenResponseDTO> call, Throwable t) {
-                        System.out.println(t.getMessage());
-                    }
-                });
+                finish();
 
             }
         });
@@ -65,6 +53,16 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, PassengerRegisterActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        Button btn3 = findViewById(R.id.login_forgot_password_button);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, ResetPasswordActivity.class);
                 startActivity(i);
             }
         });

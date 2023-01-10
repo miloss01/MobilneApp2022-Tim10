@@ -80,6 +80,7 @@ public class DriverMainActivity extends AppCompatActivity {
         }
         if (id == R.id.driver_logout_account) {
             authService.logout();
+            finish();
             return true;
         }
 
