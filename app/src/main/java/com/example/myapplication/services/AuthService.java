@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -14,7 +15,7 @@ import com.example.myapplication.Constants;
 import com.example.myapplication.activities.DriverMainActivity;
 import com.example.myapplication.activities.LoginActivity;
 import com.example.myapplication.activities.PassengerMainActivity;
-import com.example.myapplication.activities.SplashScreenActivity;
+import com.example.myapplication.dto.IsActiveDTO;
 import com.example.myapplication.dto.LoginDTO;
 import com.example.myapplication.dto.TokenResponseDTO;
 import com.example.myapplication.tools.Retrofit;
@@ -29,21 +30,19 @@ import retrofit2.Response;
 public class AuthService {
 
     private Activity activity;
-    private SharedPreferences sharedPreferences;
 
     public AuthService(Activity activity) {
         this.activity = activity;
-        this.sharedPreferences = activity.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public boolean isLoggedIn() {
-        String jwt = sharedPreferences.getString("user_jwt", null);
+        String jwt = Retrofit.sharedPreferences.getString("user_jwt", null);
         return jwt != null;
     }
 
     public void login(String email, String password) {
 
-        ILoginService loginService = Retrofit.retrofit.create(ILoginService.class);
+        IAuthService loginService = Retrofit.retrofit.create(IAuthService.class);
         Call<TokenResponseDTO> jwtResponseCall = loginService.login(new LoginDTO(email, password));
 
         jwtResponseCall.enqueue(new Callback<TokenResponseDTO>() {
@@ -58,17 +57,9 @@ public class AuthService {
 
                 String token = response.body().getAccessToken();
 
-                JWT jwt = new JWT(token);
-                String email = jwt.getSubject();
-                String id = jwt.getClaim("id").asString();
-                String role = jwt.getClaim("role").asString();
+                setLoggedInUser(token);
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("user_jwt", token);
-                editor.putString("user_email", email);
-                editor.putString("user_id", id);
-                editor.putString("user_role", role);
-                editor.apply();
+                changeActiveFlag(true);
 
                 redirect();
             }
@@ -82,23 +73,39 @@ public class AuthService {
         });
     }
 
-    public void logout() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+    public void setLoggedInUser(String token) {
+        JWT jwt = new JWT(token);
+        String email = jwt.getSubject();
+        String id = jwt.getClaim("id").asString();
+        String role = jwt.getClaim("role").asString();
+
+        SharedPreferences.Editor editor = Retrofit.sharedPreferences.edit();
+        editor.putString("user_jwt", token);
+        editor.putString("user_email", email);
+        editor.putString("user_id", id);
+        editor.putString("user_role", role);
+        editor.apply();
+    }
+
+    public void setLoggedOutUser() {
+        SharedPreferences.Editor editor = Retrofit.sharedPreferences.edit();
         editor.putString("user_jwt", null);
         editor.putString("user_email", null);
         editor.putString("user_id", null);
         editor.putString("user_role", null);
         editor.apply();
+    }
 
-        redirect();
+    public void logout() {
+        changeActiveFlag(false);
     }
 
     public Map<String, String> getUserData() {
         Map<String, String> map = new HashMap<>();
-        map.put("user_jwt", sharedPreferences.getString("user_jwt", null));
-        map.put("user_email", sharedPreferences.getString("user_email", null));
-        map.put("user_id", sharedPreferences.getString("user_id", null));
-        map.put("user_role", sharedPreferences.getString("user_role", null));
+        map.put("user_jwt", Retrofit.sharedPreferences.getString("user_jwt", null));
+        map.put("user_email", Retrofit.sharedPreferences.getString("user_email", null));
+        map.put("user_id", Retrofit.sharedPreferences.getString("user_id", null));
+        map.put("user_role", Retrofit.sharedPreferences.getString("user_role", null));
         return map;
     }
 
@@ -119,6 +126,42 @@ public class AuthService {
             System.out.println("Ili je greska ili je ulogovan admin");
 
         return;
+    }
+
+    public void changeActiveFlag(boolean flag) {
+
+        Map<String, String> map = getUserData();
+        String id = map.get("user_id");
+
+        if (id == null)
+            return;
+
+        IAuthService loginService = Retrofit.retrofit.create(IAuthService.class);
+        Call<IsActiveDTO> changeActiveFlagResponse = loginService.changeActiveFlag(Integer.parseInt(id), new IsActiveDTO(flag));
+        Log.d("TAG", "zove se" + flag);
+        changeActiveFlagResponse.enqueue(new Callback<IsActiveDTO>() {
+            @Override
+            public void onResponse(Call<IsActiveDTO> call, Response<IsActiveDTO> response) {
+                if (response.code() == 200) {
+
+                    if (!flag) {
+                        setLoggedOutUser();
+                        redirect();
+                    }
+
+                }
+                else {
+                    Log.d("TAG", "greska");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IsActiveDTO> call, Throwable t) {
+                System.out.println(t.getMessage());
+                Log.d("TAG", "greska", t);
+            }
+        });
+
     }
 
 }

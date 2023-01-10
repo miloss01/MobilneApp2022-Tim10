@@ -26,16 +26,14 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        authService = new AuthService(this);
-
         int SPLASH_TIME_OUT = 3000;
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
 
-                System.out.println(authService.getUserData());
-
                 Retrofit.sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
+
+                authService = new AuthService(SplashScreenActivity.this);
 
                 if (!authService.isLoggedIn())
                     startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));

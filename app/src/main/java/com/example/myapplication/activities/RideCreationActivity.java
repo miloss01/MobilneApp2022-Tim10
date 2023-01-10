@@ -27,7 +27,6 @@ import com.example.myapplication.dto.TokenResponseDTO;
 import com.example.myapplication.dto.UserDTO;
 import com.example.myapplication.fragments.TimePickerFragment;
 import com.example.myapplication.services.AuthService;
-import com.example.myapplication.services.ILoginService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.Retrofit;
 import com.google.android.material.snackbar.Snackbar;

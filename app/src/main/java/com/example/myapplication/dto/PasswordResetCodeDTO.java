@@ -6,6 +6,8 @@ public class PasswordResetCodeDTO {
     private String newPassword;
     private String code;
 
+    public PasswordResetCodeDTO() {}
+
     public PasswordResetCodeDTO(String email, String newPassword, String code) {
         this.email = email;
         this.newPassword = newPassword;
