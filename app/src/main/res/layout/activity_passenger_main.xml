@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/passenger_main_toolbar"
@@ -20,80 +16,96 @@
             app:titleTextColor="@color/white">
         </androidx.appcompat.widget.Toolbar>
 
-        <ImageView
-            android:layout_width="400dp"
-            android:layout_height="500dp"
-            android:layout_gravity="start"
-            android:src="@drawable/examplemapvertical" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/passenger_map_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="400dp"-->
+<!--            android:orientation="vertical" />-->
 
-        <LinearLayout
+
+        <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="start"
-                android:layout_marginTop="200dp"
-                android:src="@drawable/ic_play_circle" />
-
-            <EditText
-                android:layout_width="200dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:hint="@string/beginning_location" />
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/passenger_map_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:orientation="vertical" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="35dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/add_departure_to_favoutites_btn"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="45dp"
-                android:background="@drawable/ic_heart"/>
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="200dp"
+                        android:src="@drawable/ic_play_circle" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+                    <EditText
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:hint="@string/beginning_location" />
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="start"
-                android:layout_marginTop="200dp"
-                android:src="@drawable/ic_pin_drop" />
+                    <Button
+                        android:id="@+id/add_departure_to_favoutites_btn"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="45dp"
+                        android:background="@drawable/ic_heart"/>
 
-            <EditText
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:hint="@string/destination" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="35dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/add_destination_to_fav_btn"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="45dp"
-                android:background="@drawable/ic_heart"/>
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="200dp"
+                        android:src="@drawable/ic_pin_drop" />
 
-        </LinearLayout>
+                    <EditText
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:hint="@string/destination" />
 
-        <Button
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:id="@+id/open_ride_creation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/make_reservation"
-            />
+                    <Button
+                        android:id="@+id/add_destination_to_fav_btn"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="45dp"
+                        android:background="@drawable/ic_heart"/>
 
 
 
-    </LinearLayout>
+                </LinearLayout>
+                <Button
+                    android:layout_marginStart="45dp"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/open_ride_creation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/make_reservation"
+                    />
+            </LinearLayout>
 
-</ScrollView>
+        </ScrollView>
+
+
+
+
+</LinearLayout>

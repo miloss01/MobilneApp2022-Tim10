@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,12 +23,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-<!--        <meta-data-->
-<!--            android:name="com.google.android.geo.API_KEY"-->
-<!--            android:value="MAPS_API_KEY" />-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${googleMapApiKey}"/>
+            android:value="${MAPS_API_KEY}" />
 
         <activity
             android:name=".activities.RideCreationActivity"
@@ -141,12 +137,12 @@
             android:label="LoginScreenActivity">
 
         </activity>
+
         <activity
             android:name=".activities.DriverMainActivity"
             android:exported="true"
             android:label="DriverMain"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         </activity>
         <activity
             android:name=".activities.DriverRideHistoryActivity"
@@ -164,6 +160,7 @@
         </activity>
 
         <service android:name=".service.PassengerInboxService"/>
+
     </application>
 
 </manifest>

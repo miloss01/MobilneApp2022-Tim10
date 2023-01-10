@@ -2,9 +2,6 @@ plugins {
     id 'com.android.application'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def googleMapApiKey = properties.getProperty('MAPS_API_KY')
 
 android {
     namespace 'com.example.myapplication'
@@ -39,7 +36,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.shuhart.stepview/stepview
     implementation 'com.github.shuhart:stepview:1.5.1'
-
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'

@@ -16,8 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.myapplication.R;
-import com.example.myapplication.fragments.DriverStatisticFragment;
 import com.example.myapplication.services.AuthService;
+import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.tools.FragmentTransition;
 
 import java.util.zip.Inflater;
@@ -48,6 +48,8 @@ public class PassengerMainActivity extends AppCompatActivity {
 //                createAddLocationDialog();
 //            }
 //        });
+
+        //TODO
         Button rideCreation = this.findViewById(R.id.open_ride_creation);
         rideCreation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,9 @@ public class PassengerMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        FragmentTransition.to(MapFragment.newInstance(), this, false, R.id.passenger_map_container);
+
 
     }
 
