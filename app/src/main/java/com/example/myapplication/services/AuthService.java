@@ -151,7 +151,9 @@ public class AuthService {
 
                 }
                 else {
-                    Log.d("TAG", "greska");
+                    Log.d("TAG", "greska, verovatno je istekao jwt token");
+                    setLoggedOutUser();
+                    redirect();
                 }
             }
 
