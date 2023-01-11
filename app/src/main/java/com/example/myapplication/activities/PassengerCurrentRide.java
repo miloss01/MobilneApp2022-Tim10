@@ -19,7 +19,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.myapplication.R;
+import com.example.myapplication.dto.DriverDTO;
+import com.example.myapplication.dto.IsActiveDTO;
 import com.example.myapplication.dto.RideDTO;
+import com.example.myapplication.services.IAuthService;
+import com.example.myapplication.services.IDriverService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.services.MapService;
 import com.example.myapplication.tools.Retrofit;
@@ -137,6 +141,29 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
                 estimatedTime = String.valueOf(rideDTO.getEstimatedTimeInMinutes());
                 time.setText(elapsedTime + "/" + estimatedTime + "min");
                 driverData.setText(rideDTO.getDriver().getEmail());
+
+                IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+                Call<DriverDTO> getDriverResponse = driverService.getDriver(rideDTO.getDriver().getId().intValue());
+
+                getDriverResponse.enqueue(new Callback<DriverDTO>() {
+                    @Override
+                    public void onResponse(Call<DriverDTO> call, Response<DriverDTO> response) {
+
+                        if (response.code() != 200)
+                            return;
+
+                        DriverDTO driverDTO = response.body();
+
+                        String ret = driverDTO.getName() + " " + driverDTO.getSurname() + " (" + driverDTO.getEmail() + ")";
+                        driverData.setText(ret);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<DriverDTO> call, Throwable t) {
+                        Log.d("TAG", "greska u povlacenju drivera", t);
+                    }
+                });
 
                 String departureAddress = rideDTO.getLocations().get(0).getDeparture().getAddress();
                 double departureLat = rideDTO.getLocations().get(0).getDeparture().getLatitude();
