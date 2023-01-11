@@ -1,51 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="16dp"
-    android:paddingTop="30dp">
-    <ImageView
-        android:layout_width="350dp"
-        android:layout_height="500dp"
-        android:layout_gravity="left"
-        android:src="@drawable/examplemapvertical" />
-    <LinearLayout
+    android:paddingStart="30dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/hahah"
+        android:text="@string/ride_booked"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="left"
-            android:layout_marginTop="200dp"
-            android:src="@drawable/ic_play_circle" />
+        android:text="@string/drivers_full_name"
+        android:textColor="@color/black"
+        android:id="@+id/name_tag"
+        app:layout_constraintLeft_toLeftOf="@id/hahah"
+        app:layout_constraintTop_toBottomOf="@id/hahah"/>
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:hint="New location"
-            android:id="@+id/new_location"/>
+            android:layout_marginStart="20dp"
+            android:id="@+id/driver_name"
+            app:layout_constraintLeft_toRightOf="@id/name_tag"
+            app:layout_constraintTop_toTopOf="@id/name_tag"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/drivers_mail"
+        android:textColor="@color/black"
+        android:id="@+id/mail_tag"
+        app:layout_constraintLeft_toLeftOf="@id/name_tag"
+        app:layout_constraintTop_toBottomOf="@id/name_tag"/>
 
-    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/driver_mail"
+        android:layout_marginStart="20dp"
+        app:layout_constraintLeft_toRightOf="@id/mail_tag"
+        app:layout_constraintTop_toTopOf="@id/mail_tag"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/drivers_phone"
+        android:textColor="@color/black"
+        android:id="@+id/phone_tag"
+        app:layout_constraintLeft_toLeftOf="@id/mail_tag"
+        app:layout_constraintTop_toBottomOf="@id/mail_tag"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:id="@+id/driver_phone"
+        app:layout_constraintLeft_toRightOf="@id/phone_tag"
+        app:layout_constraintTop_toTopOf="@id/phone_tag"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/vehicle_registration"
+        android:textColor="@color/black"
+        android:id="@+id/reg_tag"
+        app:layout_constraintLeft_toLeftOf="@id/phone_tag"
+        app:layout_constraintTop_toBottomOf="@id/phone_tag"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:id="@+id/vehicle_registration"
+        app:layout_constraintLeft_toRightOf="@id/reg_tag"
+        app:layout_constraintTop_toTopOf="@id/reg_tag"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/vehicle_model"
+        android:textColor="@color/black"
+        android:id="@+id/model_tag"
+        app:layout_constraintLeft_toLeftOf="@id/reg_tag"
+        app:layout_constraintTop_toBottomOf="@id/reg_tag"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:id="@+id/vehicle_model"
+        app:layout_constraintLeft_toRightOf="@id/model_tag"
+        app:layout_constraintTop_toTopOf="@id/model_tag"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
-            android:layout_marginEnd="140dp"
-            android:id="@+id/add_departure_to_favoutites_btn"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:id="@+id/cancel_location_btn"/>
-    </LinearLayout>
+            android:text="@string/close"
+            android:layout_marginTop="30dp"
+            android:id="@+id/cancel_location_btn"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vehicle_model"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

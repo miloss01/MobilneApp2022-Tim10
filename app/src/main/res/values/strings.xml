@@ -50,6 +50,13 @@
     <string name="no">No</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
     <string name="show_path">Show path</string>
+    <string name="ride_booked">RIDE BOOKED!</string>
+    <string name="close">Close</string>
+    <string name="drivers_full_name">Drivers full name:</string>
+    <string name="drivers_mail">Drivers mail:</string>
+    <string name="drivers_phone">Drivers phone:</string>
+    <string name="vehicle_registration">Vehicle Registration:</string>
+    <string name="vehicle_model">Vehicle Model:</string>
 
 
     <array name="stepper_details">
