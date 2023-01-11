@@ -148,6 +148,11 @@ public class RideCreationActivity extends AppCompatActivity {
         EditText departure = findViewById(R.id.reservation_departure);
         EditText destination = findViewById(R.id.reservation_destination);
         TextView startTextView = (TextView) findViewById(R.id.time_text);
+        if (startTextView.getText().toString().equals("")){
+            Snackbar.make(stepView, "Booking aborted. Select time.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            return;
+        }
         String startTime = startTextView.getText().toString().substring(selectTime.length());  //TODO ako je prazan string puca
         Spinner spinner = findViewById(R.id.sppiner_vehicle_type);
         String vehicleType = spinner.getSelectedItem().toString().toLowerCase(Locale.ROOT);
@@ -161,12 +166,13 @@ public class RideCreationActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
             return;
         }
+
         String[] dates = startTime.split(":");
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime setDate = LocalDate.now().atTime(Integer.parseInt(dates[0]), Integer.parseInt(dates[0]));
+        LocalDateTime setDate = LocalDate.now().atTime(Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
         if (now.getHour()>setDate.getHour()) {
-            setDate.plusDays(1);
+            setDate = setDate.plusDays(1);
             System.out.println("aaaaaaaaaaaaaaaaa");
         }
         long minutesBetween = ChronoUnit.MINUTES.between(now, setDate);
