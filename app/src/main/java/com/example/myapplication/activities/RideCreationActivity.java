@@ -3,11 +3,9 @@ package com.example.myapplication.activities;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,17 +16,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.databinding.ActivityMainBinding;
 import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
 import com.example.myapplication.dto.LocationDTO;
-import com.example.myapplication.dto.LoginDTO;
 import com.example.myapplication.dto.RideCreationDTO;
 import com.example.myapplication.dto.RideDTO;
-import com.example.myapplication.dto.TokenResponseDTO;
 import com.example.myapplication.dto.UserDTO;
+import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.fragments.TimePickerFragment;
-import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IRideService;
+import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
 import com.google.android.material.snackbar.Snackbar;
 import com.shuhart.stepview.StepView;
@@ -39,7 +35,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,14 +44,33 @@ public class RideCreationActivity extends AppCompatActivity {
 
     private int currentStep = 0;
     private RideCreationDTO ride;
-    private AuthService authService;
     private StepView stepView;
+    private EditText departure;
+    private EditText destination;
+    private LocationDTO departureDTO = new LocationDTO();
+    private LocationDTO destinationDTO = new LocationDTO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_creation);
-        authService = new AuthService(this);
+        departure = findViewById(R.id.reservation_departure);
+        destination = findViewById(R.id.reservation_destination);
+        MapFragment mapFragment = MapFragment.newInstance();
+        FragmentTransition.to(mapFragment, this, false, R.id.steper_map);
+        findViewById(R.id.stepper_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (departure.getText().toString().equals("") || destination.getText().toString().equals("")) {
+                    Snackbar.make(stepView, "Booking aborted. Fill in the locations", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                departureDTO.setAddress(departure.getText().toString());
+                destinationDTO.setAddress(destination.getText().toString());
+                mapFragment.drawRoute(departureDTO, destinationDTO);
+            }
+        });
         stepView = findViewById(R.id.step_view);
         stepView.getState()
                 .selectedTextColor(ContextCompat.getColor(this, com.google.android.material.R.color.material_on_surface_emphasis_high_type))
@@ -148,8 +162,7 @@ public class RideCreationActivity extends AppCompatActivity {
     };
 
     private void sendRideData(String selectTime) {
-        EditText departure = findViewById(R.id.reservation_departure);
-        EditText destination = findViewById(R.id.reservation_destination);
+
         TextView startTextView = (TextView) findViewById(R.id.time_text);
         if (startTextView.getText().toString().equals("")){
             Snackbar.make(stepView, "Booking aborted. Select time.", Snackbar.LENGTH_LONG)
@@ -189,8 +202,8 @@ public class RideCreationActivity extends AppCompatActivity {
         ArrayList<DepartureDestinationLocationsDTO> departureDestinationLocations = new ArrayList<>();
         ArrayList<UserDTO> passengers = new ArrayList<>();
         departureDestinationLocations.add(new DepartureDestinationLocationsDTO(
-                new LocationDTO(departure.getText().toString(), 45.2366791, 19.8160032),
-                new LocationDTO(destination.getText().toString(), 45.2366791, 19.8160032)
+                departureDTO,
+                destinationDTO
         ));
         passengers.add(new UserDTO(
                 Long.parseLong(Retrofit.sharedPreferences.getString("user_id", null)),

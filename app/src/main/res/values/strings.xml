@@ -49,6 +49,7 @@
     <string name="sure">Sure</string>
     <string name="no">No</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="show_path">Show path</string>
 
 
     <array name="stepper_details">

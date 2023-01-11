@@ -16,9 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.myapplication.R;
+import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.tools.FragmentTransition;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.zip.Inflater;
 
@@ -27,15 +29,24 @@ public class PassengerMainActivity extends AppCompatActivity {
     private CharSequence mTitle;
     private AlertDialog dialog;
     private AlertDialog.Builder dialogBuilder;
-    private EditText new_location;
-    private Button add_location_btn, cancel_location_btn;
+//    private EditText new_location;
+//    private Button add_location_btn, cancel_location_btn;
+    private View view;
     private AuthService authService;
+    private EditText departure;
+    private EditText destination;
+    private LocationDTO departureDTO = new LocationDTO();
+    private LocationDTO destinationDTO = new LocationDTO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
+        MapFragment mapFragment = MapFragment.newInstance();
+        FragmentTransition.to(mapFragment, this, false, R.id.passenger_map_container);
 
+        departure = findViewById(R.id.pass_departure);
+        destination = findViewById(R.id.pass_destination);
         authService = new AuthService(this);
 
         Toolbar toolbar = findViewById(R.id.passenger_main_toolbar);
@@ -48,8 +59,20 @@ public class PassengerMainActivity extends AppCompatActivity {
 //                createAddLocationDialog();
 //            }
 //        });
+        findViewById(R.id.pass_main_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (departure.getText().toString().equals("") || destination.getText().toString().equals("")) {
+                    Snackbar.make(view, "Booking aborted. Fill in the locations", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                departureDTO.setAddress(departure.getText().toString());
+                destinationDTO.setAddress(destination.getText().toString());
+                mapFragment.drawRoute(departureDTO, destinationDTO);
+            }
 
-        //TODO
+        });
         Button rideCreation = this.findViewById(R.id.open_ride_creation);
         rideCreation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +81,6 @@ public class PassengerMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        FragmentTransition.to(MapFragment.newInstance(), this, false, R.id.passenger_map_container);
-
 
     }
 

@@ -5,7 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +28,9 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dialogs.LocationDialog;
+import com.example.myapplication.dto.LocationDTO;
+import com.example.myapplication.services.MapService;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +40,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +61,8 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     private AlertDialog dialog;
     private Marker home;
     private GoogleMap map;
+    private List<LatLng> path = new ArrayList();
+    private MapService mapService;
 
     public static MapFragment newInstance() {
         MapFragment mpf = new MapFragment();
@@ -63,7 +76,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
+        mapService = new MapService();
     }
 
     /**
@@ -377,5 +390,45 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         super.onPause();
 
         locationManager.removeUpdates(this);
+    }
+
+    public void drawRoute(LocationDTO departureDTO, LocationDTO destinationDTO) {
+        map.clear();
+        Log.e("DEBUD", "Usao u funkciiju");
+        String origin = setMark(departureDTO);
+        String end = setMark(destinationDTO);
+        path = mapService.getPath(origin, end);
+        Log.e("DEBUD", "Crta rutu");
+
+        //Draw the polyline
+        if (path.size() > 0) {
+            Log.d("TAG", "duzina" + path.size());
+            PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
+            map.addPolyline(opts);
+        }
+    }
+
+    private String setMark(LocationDTO departureDTO) {
+        Geocoder geocoder = new Geocoder(getContext());
+        String coordinates = "";
+        try {
+            Log.e("DEBUD", "Usao u TRY");
+            List<Address> departures = geocoder.getFromLocationName(departureDTO.getAddress(), 1);
+            departureDTO.setLatitude(departures.get(0).getLatitude());
+            departureDTO.setLongitude(departures.get(0).getLongitude());
+            LatLng latLng = new LatLng(departures.get(0).getLatitude(), departures.get(0).getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.title("Departure");
+            markerOptions.position(latLng);
+            map.addMarker(markerOptions);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 5);
+            map.animateCamera(cameraUpdate);
+            coordinates = "" + departureDTO.getLatitude() + "," + departureDTO.getLongitude();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("=================================================");
+
+        return coordinates;
     }
 }
