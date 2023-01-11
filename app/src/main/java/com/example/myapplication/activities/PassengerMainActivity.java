@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,12 +39,13 @@ public class PassengerMainActivity extends AppCompatActivity {
     private EditText destination;
     private LocationDTO departureDTO = new LocationDTO();
     private LocationDTO destinationDTO = new LocationDTO();
+    private MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
-        MapFragment mapFragment = MapFragment.newInstance();
+        mapFragment = MapFragment.newInstance();
         FragmentTransition.to(mapFragment, this, false, R.id.passenger_map_container);
 
         departure = findViewById(R.id.pass_departure);
@@ -59,6 +62,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 //                createAddLocationDialog();
 //            }
 //        });
+        //mapFragment.loadVehicles();
         findViewById(R.id.pass_main_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +85,13 @@ public class PassengerMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //mapFragment.loadVehicles();
 
     }
 

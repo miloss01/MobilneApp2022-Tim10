@@ -26,8 +26,8 @@ public class LocationDialog extends AlertDialog.Builder {
 
         setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                getContext().startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-//				getContext().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+//                getContext().startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+				getContext().startActivity(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS));
 
                 dialog.dismiss();
             }

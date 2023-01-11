@@ -1,5 +1,7 @@
 package com.example.myapplication.fragments;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +14,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,7 +34,11 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.dialogs.LocationDialog;
 import com.example.myapplication.dto.LocationDTO;
+import com.example.myapplication.dto.VehicleForMapDTO;
+import com.example.myapplication.dto.VehicleResponceDTO;
+import com.example.myapplication.services.IVehicleService;
 import com.example.myapplication.services.MapService;
+import com.example.myapplication.tools.Retrofit;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,6 +55,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MapFragment#newInstance} factory method to
@@ -55,8 +68,8 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
-    private LocationManager locationManager;
-    private String provider;
+    //private LocationManager locationManager;
+    //private String provider;
     private SupportMapFragment mMapFragment;
     private AlertDialog dialog;
     private Marker home;
@@ -75,7 +88,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        //locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         mapService = new MapService();
     }
 
@@ -84,13 +97,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
      * po kom kriterijumu zelimo da dobijamo informacije GSP, MOBILNO(WIFI, MObilni internet), GPS+MOBILNO
      * **/
     private void createMapFragmentAndInflate() {
-        //specificiramo krijterijum da dobijamo informacije sa svih izvora
-        //ako korisnik to dopusti
-        Criteria criteria = new Criteria();
-
-        //sistemskom servisu prosledjujemo taj kriterijum da bi
-        //mogli da dobijamo informacje sa tog izvora
-        provider = locationManager.getBestProvider(criteria, true);
 
         //kreiramo novu instancu fragmenta
         mMapFragment = SupportMapFragment.newInstance();
@@ -99,9 +105,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.map_container, mMapFragment).commit();
 
-        //pozivamo ucitavnje mape.
-        //VODITI RACUNA OVO JE ASINHRONA OPERACIJA
-        //LOKACIJE MOGU DA SE DOBIJU PRE MAPE I OBRATNO
         mMapFragment.getMapAsync(this);
     }
 
@@ -123,11 +126,9 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
         createMapFragmentAndInflate();
 
-        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        boolean wifi = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        Log.i("wwww", String.valueOf(gps));
-        Log.i("wqqqq", String.valueOf(wifi));
-        if (!gps && !wifi) {
+
+//        if (!gps && !wifi) {
+        if (false) {
             Log.i("ASD", "ASDresumemap");
             showLocatonDialog();
         } else {
@@ -136,13 +137,13 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
 
                     //Request location updates:
-                    locationManager.requestLocationUpdates(provider, 2000, 0, this);
+                    //locationManager.requestLocationUpdates(provider, 2000, 0, this);
                     Toast.makeText(getContext(), "ACCESS_FINE_LOCATION", Toast.LENGTH_SHORT).show();
                 }else if(ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
 
                     //Request location updates:
-                    locationManager.requestLocationUpdates(provider, 2000, 0, this);
+                    //locationManager.requestLocationUpdates(provider, 2000, 0, this);
                     Toast.makeText(getContext(), "ACCESS_COARSE_LOCATION", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -164,9 +165,9 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     @Override
     public void onLocationChanged(Location location) {
 //        Toast.makeText(getActivity(), "NEW LOCATION", Toast.LENGTH_SHORT).show();
-        if (map != null) {
-            addMarker(location);
-        }
+//        if (map != null) {
+//            addMarker(location);
+//        }
     }
 
     @Override
@@ -276,8 +277,8 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 //        map.setMyLocationEnabled(true);
-        Location location = null;
-
+        LatLng location = null;
+        String provider = "d";
         if (provider == null) {
             Log.i("ASD", "Onmapre");
 
@@ -291,14 +292,16 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
                     //Request location updates:
-                    location = locationManager.getLastKnownLocation(provider);
+                    //location = locationManager.getLastKnownLocation(provider);
+                    location = new LatLng(45.24619939901454, 19.85162169815072);
                     Log.i("LOCATION", location.toString());
 
                 } else if (ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
                     //Request location updates:
-                    location = locationManager.getLastKnownLocation(provider);
+                    //location = locationManager.getLastKnownLocation(provider);
+                    location = new LatLng(45.24619939901454, 19.85162169815072);
                     Log.i("LOCATION", location.toString());
 
                 }
@@ -310,16 +313,16 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                map.addMarker(new MarkerOptions()
-                        .title("YOUR_POSITON")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                        .position(latLng));
-                home.setFlat(true);
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(latLng).zoom(14).build();
-
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//                map.addMarker(new MarkerOptions()
+//                        .title("YOUR_POSITON")
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+//                        .position(latLng));
+//                home.setFlat(true);
+//
+//                CameraPosition cameraPosition = new CameraPosition.Builder()
+//                        .target(latLng).zoom(14).build();
+//
+//                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
 
@@ -362,8 +365,8 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         }
     }
 
-    private void addMarker(Location location) {
-        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+    private void addMarker(LatLng location) {
+        LatLng loc = location;
 
         if (home != null) {
             home.remove();
@@ -379,6 +382,8 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                 .target(loc).zoom(14).build();
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.24619939901454, 19.85162169815072), 15));
+        this.loadVehicles();
     }
 
     /**
@@ -389,16 +394,15 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     public void onPause() {
         super.onPause();
 
-        locationManager.removeUpdates(this);
+        //locationManager.removeUpdates(this);
     }
 
     public void drawRoute(LocationDTO departureDTO, LocationDTO destinationDTO) {
         map.clear();
-        Log.e("DEBUD", "Usao u funkciiju");
-        String origin = setMark(departureDTO);
-        String end = setMark(destinationDTO);
+        //loadVehicles();
+        String origin = setMark(departureDTO, "departure");
+        String end = setMark(destinationDTO, "destination");
         path = mapService.getPath(origin, end);
-        Log.e("DEBUD", "Crta rutu");
 
         //Draw the polyline
         if (path.size() > 0) {
@@ -408,27 +412,58 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         }
     }
 
-    private String setMark(LocationDTO departureDTO) {
+    private String setMark(LocationDTO departureDTO, String tagName) {
         Geocoder geocoder = new Geocoder(getContext());
         String coordinates = "";
         try {
-            Log.e("DEBUD", "Usao u TRY");
             List<Address> departures = geocoder.getFromLocationName(departureDTO.getAddress(), 1);
             departureDTO.setLatitude(departures.get(0).getLatitude());
             departureDTO.setLongitude(departures.get(0).getLongitude());
             LatLng latLng = new LatLng(departures.get(0).getLatitude(), departures.get(0).getLongitude());
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.title("Departure");
+            markerOptions.title(tagName);
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             markerOptions.position(latLng);
             map.addMarker(markerOptions);
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 5);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
             map.animateCamera(cameraUpdate);
             coordinates = "" + departureDTO.getLatitude() + "," + departureDTO.getLongitude();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("=================================================");
 
         return coordinates;
+    }
+
+    public void loadVehicles() {
+        Log.e("DEBUG", "Usao je u ucitavanje");
+        IVehicleService vehicleService = Retrofit.retrofit.create(IVehicleService.class);
+        Call<VehicleResponceDTO> vehicleResponce = vehicleService.getVehicles();
+        vehicleResponce.enqueue(new Callback<VehicleResponceDTO>() {
+            @Override
+            public void onResponse(Call<VehicleResponceDTO> call, Response<VehicleResponceDTO> response) {
+                if (response.code() != 200)
+                    return;
+                assert response.body() != null;
+                for (VehicleForMapDTO vehicle: response.body().getVehicles()) {
+                    Log.d("TAG", vehicle.toString());
+                    LatLng location = new LatLng(vehicle.getCurrentLocation().getLatitude(), vehicle.getCurrentLocation().getLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.title("Non Active Vehicle");
+                    markerOptions.position(location);
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    if(vehicle.isActive()) {
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        markerOptions.title("Active Vehicle");
+                    }
+                    map.addMarker(markerOptions);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleResponceDTO> call, Throwable t) {
+                Log.d("TAG", "greska", t);
+            }
+        });
     }
 }

@@ -34,7 +34,8 @@
                     android:id="@+id/passenger_map_container"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:layout_marginStart="35dp" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
@@ -43,15 +44,15 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_gravity="start"
                         android:layout_marginTop="200dp"
                         android:src="@drawable/ic_play_circle" />
 
                     <EditText
                         android:layout_width="200dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_marginStart="10dp"
                         android:hint="@string/beginning_location"
                         android:id="@+id/pass_departure"/>
@@ -72,15 +73,15 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_gravity="start"
                         android:layout_marginTop="200dp"
                         android:src="@drawable/ic_pin_drop" />
 
                     <EditText
                         android:layout_width="200dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_marginStart="10dp"
                         android:hint="@string/destination"
                         android:id="@+id/pass_destination"/>
@@ -100,7 +101,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="45dp"
-                    android:text="@string/show_path"/>
+                    android:text="@string/show_path"
+                    android:layout_marginTop="20dp"/>
                 <Button
                     android:layout_marginStart="45dp"
                     android:layout_marginTop="20dp"
