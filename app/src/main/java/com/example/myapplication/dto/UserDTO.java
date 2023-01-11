@@ -1,11 +1,11 @@
 package com.example.myapplication.dto;
 
 public class UserDTO {
+
     private Long id;
     private String email;
 
-    public UserDTO() {
-    }
+    public UserDTO() {}
 
     public UserDTO(Long id, String email) {
         this.id = id;

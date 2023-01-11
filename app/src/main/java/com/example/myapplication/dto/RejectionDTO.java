@@ -1,6 +1,7 @@
 package com.example.myapplication.dto;
 
 public class RejectionDTO {
+
     private String reason;
     private String timeOfRejection;
 

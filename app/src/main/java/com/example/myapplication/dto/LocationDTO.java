@@ -1,6 +1,7 @@
 package com.example.myapplication.dto;
 
 public class LocationDTO {
+
     private String address;
     private double latitude;
     private double longitude;

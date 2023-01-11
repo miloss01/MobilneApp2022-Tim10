@@ -7,14 +7,6 @@ public class DepartureDestinationLocationsDTO {
     public DepartureDestinationLocationsDTO() {
     }
 
-    @Override
-    public String toString() {
-        return "DepartureDestinationLocationsDTO{" +
-                "departure=" + departure +
-                ", destination=" + destination +
-                '}';
-    }
-
     public DepartureDestinationLocationsDTO(LocationDTO departure, LocationDTO destination) {
         this.departure = departure;
         this.destination = destination;
@@ -34,5 +26,14 @@ public class DepartureDestinationLocationsDTO {
 
     public void setDestination(LocationDTO destination) {
         this.destination = destination;
+    }
+
+
+    @Override
+    public String toString() {
+        return "DepartureDestinationLocationsDTO{" +
+                "departure=" + departure +
+                ", destination=" + destination +
+                '}';
     }
 }

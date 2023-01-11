@@ -21,8 +21,7 @@ public class RideDTO {
     private String status;
     private RejectionDTO rejection;
 
-    public RideDTO() {
-    }
+    public RideDTO() {}
 
     public RideDTO(Long id, ArrayList<DepartureDestinationLocationsDTO> locations, String startTime, String endTime, int totalCost, UserDTO driver, ArrayList<UserDTO> passengers, int estimatedTimeInMinutes, String vehicleType, boolean babyTransport, boolean petTransport, String status, RejectionDTO rejection) {
         this.id = id;

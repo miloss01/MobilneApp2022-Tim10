@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -41,6 +42,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RideCreationActivity extends AppCompatActivity {
 
@@ -153,7 +156,7 @@ public class RideCreationActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
             return;
         }
-        String startTime = startTextView.getText().toString().substring(selectTime.length());  //TODO ako je prazan string puca
+        String startTime = startTextView.getText().toString().substring(selectTime.length());
         Spinner spinner = findViewById(R.id.sppiner_vehicle_type);
         String vehicleType = spinner.getSelectedItem().toString().toLowerCase(Locale.ROOT);
         CheckBox petCheckBox = findViewById(R.id.pet_checkbox);
@@ -190,15 +193,37 @@ public class RideCreationActivity extends AppCompatActivity {
                 new LocationDTO(destination.getText().toString(), 45.2366791, 19.8160032)
         ));
         passengers.add(new UserDTO(
-                Long.parseLong(Objects.requireNonNull(authService.getUserData().get("user_id"))),
-                authService.getUserData().get("user_email")));
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+                Long.parseLong(Retrofit.sharedPreferences.getString("user_id", null)),
+                Retrofit.sharedPreferences.getString("user_email", null)));
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         ride = new RideCreationDTO(departureDestinationLocations, passengers, setDate.format(dateTimeFormatter), vehicleType, babyTransport, petTransport, estimatedTime);
         System.out.println(ride);
-        IRideService rideService = Retrofit.retrofit.create(IRideService.class);
 
-        Call<RideDTO> jwtResponseCall = rideService.addRide(ride);
-        System.out.println(jwtResponseCall);
+        saveInBase();
+    }
+
+    private void saveInBase() {
+        IRideService rideService = Retrofit.retrofit.create(IRideService.class);
+        Call<RideDTO> reservation = rideService.addRide(ride);
+        reservation.enqueue(new Callback<RideDTO>() {
+            @Override
+            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                if (response.code() != 200)
+                    return;
+                RideDTO rideDTO = response.body();
+                assert rideDTO != null;
+                Log.d("TAG", rideDTO.toString());
+                Snackbar.make(stepView, "Ride evidenced as pending", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+
+            @Override
+            public void onFailure(Call<RideDTO> call, Throwable t) {
+                Log.d("TAG", "greska");
+                Snackbar.make(stepView, "Ride could not be booked", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
 

@@ -1,12 +1,18 @@
 package com.example.myapplication.services;
-
 import com.example.myapplication.dto.RideCreationDTO;
 import com.example.myapplication.dto.RideDTO;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface IRideService {
+
+    @GET("ride/driver/{driverId}/active")
+    Call<RideDTO> getDriverActiveRide(@Path("driverId") Integer driverId);
+
     @POST("ride")
     Call<RideDTO> addRide(@Body RideCreationDTO rideCreationDTO);
+
 }
