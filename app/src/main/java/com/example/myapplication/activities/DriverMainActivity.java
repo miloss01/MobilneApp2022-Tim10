@@ -198,31 +198,16 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 //            }
 //        });
 
-        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
-        stompClient.connect();
+//        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
+//        stompClient.connect();
 
-        stompClient.lifecycle().subscribe(lifecycleEvent -> {
-            switch (lifecycleEvent.getType()) {
 
-                case OPENED:
-                    Log.d("TAG", "Stomp connection opened");
-                    break;
 
-                case ERROR:
-                    Log.e("TAG", "Error", lifecycleEvent.getException());
-                    break;
+//        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+//            Log.d("TAG", topicMessage.getPayload());
+//        });
 
-                case CLOSED:
-                    Log.d("TAG", "Stomp connection closed");
-                    break;
-            }
-        });
-
-        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
-            Log.d("TAG", topicMessage.getPayload());
-        });
-
-        stompClient.send("/vehicle-location", "data").subscribe(new Action() {
+        Retrofit.stompClient.send("/vehicle-location", "data").subscribe(new Action() {
             @Override
             public void run() throws Exception {
                 Log.d("TAG", "poslato iz koda");

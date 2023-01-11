@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/passenger_current_ride_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/black"
+            app:titleTextColor="@color/white"
+            tools:ignore="MissingConstraints">
+        </androidx.appcompat.widget.Toolbar>
+
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_below="@id/passenger_current_ride_toolbar"
+            android:layout_height="400sp"
+            android:id="@+id/passenger_current_ride_map"
+            tools:context=".activities.PassengerCurrentRide"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+<!--        <Button-->
+<!--            android:id="@+id/passenger_current_ride_map"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="400sp"-->
+<!--            android:layout_below="@id/passenger_current_ride_toolbar">-->
+
+<!--        </Button>-->
+
+        <Button
+            android:id="@+id/passenger_start_sim_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/passenger_current_ride_map"
+            android:layout_marginLeft="26sp"
+            android:layout_marginTop="15sp"
+            android:layout_marginRight="26sp"
+            android:layout_marginBottom="25sp"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:text="Start simulation" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/passenger_start_sim_btn"
+            android:id="@+id/left_linear"
+            android:orientation="vertical"
+            android:layout_marginBottom="20sp">
+
+            <TextView
+                android:id="@+id/pass_curr_ride_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="26sp"
+                android:layout_weight="9"
+                android:text="18/07/2022 10:43"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/pass_curr_ride_departure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="26sp"
+                android:layout_weight="9"
+                android:text="Pocetna ulica"
+                android:textColor="#3A3838"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/pass_curr_ride_destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="26sp"
+                android:layout_weight="9"
+                android:text="Krajnja ulica"
+                android:textColor="#3A3838"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/right_linear"
+            android:layout_toRightOf="@id/left_linear"
+            android:gravity="right"
+            android:layout_below="@id/passenger_start_sim_btn"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pass_curr_ride_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="26sp"
+                android:layout_weight="9"
+                android:text="Cena"
+                android:textColor="#044904"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/pass_curr_ride_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="26sp"
+                android:layout_weight="9"
+                android:text="Curr/Estimated time"
+                android:textColor="#610E0E"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pass_curr_ride_driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/left_linear"
+            android:layout_marginLeft="26sp"
+            android:layout_weight="9"
+            android:text="Driver"
+            android:textColor="#3A3838"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pass_curr_ride_driver_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pass_curr_ride_driver"
+            android:layout_marginLeft="26sp"
+            android:layout_weight="9"
+            android:text="Driver data"
+            android:textColor="#3A3838"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/pass_curr_ride_driver_data"
+            android:layout_marginHorizontal="26sp"
+            android:layout_marginTop="25sp"
+            >
+
+            <Button
+                android:id="@+id/passenger_start_panic_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passenger_current_ride_map"
+                android:layout_marginRight="20sp"
+                android:background="#BF0D0D"
+                android:text="Panic"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/passenger_start_message_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passenger_current_ride_map"
+                android:background="#3F51B5"
+                android:text="Message"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/passenger_start_call_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passenger_current_ride_map"
+                android:layout_marginLeft="20sp"
+                android:background="#4CAF50"
+                android:text="Call"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

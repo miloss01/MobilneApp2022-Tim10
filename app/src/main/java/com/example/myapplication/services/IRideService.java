@@ -11,4 +11,7 @@ public interface IRideService {
     @GET("ride/driver/{driverId}/active")
     Call<RideDTO> getDriverActiveRide(@Path("driverId") Integer driverId);
 
+    @GET("ride/passenger/{passengerId}/active")
+    Call<RideDTO> getPassengerActiveRide(@Path("passengerId") Integer passengerId);
+
 }
