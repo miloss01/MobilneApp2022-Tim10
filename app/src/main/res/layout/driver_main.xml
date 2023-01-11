@@ -19,12 +19,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/driver_main_image"
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="252dp"
-            android:layout_gravity="top"
-            app:srcCompat="@drawable/examplemap" />
+            android:layout_height="400sp"
+            android:id="@+id/driver_map"
+            tools:context=".activities.DriverMainActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
 
         <LinearLayout
             android:layout_width="match_parent"

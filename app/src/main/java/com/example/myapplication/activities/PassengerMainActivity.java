@@ -4,11 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.AlteredCharSequence;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +27,7 @@ import com.example.myapplication.fragments.DriverStatisticFragment;
 import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.tools.FragmentTransition;
+import com.example.myapplication.tools.Retrofit;
 
 import java.util.zip.Inflater;
 
@@ -34,6 +40,7 @@ public class PassengerMainActivity extends AppCompatActivity {
     private Button add_location_btn, cancel_location_btn;
     private AuthService authService;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +59,30 @@ public class PassengerMainActivity extends AppCompatActivity {
             }
         });
 
-        FragmentTransition.to(MapFragment.newInstance(), this, false, R.id.passenger_map_container);
+//        FragmentTransition.to(MapFragment.newInstance(), this, false, R.id.passenger_map_container);
 
+        String passengerId = Retrofit.sharedPreferences.getString("user_id", null);
+        Retrofit.stompClient.topic("/passenger/" + passengerId + "/start-ride").subscribe(topicMessage -> {
+            Log.d("TAG", topicMessage.getPayload());
+
+            Intent intent = new Intent(this, PassengerCurrentRide.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                    .setContentTitle("Driver started your ride")
+                    .setContentText("Click to go to current ride page!")
+                    .setSmallIcon(R.drawable.ic_message_icon)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+            notificationManager.notify(1000, builder.build());
+        });
+
+        Retrofit.stompClient.send("/passenger/" + passengerId + "/start-ride", "iz passeneger main activity").subscribe();
 
     }
 

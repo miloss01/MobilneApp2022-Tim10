@@ -28,7 +28,8 @@ public class PassengerRegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Please confirm registration on your email", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Intent intent = new Intent(view2, PassengerMainActivity.class);
+//                Intent intent = new Intent(view2, PassengerMainActivity.class);
+                Intent intent = new Intent(view2, DriverMainActivity.class);
                 startActivity(intent);
             }
         });
