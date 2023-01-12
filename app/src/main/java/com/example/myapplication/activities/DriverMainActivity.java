@@ -142,7 +142,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             e.printStackTrace();
         }
         String driverId = Retrofit.sharedPreferences.getString("user_id", null);
-        Retrofit.stompClient.send("/ride-notification-driver-request/" + driverId, json).subscribe();
+        Retrofit.stompClient.send("/ride-notification-driver-request-mob/" + driverId, json).subscribe();
     }
 
     @Override
@@ -290,7 +290,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     @SuppressLint("CheckResult")
     private void subscribeToAcceptRide() {
         String driverId = Retrofit.sharedPreferences.getString("user_id", null);
-        Retrofit.stompClient.topic("/ride-notification-driver-request/" + driverId).subscribe(topicMessage -> {
+        Retrofit.stompClient.topic("/ride-notification-driver-request-mob/" + driverId).subscribe(topicMessage -> {
             Log.d("TAG", "doslo" + topicMessage.getPayload());
 
             ObjectMapper objectMapper = new ObjectMapper();
