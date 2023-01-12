@@ -249,14 +249,14 @@ public class RideCreationActivity extends AppCompatActivity {
             final View newLocationPopup = getLayoutInflater().inflate(R.layout.new_location, null);
 
             Button cancel_location_btn = (Button) newLocationPopup.findViewById(R.id.cancel_location_btn);
-            TextView driverName = (TextView) newLocationPopup.findViewById(R.id.driver_name);
-            TextView driverMail = (TextView) newLocationPopup.findViewById(R.id.driver_mail);
-            TextView driverPhone = (TextView) newLocationPopup.findViewById(R.id.driver_phone);
-            TextView vehicleReg = (TextView) newLocationPopup.findViewById(R.id.vehicle_registration);
-            TextView vehicleModel = (TextView) newLocationPopup.findViewById(R.id.vehicle_model);
+//            TextView driverName = (TextView) newLocationPopup.findViewById(R.id.driver_name);
+//            TextView driverMail = (TextView) newLocationPopup.findViewById(R.id.driver_mail);
+//            TextView driverPhone = (TextView) newLocationPopup.findViewById(R.id.driver_phone);
+//            TextView vehicleReg = (TextView) newLocationPopup.findViewById(R.id.vehicle_registration);
+//            TextView vehicleModel = (TextView) newLocationPopup.findViewById(R.id.vehicle_model);
 
-            fillDriver(driverName, driverMail, driverPhone, rideDTO.getDriver().getId());
-            fillVehicle(vehicleReg, vehicleModel, rideDTO.getDriver().getId());
+            fillDriver(newLocationPopup, rideDTO.getDriver().getId());
+            fillVehicle(newLocationPopup, rideDTO.getDriver().getId());
 
             dialogBuilder.setView(newLocationPopup);
             AlertDialog dialog = dialogBuilder.create();
@@ -270,7 +270,9 @@ public class RideCreationActivity extends AppCompatActivity {
         });
     }
 
-    private void fillVehicle(TextView vehicleReg, TextView vehicleModel, Long id) {
+    private void fillVehicle(View newLocationPopup, Long id) {
+        TextView vehicleReg = (TextView) newLocationPopup.findViewById(R.id.vehicle_registration);
+        TextView vehicleModel = (TextView) newLocationPopup.findViewById(R.id.vehicle_model);
         IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
         Call<VehicleDTO> reservation = driverService.getVehicleByDriverId(Math.toIntExact(id));
         reservation.enqueue(new Callback<VehicleDTO>() {
@@ -290,7 +292,10 @@ public class RideCreationActivity extends AppCompatActivity {
         });
     }
 
-    private void fillDriver(TextView driverName, TextView driverMail, TextView driverPhone, Long id) {
+    private void fillDriver(View newLocationPopup, Long id) {
+        TextView driverName = (TextView) newLocationPopup.findViewById(R.id.driver_name);
+        TextView driverMail = (TextView) newLocationPopup.findViewById(R.id.driver_mail);
+        TextView driverPhone = (TextView) newLocationPopup.findViewById(R.id.driver_phone);
         IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
         Call<UserExtendedDTO> callback = driverService.getDriver(Math.toIntExact(id));
         callback.enqueue(new Callback<UserExtendedDTO>() {
