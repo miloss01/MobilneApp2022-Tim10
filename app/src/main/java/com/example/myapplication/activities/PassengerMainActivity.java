@@ -4,11 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.OnLifecycleEvent;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.AlteredCharSequence;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,9 +25,13 @@ import android.widget.EditText;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dto.LocationDTO;
+import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.tools.FragmentTransition;
+import com.example.myapplication.tools.Retrofit;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.zip.Inflater;
@@ -41,6 +51,7 @@ public class PassengerMainActivity extends AppCompatActivity {
     private LocationDTO destinationDTO = new LocationDTO();
     private MapFragment mapFragment;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,12 +97,56 @@ public class PassengerMainActivity extends AppCompatActivity {
             }
         });
 
+
+//        FragmentTransition.to(MapFragment.newInstance(), this, false, R.id.passenger_map_container);
+
+        String passengerId = Retrofit.sharedPreferences.getString("user_id", null);
+        Retrofit.stompClient.topic("/ride-notification-passenger/" + passengerId).subscribe(topicMessage -> {
+            Log.d("TAG", topicMessage.getPayload());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            NotificationDTO notificationDTO = objectMapper.readValue(topicMessage.getPayload(), NotificationDTO.class);
+
+            if (notificationDTO.getReason().equals("START_RIDE")) {
+
+                Intent intent = new Intent(this, PassengerCurrentRide.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                        .setContentTitle("Driver started your ride")
+                        .setContentText("Click to go to current ride page!")
+                        .setSmallIcon(R.drawable.ic_message_icon)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+                notificationManager.notify(1000, builder.build());
+            }
+        });
+
+        // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
+        // pritisne na start ride dugme (verovatno ce se dobiti sa beka)
+        NotificationDTO data = new NotificationDTO("message", 1, "START_RIDE");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = "asd";
+        try {
+            json = objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
+
     }
 
     @Override
     public void onResume(){
         super.onResume();
         //mapFragment.loadVehicles();
+
 
     }
 

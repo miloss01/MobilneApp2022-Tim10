@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
+import com.example.myapplication.dto.DriverDTO;
 import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.RideCreationDTO;
 import com.example.myapplication.dto.RideDTO;
@@ -241,7 +242,7 @@ public class RideCreationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RideDTO> call, Throwable t) {
                 Log.d("TAG", "greska");
-                Snackbar.make(stepView, "Ride could not be booked", Snackbar.LENGTH_LONG)
+                Snackbar.make(stepView, "Cannot create a ride while you have one already pending!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -301,13 +302,13 @@ public class RideCreationActivity extends AppCompatActivity {
         TextView driverMail = (TextView) newLocationPopup.findViewById(R.id.driver_mail);
         TextView driverPhone = (TextView) newLocationPopup.findViewById(R.id.driver_phone);
         IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
-        Call<UserExtendedDTO> callback = driverService.getDriver(Math.toIntExact(id));
-        callback.enqueue(new Callback<UserExtendedDTO>() {
+        Call<DriverDTO> callback = driverService.getDriver(Math.toIntExact(id));
+        callback.enqueue(new Callback<DriverDTO>() {
             @Override
-            public void onResponse(Call<UserExtendedDTO> call, Response<UserExtendedDTO> response) {
+            public void onResponse(Call<DriverDTO> call, Response<DriverDTO> response) {
                 if (response.code() != 200)
                     return;
-                UserExtendedDTO driver = response.body();
+                DriverDTO driver = response.body();
                 assert driver != null;
                 driverName.setText(driver.getName() + " " + driver.getSurname());
                 driverMail.setText(driver.getEmail());
@@ -315,7 +316,7 @@ public class RideCreationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserExtendedDTO> call, Throwable t) {
+            public void onFailure(Call<DriverDTO> call, Throwable t) {
 
             }
         });

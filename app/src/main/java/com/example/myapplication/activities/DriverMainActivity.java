@@ -1,5 +1,7 @@
 package com.example.myapplication.activities;
 
+import static ua.naiksoftware.stomp.dto.LifecycleEvent.Type.OPENED;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.dto.ErrorMessage;
 import com.example.myapplication.dto.LoginDTO;
@@ -48,9 +51,13 @@ import com.google.maps.model.EncodedPolyline;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.functions.Action;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ua.naiksoftware.stomp.Stomp;
+import ua.naiksoftware.stomp.StompClient;
+import ua.naiksoftware.stomp.dto.StompMessage;
 
 public class DriverMainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -136,60 +143,77 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+//        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+//
+//        IRideService rideService = Retrofit.retrofit.create(IRideService.class);
+//        Call<RideDTO> activeRideResponseCall = rideService.getDriverActiveRide(Integer.parseInt(driverId));
+//
+//        activeRideResponseCall.enqueue(new Callback<RideDTO>() {
+//            @Override
+//            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+//                if (response.code() != 200)
+//                    return;
+//
+//                RideDTO rideDTO = response.body();
+//                Log.d("TAG", rideDTO.toString());
+//
+//                String departureAddress = rideDTO.getLocations().get(0).getDeparture().getAddress();
+//                double departureLat = rideDTO.getLocations().get(0).getDeparture().getLatitude();
+//                double departureLon = rideDTO.getLocations().get(0).getDeparture().getLongitude();
+//                String destinationAddress = rideDTO.getLocations().get(0).getDestination().getAddress();
+//                double destinationLat = rideDTO.getLocations().get(0).getDestination().getLatitude();
+//                double destinationLon = rideDTO.getLocations().get(0).getDestination().getLongitude();
+//
+//                LatLng departure = new LatLng(departureLat, departureLon);
+//                mMap.addMarker(new MarkerOptions()
+//                        .position(departure)
+//                        .title(departureAddress));
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(departure, 14));
+//
+//                LatLng destination = new LatLng(destinationLat, destinationLon);
+//                mMap.addMarker(new MarkerOptions()
+//                        .position(destination)
+//                        .title(destinationAddress));
+//
+//                String origin = "" + departureLat + "," + departureLon;
+//                String end = "" + destinationLat + "," + destinationLon;
+//
+//                path = mapService.getPath(origin, end);
+//
+//                //Draw the polyline
+//                if (path.size() > 0) {
+//                    Log.d("TAG", "duzina" + path.size());
+//                    PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
+//                    mMap.addPolyline(opts);
+//                }
+//
+//                simMarker = mMap.addMarker(new MarkerOptions().position(path.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+//
+//                startSimulation();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RideDTO> call, Throwable t) {
+//                Log.d("TAG", "greska", t);
+//            }
+//        });
 
-        IRideService rideService = Retrofit.retrofit.create(IRideService.class);
-        Call<RideDTO> activeRideResponseCall = rideService.getDriverActiveRide(Integer.parseInt(driverId));
+//        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
+//        stompClient.connect();
 
-        activeRideResponseCall.enqueue(new Callback<RideDTO>() {
+
+
+//        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+//            Log.d("TAG", topicMessage.getPayload());
+//        });
+
+        Retrofit.stompClient.send("/vehicle-location", "data").subscribe(new Action() {
             @Override
-            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
-                if (response.code() != 200)
-                    return;
-
-                RideDTO rideDTO = response.body();
-                Log.d("TAG", rideDTO.toString());
-
-                String departureAddress = rideDTO.getLocations().get(0).getDeparture().getAddress();
-                double departureLat = rideDTO.getLocations().get(0).getDeparture().getLatitude();
-                double departureLon = rideDTO.getLocations().get(0).getDeparture().getLongitude();
-                String destinationAddress = rideDTO.getLocations().get(0).getDestination().getAddress();
-                double destinationLat = rideDTO.getLocations().get(0).getDestination().getLatitude();
-                double destinationLon = rideDTO.getLocations().get(0).getDestination().getLongitude();
-
-                LatLng departure = new LatLng(departureLat, departureLon);
-                mMap.addMarker(new MarkerOptions()
-                        .position(departure)
-                        .title(departureAddress));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(departure, 14));
-
-                LatLng destination = new LatLng(destinationLat, destinationLon);
-                mMap.addMarker(new MarkerOptions()
-                        .position(destination)
-                        .title(destinationAddress));
-
-                String origin = "" + departureLat + "," + departureLon;
-                String end = "" + destinationLat + "," + destinationLon;
-
-                path = mapService.getPath(origin, end);
-
-                //Draw the polyline
-                if (path.size() > 0) {
-                    Log.d("TAG", "duzina" + path.size());
-                    PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
-                    mMap.addPolyline(opts);
-                }
-
-                simMarker = mMap.addMarker(new MarkerOptions().position(path.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-                startSimulation();
-            }
-
-            @Override
-            public void onFailure(Call<RideDTO> call, Throwable t) {
-                Log.d("TAG", "greska", t);
+            public void run() throws Exception {
+                Log.d("TAG", "poslato iz koda");
             }
         });
+
     }
 
     private void showMarker(Integer i) {
