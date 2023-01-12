@@ -101,7 +101,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 //        FragmentTransition.to(MapFragment.newInstance(), this, false, R.id.passenger_map_container);
 
         String passengerId = Retrofit.sharedPreferences.getString("user_id", null);
-        Retrofit.stompClient.topic("/ride-notification-passenger").subscribe(topicMessage -> {
+        Retrofit.stompClient.topic("/ride-notification-passenger/" + passengerId).subscribe(topicMessage -> {
             Log.d("TAG", topicMessage.getPayload());
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -138,7 +138,7 @@ public class PassengerMainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Retrofit.stompClient.send("/ride-notification-passenger", json).subscribe();
+        Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
 
     }
 

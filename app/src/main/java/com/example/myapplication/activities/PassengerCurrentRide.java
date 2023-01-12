@@ -110,8 +110,9 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
         });
 
         String passengerId = Retrofit.sharedPreferences.getString("user_id", null);
-        Retrofit.stompClient.topic("/ride-notification-passenger").subscribe(topicMessage -> {
-            Log.d("TAG", topicMessage.getPayload());
+        Retrofit.stompClient.topic("/ride-notification-passenger/" + passengerId).subscribe(topicMessage -> {
+            Log.d("TAG", "asddd" + topicMessage.getPayload());
+            Log.d("TAG", "opaljen");
 
             ObjectMapper objectMapper = new ObjectMapper();
             NotificationDTO notificationDTO = objectMapper.readValue(topicMessage.getPayload(), NotificationDTO.class);
@@ -260,6 +261,7 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
         if (i > path.size() - 1) {
             // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
             // pritisne na end ride dugme (verovatno ce se dobiti sa beka)
+            String passengerId = Retrofit.sharedPreferences.getString("user_id", null);
             NotificationDTO data = new NotificationDTO("message", 1, "END_RIDE");
             ObjectMapper objectMapper = new ObjectMapper();
             String json = "asd";
@@ -268,7 +270,7 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            Retrofit.stompClient.send("/ride-notification-passenger", json).subscribe();
+            Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
             return;
         }
 
