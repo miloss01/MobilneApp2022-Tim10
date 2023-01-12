@@ -21,9 +21,11 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.dialogs.MakeReviewDialog;
 import com.example.myapplication.dialogs.PanicDialog;
 import com.example.myapplication.dto.DriverDTO;
 import com.example.myapplication.dto.IsActiveDTO;
+import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.ReasonDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.services.IAuthService;
@@ -31,6 +33,8 @@ import com.example.myapplication.services.IDriverService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.services.MapService;
 import com.example.myapplication.tools.Retrofit;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -64,6 +68,7 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
     private Integer elapsedTime = 0;
     private String estimatedTime = "NaN";
     private DriverDTO driverDTO = new DriverDTO();
+    private RideDTO rideDTO = new RideDTO();
 
     @SuppressLint("CheckResult")
     @Override
@@ -105,19 +110,27 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
         });
 
         String passengerId = Retrofit.sharedPreferences.getString("user_id", null);
-        Retrofit.stompClient.topic("/passenger/" + passengerId + "/end-ride").subscribe(topicMessage -> {
+        Retrofit.stompClient.topic("/ride-notification-passenger").subscribe(topicMessage -> {
             Log.d("TAG", topicMessage.getPayload());
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
-                    .setContentTitle("Driver ended your ride")
-                    .setContentText("Get out!")
-                    .setSmallIcon(R.drawable.ic_message_icon)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true);
+            ObjectMapper objectMapper = new ObjectMapper();
+            NotificationDTO notificationDTO = objectMapper.readValue(topicMessage.getPayload(), NotificationDTO.class);
 
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            if (notificationDTO.getReason().equals("END_RIDE")) {
 
-            notificationManager.notify(25234, builder.build());
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                        .setContentTitle("Driver ended your ride")
+                        .setContentText("Get out!")
+                        .setSmallIcon(R.drawable.ic_message_icon)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+                notificationManager.notify(25234, builder.build());
+
+                makeReview();
+            }
         });
     }
 
@@ -136,7 +149,7 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
                 if (response.code() != 200)
                     return;
 
-                RideDTO rideDTO = response.body();
+                rideDTO = response.body();
                 Log.d("TAG", rideDTO.toString());
 
                 startTime.setText(rideDTO.getStartTime());
@@ -245,8 +258,17 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
     private void showMarker(Integer i) {
 
         if (i > path.size() - 1) {
-            String passengerId = Retrofit.sharedPreferences.getString("user_id", null);
-            Retrofit.stompClient.send("/passenger/" + passengerId + "/end-ride", "gotovo").subscribe();
+            // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
+            // pritisne na end ride dugme (verovatno ce se dobiti sa beka)
+            NotificationDTO data = new NotificationDTO("message", 1, "END_RIDE");
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = "asd";
+            try {
+                json = objectMapper.writeValueAsString(data);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            Retrofit.stompClient.send("/ride-notification-passenger", json).subscribe();
             return;
         }
 
@@ -275,6 +297,11 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
     private void moveMarker(LatLng loc) {
         simMarker.remove();
         simMarker = mMap.addMarker(new MarkerOptions().position(loc).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+    }
+
+    private void makeReview() {
+        DialogFragment makeReviewDialog = MakeReviewDialog.newInstance(rideDTO.getId().intValue());
+        makeReviewDialog.show(getSupportFragmentManager(), "make_review_dialog");
     }
 
 }
