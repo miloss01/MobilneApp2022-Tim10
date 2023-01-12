@@ -50,6 +50,10 @@
     <string name="no">No</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
     <string name="show_path">Show path</string>
+    <string name="departure">Departure</string>
+    <string name="panic">panic</string>
+    <string name="end_ride">End ride</string>
+    <string name="time_elapsed">Time elapsed:</string>
 
 
     <array name="stepper_details">

@@ -2,6 +2,7 @@ package com.example.myapplication.activities;
 
 import static ua.naiksoftware.stomp.dto.LifecycleEvent.Type.OPENED;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
@@ -25,9 +27,12 @@ import com.example.myapplication.dto.ErrorMessage;
 import com.example.myapplication.dto.LoginDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.TokenResponseDTO;
+import com.example.myapplication.fragments.DriverActiveRideFragment;
+import com.example.myapplication.fragments.DriverNoRideFragment;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.services.MapService;
+import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -91,17 +96,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.driver_map);
         mapFragment.getMapAsync(this);
 
-        Switch toggle = findViewById(R.id.driver_main_toggle);
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TextView t = findViewById(R.id.driver_main_label_active);
-                if (isChecked) {
-                    t.setText("ACTIVE");
-                } else {
-                    t.setText("NOT ACTIVE");
-                }
-            }
-        });
+
     }
 
     @Override
@@ -143,69 +138,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-//        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
-//
-//        IRideService rideService = Retrofit.retrofit.create(IRideService.class);
-//        Call<RideDTO> activeRideResponseCall = rideService.getDriverActiveRide(Integer.parseInt(driverId));
-//
-//        activeRideResponseCall.enqueue(new Callback<RideDTO>() {
-//            @Override
-//            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
-//                if (response.code() != 200)
-//                    return;
-//
-//                RideDTO rideDTO = response.body();
-//                Log.d("TAG", rideDTO.toString());
-//
-//                String departureAddress = rideDTO.getLocations().get(0).getDeparture().getAddress();
-//                double departureLat = rideDTO.getLocations().get(0).getDeparture().getLatitude();
-//                double departureLon = rideDTO.getLocations().get(0).getDeparture().getLongitude();
-//                String destinationAddress = rideDTO.getLocations().get(0).getDestination().getAddress();
-//                double destinationLat = rideDTO.getLocations().get(0).getDestination().getLatitude();
-//                double destinationLon = rideDTO.getLocations().get(0).getDestination().getLongitude();
-//
-//                LatLng departure = new LatLng(departureLat, departureLon);
-//                mMap.addMarker(new MarkerOptions()
-//                        .position(departure)
-//                        .title(departureAddress));
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(departure, 14));
-//
-//                LatLng destination = new LatLng(destinationLat, destinationLon);
-//                mMap.addMarker(new MarkerOptions()
-//                        .position(destination)
-//                        .title(destinationAddress));
-//
-//                String origin = "" + departureLat + "," + departureLon;
-//                String end = "" + destinationLat + "," + destinationLon;
-//
-//                path = mapService.getPath(origin, end);
-//
-//                //Draw the polyline
-//                if (path.size() > 0) {
-//                    Log.d("TAG", "duzina" + path.size());
-//                    PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
-//                    mMap.addPolyline(opts);
-//                }
-//
-//                simMarker = mMap.addMarker(new MarkerOptions().position(path.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-//
-//                startSimulation();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RideDTO> call, Throwable t) {
-//                Log.d("TAG", "greska", t);
-//            }
-//        });
-
-//        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
-//        stompClient.connect();
-
-
-
-//        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
-//            Log.d("TAG", topicMessage.getPayload());
-//        });
+        showActiveRide();
 
         Retrofit.stompClient.send("/vehicle-location", "data").subscribe(new Action() {
             @Override
@@ -245,4 +178,150 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
         simMarker.remove();
         simMarker = mMap.addMarker(new MarkerOptions().position(loc).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
     }
+
+    private void showActiveRide() {
+
+        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+
+        IRideService rideService = Retrofit.retrofit.create(IRideService.class);
+        Call<RideDTO> activeRideResponseCall = rideService.getDriverActiveRide(Integer.parseInt(driverId));
+
+        activeRideResponseCall.enqueue(new Callback<RideDTO>() {
+            @Override
+            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                if (response.code() != 200) {
+                    Log.d("TAG", "No active ride from != 200 : ");
+                    showAcceptedRide();
+                    return;
+                }
+
+                RideDTO rideDTO = response.body();
+                Log.d("TAG", "Active ride: " + rideDTO.toString());
+                transitionToActiveRideFragment(rideDTO);
+
+                String departureAddress = rideDTO.getLocations().get(0).getDeparture().getAddress();
+                double departureLat = rideDTO.getLocations().get(0).getDeparture().getLatitude();
+                double departureLon = rideDTO.getLocations().get(0).getDeparture().getLongitude();
+                String destinationAddress = rideDTO.getLocations().get(0).getDestination().getAddress();
+                double destinationLat = rideDTO.getLocations().get(0).getDestination().getLatitude();
+                double destinationLon = rideDTO.getLocations().get(0).getDestination().getLongitude();
+
+                LatLng departure = new LatLng(departureLat, departureLon);
+                mMap.addMarker(new MarkerOptions()
+                        .position(departure)
+                        .title("Departure: " +departureAddress));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(departure, 14));
+
+                LatLng destination = new LatLng(destinationLat, destinationLon);
+                mMap.addMarker(new MarkerOptions()
+                        .position(destination)
+                        .title("Destination: " +destinationAddress));
+
+                String origin = "" + departureLat + "," + departureLon;
+                String end = "" + destinationLat + "," + destinationLon;
+
+                path = mapService.getPath(origin, end);
+
+                //Draw the polyline
+                if (path.size() > 0) {
+                    Log.d("TAG", "duzina" + path.size());
+                    PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
+                    mMap.addPolyline(opts);
+                }
+
+                simMarker = mMap.addMarker(new MarkerOptions().position(path.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                startSimulation();
+            }
+
+            @Override
+            public void onFailure(Call<RideDTO> call, Throwable t) {
+                Log.d("TAG", "greska", t);
+                Log.d("TAG", "No active ride from onFailure :");
+                showAcceptedRide();
+            }
+        });
+
+        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
+        stompClient.connect();
+
+
+        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+            Log.d("TAG", topicMessage.getPayload());
+
+        });
+    }
+
+    private void showAcceptedRide() {
+
+        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+
+        IRideService rideService = Retrofit.retrofit.create(IRideService.class);
+        Call<RideDTO> activeRideResponseCall = rideService.getDriverAcceptedRide(Integer.parseInt(driverId));
+
+        activeRideResponseCall.enqueue(new Callback<RideDTO>() {
+            @Override
+            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                if (response.code() != 200) {
+                    Log.d("TAG", "No accepted ride");
+                    return;
+                }
+
+                RideDTO rideDTO = response.body();
+                Log.d("TAG", "Accepted ride: " + rideDTO.toString());
+                transitionToAcceptedRideFragment(rideDTO);
+
+                String departureAddress = rideDTO.getLocations().get(0).getDeparture().getAddress();
+                double departureLat = rideDTO.getLocations().get(0).getDeparture().getLatitude();
+                double departureLon = rideDTO.getLocations().get(0).getDeparture().getLongitude();
+                String destinationAddress = rideDTO.getLocations().get(0).getDestination().getAddress();
+                double destinationLat = rideDTO.getLocations().get(0).getDestination().getLatitude();
+                double destinationLon = rideDTO.getLocations().get(0).getDestination().getLongitude();
+
+                LatLng departure = new LatLng(departureLat, departureLon);
+                mMap.addMarker(new MarkerOptions()
+                        .position(departure)
+                        .title("Departure: " + departureAddress));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(departure, 14));
+
+                LatLng destination = new LatLng(destinationLat, destinationLon);
+                mMap.addMarker(new MarkerOptions()
+                        .position(destination)
+                        .title("Destination: " +destinationAddress));
+
+                String origin = "" + departureLat + "," + departureLon;
+                String end = "" + destinationLat + "," + destinationLon;
+            }
+
+            @Override
+            public void onFailure(Call<RideDTO> call, Throwable t) {
+                Log.d("TAG", "greska", t);
+                transitionToNoRideFragment();
+            }
+        });
+//
+//        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
+//        stompClient.connect();
+//
+//
+//        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+//            Log.d("TAG", topicMessage.getPayload());
+//        });
+    }
+
+    private void transitionToNoRideFragment() {
+        FragmentTransition.to(DriverNoRideFragment.newInstance(authService.getUserData().get("user_id")),
+                this, false, R.id.driver_ride_details_container);
+    }
+
+    private void transitionToAcceptedRideFragment(RideDTO rideDTO) {
+        FragmentTransition.to(DriverNoRideFragment.newInstance(authService.getUserData().get("user_id")),
+                this, false, R.id.driver_ride_details_container);
+    }
+
+    private void transitionToActiveRideFragment(RideDTO rideDTO) {
+        FragmentTransition.to(DriverActiveRideFragment.newInstance(rideDTO),
+                this, false, R.id.driver_ride_details_container);
+    }
+
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.DriverNoRideFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+
+        <Switch
+            android:id="@+id/driver_main_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:layout_marginLeft="20sp">
+        </Switch>
+
+        <TextView
+            android:id="@+id/driver_main_label_active"
+            android:gravity="end"
+            android:layout_marginRight="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:text="ACTIVE"></TextView>
+
+    </LinearLayout>
+
+</FrameLayout>
