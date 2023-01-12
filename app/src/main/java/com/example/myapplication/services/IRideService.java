@@ -23,4 +23,7 @@ public interface IRideService {
     @PUT("ride/{id}/panic")
     Call<Void> sendPanic(@Path("id") Integer id, @Body ReasonDTO reasonDTO);
 
+    @GET("ride/{id}")
+    Call<RideDTO> getRideById(@Path("id") Integer id);
+
 }

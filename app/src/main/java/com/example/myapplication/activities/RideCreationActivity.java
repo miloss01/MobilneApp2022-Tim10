@@ -20,6 +20,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
 import com.example.myapplication.dto.DriverDTO;
 import com.example.myapplication.dto.LocationDTO;
+import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.RideCreationDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.UserDTO;
@@ -31,6 +32,8 @@ import com.example.myapplication.services.IDriverService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.snackbar.Snackbar;
 import com.shuhart.stepview.StepView;
 
@@ -226,9 +229,13 @@ public class RideCreationActivity extends AppCompatActivity {
         reservation.enqueue(new Callback<RideDTO>() {
             @Override
             public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                if (response.code() == 204)
+                    Snackbar.make(stepView, "No vehicles available", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 if (response.code() != 200)
                     return;
                 RideDTO rideDTO = response.body();
+                Log.d("TAG", String.valueOf(rideDTO == null));
                 if (rideDTO == null) {
                     Snackbar.make(stepView, "Ride could not be booked", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -254,11 +261,6 @@ public class RideCreationActivity extends AppCompatActivity {
             final View newLocationPopup = getLayoutInflater().inflate(R.layout.new_location, null);
 
             Button cancel_location_btn = (Button) newLocationPopup.findViewById(R.id.cancel_location_btn);
-//            TextView driverName = (TextView) newLocationPopup.findViewById(R.id.driver_name);
-//            TextView driverMail = (TextView) newLocationPopup.findViewById(R.id.driver_mail);
-//            TextView driverPhone = (TextView) newLocationPopup.findViewById(R.id.driver_phone);
-//            TextView vehicleReg = (TextView) newLocationPopup.findViewById(R.id.vehicle_registration);
-//            TextView vehicleModel = (TextView) newLocationPopup.findViewById(R.id.vehicle_model);
 
             fillDriver(newLocationPopup, rideDTO.getDriver().getId());
             fillVehicle(newLocationPopup, rideDTO.getDriver().getId());
@@ -266,6 +268,19 @@ public class RideCreationActivity extends AppCompatActivity {
             dialogBuilder.setView(newLocationPopup);
             AlertDialog dialog = dialogBuilder.create();
             dialog.show();
+
+
+            //simulacija
+//            NotificationDTO data = new NotificationDTO("Driver has accepted your ride request! You'll be riding with Neko", 1, "ACCEPT_RIDE");
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String json = "asd";
+//            try {
+//                json = objectMapper.writeValueAsString(data);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//
+//            Retrofit.stompClient.send("/ride-notification-passenger/" + Retrofit.sharedPreferences.getString("user_id", null), json).subscribe();
 
 
         cancel_location_btn.setOnClickListener(new View.OnClickListener() {

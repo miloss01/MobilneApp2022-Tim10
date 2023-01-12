@@ -57,6 +57,7 @@
     <string name="drivers_phone">Drivers phone:</string>
     <string name="vehicle_registration">Vehicle Registration:</string>
     <string name="vehicle_model">Vehicle Model:</string>
+    <string name="vehicle_arrives_in">Vehicle arrives in:</string>
 
 
     <array name="stepper_details">

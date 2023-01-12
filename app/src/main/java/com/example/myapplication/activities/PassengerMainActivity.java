@@ -125,6 +125,28 @@ public class PassengerMainActivity extends AppCompatActivity {
 
                 notificationManager.notify(1000, builder.build());
             }
+            if (notificationDTO.getReason().equals("ACCEPT_RIDE")) {
+                Intent intent = new Intent(this, VehicleMovementActivity.class);
+                Log.d("DEBUG", "pre extra");
+                //intent.putExtra("rideId", notificationDTO.getRideId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                Log.d("DEBUG", "posle extra");
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                        .setContentTitle("Driver Accepted your ride")
+                        .setContentText(notificationDTO.getMessage())
+                        .setSmallIcon(R.drawable.ic_message_icon)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent);
+                        //.setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+                notificationManager.notify(1001, builder.build());
+            }
         });
 
         // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
@@ -139,6 +161,8 @@ public class PassengerMainActivity extends AppCompatActivity {
         }
 
         Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
+
+
 
     }
 
