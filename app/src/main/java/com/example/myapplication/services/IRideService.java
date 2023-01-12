@@ -23,4 +23,10 @@ public interface IRideService {
     @PUT("ride/{id}/panic")
     Call<Void> sendPanic(@Path("id") Integer id, @Body ReasonDTO reasonDTO);
 
+    @PUT("ride/{id}/accept")
+    Call<Void> acceptRide(@Path("id") Integer id);
+
+    @PUT("ride/{id}/cancel")
+    Call<Void> cancelRide(@Path("id") Integer id, @Body ReasonDTO reasonDTO);
+
 }

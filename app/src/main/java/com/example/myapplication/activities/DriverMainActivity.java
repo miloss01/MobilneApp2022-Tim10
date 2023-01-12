@@ -2,6 +2,9 @@ package com.example.myapplication.activities;
 
 import static ua.naiksoftware.stomp.dto.LifecycleEvent.Type.OPENED;
 
+import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
+import android.widget.RemoteViews;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -18,17 +22,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.RemoteInput;
 
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
+import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
 import com.example.myapplication.dto.ErrorMessage;
+import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.LoginDTO;
+import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.TokenResponseDTO;
+import com.example.myapplication.dto.UserDTO;
+import com.example.myapplication.receiver.AcceptRideNotificationReceiver;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.services.MapService;
 import com.example.myapplication.tools.Retrofit;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -102,6 +116,33 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 }
             }
         });
+
+        subscribeToAcceptRide();
+
+        // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
+        // dobije voznju da prihvati ili odbije (verovatno ce se dobiti sa beka pri zakazivanju)
+        RideDTO rideDTO = new RideDTO();
+        rideDTO.setId(1L);
+        DepartureDestinationLocationsDTO departureDestinationLocationsDTO = new DepartureDestinationLocationsDTO(new LocationDTO("adresa1", 0, 0), new LocationDTO("adresa2", 0, 0));
+        ArrayList<DepartureDestinationLocationsDTO> locations = new ArrayList<>();
+        locations.add(departureDestinationLocationsDTO);
+        rideDTO.setLocations(locations);
+        rideDTO.setEstimatedTimeInMinutes(25);
+        rideDTO.setTotalCost(250);
+        ArrayList<UserDTO> passengers = new ArrayList<>();
+        passengers.add(new UserDTO(2L, "asd@asd.com"));
+        passengers.add(new UserDTO(3L, "Asd2asd.com"));
+        rideDTO.setPassengers(passengers);
+        rideDTO.setDriver(new UserDTO(2L, "dr@asd.com"));
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = "asd";
+        try {
+            json = objectMapper.writeValueAsString(rideDTO);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+        Retrofit.stompClient.send("/ride-notification-driver-request/" + driverId, json).subscribe();
     }
 
     @Override
@@ -207,12 +248,12 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 //            Log.d("TAG", topicMessage.getPayload());
 //        });
 
-        Retrofit.stompClient.send("/vehicle-location", "data").subscribe(new Action() {
-            @Override
-            public void run() throws Exception {
-                Log.d("TAG", "poslato iz koda");
-            }
-        });
+//        Retrofit.stompClient.send("/vehicle-location", "data").subscribe(new Action() {
+//            @Override
+//            public void run() throws Exception {
+//                Log.d("TAG", "poslato iz koda");
+//            }
+//        });
 
     }
 
@@ -244,5 +285,65 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     private void moveMarker(LatLng loc) {
         simMarker.remove();
         simMarker = mMap.addMarker(new MarkerOptions().position(loc).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+    }
+
+    @SuppressLint("CheckResult")
+    private void subscribeToAcceptRide() {
+        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+        Retrofit.stompClient.topic("/ride-notification-driver-request/" + driverId).subscribe(topicMessage -> {
+            Log.d("TAG", "doslo" + topicMessage.getPayload());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            RideDTO rideDTO = objectMapper.readValue(topicMessage.getPayload(), RideDTO.class);
+
+            if (rideDTO.getDriver().getId() == Long.parseLong(driverId)) {
+                Log.d("TAG", "u if");
+
+//                RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_accept_ride);
+
+                String text = "From: " + rideDTO.getLocations().get(0).getDeparture().getAddress() + "\n";
+                text += "To: " + rideDTO.getLocations().get(0).getDestination().getAddress() + "\n";
+                text += "Estimated time: " + rideDTO.getEstimatedTimeInMinutes() + "min\n";
+                text += "Price: " + rideDTO.getTotalCost() + "din\n";
+                text += "Number of passengers: " + rideDTO.getPassengers().size();
+
+                Intent acceptIntent = new Intent(this, AcceptRideNotificationReceiver.class);
+                acceptIntent.setAction("ACCEPT_RIDE");
+                acceptIntent.putExtra("rideId", rideDTO.getId());
+                PendingIntent acceptPendingIntent =
+                        PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                Intent denyIntent = new Intent(this, AcceptRideNotificationReceiver.class);
+                denyIntent.setAction("DENY_RIDE");
+                denyIntent.putExtra("rideId", rideDTO.getId());
+
+                RemoteInput remoteInput = new RemoteInput.Builder("DENY_RIDE_INPUT")
+                        .setLabel("Reason")
+                        .build();
+
+                PendingIntent replyPendingIntent =
+                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                NotificationCompat.Action denyAction =
+                        new NotificationCompat.Action.Builder(R.drawable.ic_message_icon,
+                                "DENY", replyPendingIntent)
+                                .addRemoteInput(remoteInput)
+                                .build();
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                        .setContentTitle("Ride request")
+                        .setSmallIcon(R.drawable.ic_message_icon)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .addAction(R.drawable.ic_message_icon, "ACCEPT", acceptPendingIntent)
+                        .addAction(denyAction)
+                        .setAutoCancel(true);
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                notificationManager.notify(654234, builder.build());
+
+            }
+        });
     }
 }

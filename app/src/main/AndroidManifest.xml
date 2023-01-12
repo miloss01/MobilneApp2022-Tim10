@@ -180,6 +180,12 @@
 
         <service android:name=".service.PassengerInboxService"/>
 
+        <receiver android:name=".receiver.AcceptRideNotificationReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="AcceptRideNotificationReceiver" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

@@ -111,7 +111,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(this, PassengerCurrentRide.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
                         .setContentTitle("Driver started your ride")
