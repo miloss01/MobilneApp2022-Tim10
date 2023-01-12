@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -17,10 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.dialogs.PanicDialog;
 import com.example.myapplication.dto.DriverDTO;
 import com.example.myapplication.dto.IsActiveDTO;
+import com.example.myapplication.dto.ReasonDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.services.IAuthService;
 import com.example.myapplication.services.IDriverService;
@@ -59,6 +63,7 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
     private TextView driverData;
     private Integer elapsedTime = 0;
     private String estimatedTime = "NaN";
+    private DriverDTO driverDTO = new DriverDTO();
 
     @SuppressLint("CheckResult")
     @Override
@@ -152,10 +157,41 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
                         if (response.code() != 200)
                             return;
 
-                        DriverDTO driverDTO = response.body();
+                        driverDTO = response.body();
 
                         String ret = driverDTO.getName() + " " + driverDTO.getSurname() + " (" + driverDTO.getEmail() + ")";
                         driverData.setText(ret);
+
+                        Button callBtn = findViewById(R.id.passenger_start_call_btn);
+                        callBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                intent.setData(Uri.parse("tel:" + driverDTO.getTelephoneNumber()));
+                                startActivity(intent);
+                            }
+                        });
+
+                        Button messageBtn = findViewById(R.id.passenger_message_btn);
+                        messageBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setData(Uri.parse("smsto:" + driverDTO.getTelephoneNumber()));
+                                if (intent.resolveActivity(getPackageManager()) != null) {
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+
+                        Button panicBtn = findViewById(R.id.passenger_start_panic_btn);
+                        panicBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                DialogFragment panicDialog = PanicDialog.newInstance(rideDTO.getId().intValue());
+                                panicDialog.show(getSupportFragmentManager(), "panic_dialog");
+                            }
+                        });
 
                     }
 
@@ -240,4 +276,5 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
         simMarker.remove();
         simMarker = mMap.addMarker(new MarkerOptions().position(loc).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
     }
+
 }
