@@ -228,9 +228,13 @@ public class RideCreationActivity extends AppCompatActivity {
                 if (response.code() != 200)
                     return;
                 RideDTO rideDTO = response.body();
-                assert rideDTO != null;
-                Log.d("TAG", rideDTO.toString());
-                showInformation(rideDTO);
+                if (rideDTO == null) {
+                    Snackbar.make(stepView, "Ride could not be booked", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else{
+                    Log.d("TAG", rideDTO.toString());
+                    showInformation(rideDTO);
+                }
 
             }
 
