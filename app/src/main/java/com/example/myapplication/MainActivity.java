@@ -61,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         });
-        Retrofit.stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
-            Log.d("TAG", topicMessage.getPayload());
-        });
 
         startActivity(new Intent(this, SplashScreenActivity.class));
 

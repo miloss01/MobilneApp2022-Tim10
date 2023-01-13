@@ -37,8 +37,10 @@ public class SplashScreenActivity extends Activity {
 
                 if (!authService.isLoggedIn())
                     startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
-                else
+                else {
+                    authService.changeActiveFlag(true);
                     authService.redirect();
+                }
 
                 finish(); // da nebi mogao da ode back na splash
             }
