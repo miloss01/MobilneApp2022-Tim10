@@ -38,6 +38,7 @@ import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.TokenResponseDTO;
 import com.example.myapplication.dto.VehicleDTO;
+import com.example.myapplication.fragments.DriverAcceptedRideFragment;
 import com.example.myapplication.fragments.DriverActiveRideFragment;
 import com.example.myapplication.fragments.DriverNoRideFragment;
 import com.example.myapplication.dto.UserDTO;
@@ -192,6 +193,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
+        showNoRide();
         showActiveRide();
 
 //        Retrofit.stompClient.send("/vehicle-location", "data").subscribe(new Action() {
@@ -205,8 +207,10 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 
     private void showMarker(Integer i) {
 
-        if (i > path.size() - 1)
+        if (i > path.size() - 1) {
+            Log.d("DEBUG", "You have arrived at departure");
             return;
+        }
 
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
@@ -260,6 +264,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 double destinationLat = rideDTO.getLocations().get(0).getDestination().getLatitude();
                 double destinationLon = rideDTO.getLocations().get(0).getDestination().getLongitude();
 
+                mMap.clear();
                 LatLng departure = new LatLng(departureLat, departureLon);
                 mMap.addMarker(new MarkerOptions()
                         .position(departure)
@@ -343,8 +348,22 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         .position(destination)
                         .title("Destination: " +destinationAddress));
 
-                String origin = "" + departureLat + "," + departureLon;
-                String end = "" + destinationLat + "," + destinationLon;
+                String origin = "" + currentLocation.getLatitude() + "," + currentLocation.getLongitude();
+                String end = "" + departureLat + "," + departureLon;
+
+                path = mapService.getPath(origin, end);
+
+                //Draw the polyline
+                if (path.size() > 0) {
+                    Log.d("TAG", "duzina" + path.size());
+                    PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
+                    mMap.addPolyline(opts);
+                }
+
+                simMarker = mMap.addMarker(new MarkerOptions().position(path.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                startSimulation();
+
             }
 
             @Override
@@ -369,7 +388,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void transitionToAcceptedRideFragment(RideDTO rideDTO) {
-        FragmentTransition.to(DriverNoRideFragment.newInstance(authService.getUserData().get("user_id")),
+        FragmentTransition.to(DriverAcceptedRideFragment.newInstance(rideDTO),
                 this, false, R.id.driver_ride_details_container);
     }
 
@@ -401,7 +420,6 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         .position(vehicleLatLng)
                         .title("You are here: " + vehicle.getCurrentLocation().getAddress()));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(vehicleLatLng, 14));
-
             }
 
             @Override

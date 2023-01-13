@@ -48,8 +48,6 @@ public class DriverActiveRideFragment extends Fragment {
 
     private ListView listView;
 
-    private List<PassengerDTO> passengers;
-
     private class TimerHandler {
 
         int seconds = 0, minutes = 0, hour = 0;
@@ -113,7 +111,6 @@ public class DriverActiveRideFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.i("TAG", "Loaded rideDTO in DriverActiveFragment: " + rideDTO.toString());
         displayRideDetails();
         setUpButtons();
     }

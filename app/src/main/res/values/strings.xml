@@ -55,6 +55,9 @@
     <string name="end_ride">End ride</string>
     <string name="time_elapsed">Time elapsed:</string>
     <string name="currently_no_active_ride">No ride currently in progress</string>
+    <string name="start_ride">Start ride</string>
+    <string name="cancel_ride">Cancel ride</string>
+    <string name="estimated_time_in_minutes">Estimated time:</string>
 
 
     <array name="stepper_details">
