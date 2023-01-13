@@ -59,6 +59,7 @@
     <string name="vehicle_model">Vehicle Model:</string>
     <string name="vehicle_arrives_in">Vehicle arrives in:</string>
     <string name="arive_time_header">Your vehicle will arive in...</string>
+    <string name="address">Address</string>
 
 
     <array name="stepper_details">
