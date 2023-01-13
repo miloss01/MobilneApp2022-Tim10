@@ -24,12 +24,16 @@ import androidx.fragment.app.Fragment;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.dto.ErrorMessage;
+import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.LoginDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.TokenResponseDTO;
+import com.example.myapplication.dto.VehicleDTO;
+import com.example.myapplication.dto.VehicleForMapDTO;
 import com.example.myapplication.fragments.DriverActiveRideFragment;
 import com.example.myapplication.fragments.DriverNoRideFragment;
 import com.example.myapplication.services.AuthService;
+import com.example.myapplication.services.IDriverService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.services.MapService;
 import com.example.myapplication.tools.FragmentTransition;
@@ -71,6 +75,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mMap;
     private List<LatLng> path = new ArrayList();
     private Marker simMarker;
+    private LocationDTO currentLocation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -296,7 +301,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onFailure(Call<RideDTO> call, Throwable t) {
                 Log.d("TAG", "greska", t);
-                transitionToNoRideFragment();
+                showNoRide();
             }
         });
 //
@@ -322,6 +327,48 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     private void transitionToActiveRideFragment(RideDTO rideDTO) {
         FragmentTransition.to(DriverActiveRideFragment.newInstance(rideDTO),
                 this, false, R.id.driver_ride_details_container);
+    }
+
+    private void showNoRide() {
+        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+
+        IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Call<VehicleDTO> vehicleResponseCall = driverService.getVehicle(Integer.parseInt(driverId));
+
+        vehicleResponseCall.enqueue(new Callback<VehicleDTO>() {
+            @Override
+            public void onResponse(Call<VehicleDTO> call, Response<VehicleDTO> response) {
+
+
+                VehicleDTO vehicle = response.body();
+//                Log.d("TAG", "Vehicle for map: " + VehicleDTO);
+                transitionToNoRideFragment();
+
+                currentLocation = vehicle.getCurrentLocation();
+
+                LatLng vehicleLatLng = new LatLng(vehicle.getCurrentLocation().getLatitude(), vehicle.getCurrentLocation().getLongitude());
+                mMap.addMarker(new MarkerOptions()
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                        .position(vehicleLatLng)
+                        .title("You are here: " + vehicle.getCurrentLocation().getAddress()));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(vehicleLatLng, 14));
+
+            }
+
+            @Override
+            public void onFailure(Call<VehicleDTO> call, Throwable t) {
+                Log.d("TAG", "greska", t);
+                transitionToNoRideFragment();
+            }
+        });
+
+        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
+        stompClient.connect();
+
+
+        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+            Log.d("TAG", topicMessage.getPayload());
+        });
     }
 
 }
