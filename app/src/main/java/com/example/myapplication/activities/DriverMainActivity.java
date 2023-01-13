@@ -80,6 +80,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mMap;
     private List<LatLng> path = new ArrayList();
     private Marker simMarker;
+    private String driverId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,8 +142,20 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+        driverId = Retrofit.sharedPreferences.getString("user_id", null);
         Retrofit.stompClient.send("/ride-notification-driver-request-mob/" + driverId, json).subscribe();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        driverId = Retrofit.sharedPreferences.getString("user_id", null);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        driverId = Retrofit.sharedPreferences.getString("user_id", null);
     }
 
     @Override
@@ -289,7 +302,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 
     @SuppressLint("CheckResult")
     private void subscribeToAcceptRide() {
-        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+        //String driverId = Retrofit.sharedPreferences.getString("user_id", null);
         Retrofit.stompClient.topic("/ride-notification-driver-request-mob/" + driverId).subscribe(topicMessage -> {
             Log.d("TAG", "doslo" + topicMessage.getPayload());
 
@@ -311,7 +324,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 acceptIntent.setAction("ACCEPT_RIDE");
                 acceptIntent.putExtra("rideId", rideDTO.getId());
                 PendingIntent acceptPendingIntent =
-                        PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_MUTABLE);
 
                 Intent denyIntent = new Intent(this, AcceptRideNotificationReceiver.class);
                 denyIntent.setAction("DENY_RIDE");
@@ -322,7 +335,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         .build();
 
                 PendingIntent replyPendingIntent =
-                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_MUTABLE);
 
                 NotificationCompat.Action denyAction =
                         new NotificationCompat.Action.Builder(R.drawable.ic_message_icon,

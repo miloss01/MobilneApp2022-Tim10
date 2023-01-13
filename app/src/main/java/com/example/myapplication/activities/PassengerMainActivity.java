@@ -283,6 +283,12 @@ public class PassengerMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        passengerId = Retrofit.sharedPreferences.getString("user_id", null);
+    }
+
     private void clearData() {
         TextView header = this.findViewById(R.id.headerForTime);
         TextView time = this.findViewById(R.id.fillerForTime);

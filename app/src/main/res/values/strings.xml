@@ -60,6 +60,10 @@
     <string name="vehicle_arrives_in">Vehicle arrives in:</string>
     <string name="arive_time_header">Your vehicle will arive in...</string>
     <string name="address">Address</string>
+    <string name="save_changes">Save changes</string>
+    <string name="pets_allowed">Pets allowed</string>
+    <string name="baby_seat_available">Baby seat available</string>
+    <string name="seat_number">Seat number</string>
 
 
     <array name="stepper_details">

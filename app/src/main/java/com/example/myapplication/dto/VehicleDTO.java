@@ -8,6 +8,10 @@ public class VehicleDTO {
     private String vehicleType;
     private String model;
     private String licenseNumber;
+    private boolean babyTransport;
+    private LocationDTO currentLocation;
+    private Integer passengerSeats;
+    private boolean petTransport;
 
     public VehicleDTO() {
     }
@@ -96,8 +100,18 @@ public class VehicleDTO {
         this.petTransport = petTransport;
     }
 
-    private LocationDTO currentLocation;
-    private Integer passengerSeats;
-    private Boolean babyTransport;
-    private Boolean petTransport;
+    @Override
+    public String toString() {
+        return "VehicleDTO{" +
+                "id=" + id +
+                ", driverId=" + driverId +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", model='" + model + '\'' +
+                ", licenseNumber='" + licenseNumber + '\'' +
+                ", babyTransport=" + babyTransport +
+                ", currentLocation=" + currentLocation +
+                ", passengerSeats=" + passengerSeats +
+                ", petTransport=" + petTransport +
+                '}';
+    }
 }
