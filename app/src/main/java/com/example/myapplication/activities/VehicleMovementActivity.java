@@ -31,12 +31,12 @@ public class VehicleMovementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_movement);
-//        Bundle extras = getIntent().getExtras();
-//        Log.d("DEBUG", "USAOOOO");
-//
-//        if (extras != null) {
-//            loadRide(extras);
-//        }
+        Bundle extras = getIntent().getExtras();
+        Log.d("DEBUG", "USAOOOO");
+
+        if (extras != null) {
+            loadRide(extras);
+        }
     }
 
     private void loadRide(Bundle extras) {
@@ -69,19 +69,19 @@ public class VehicleMovementActivity extends AppCompatActivity {
         DepartureDestinationLocationsDTO departureDestination = rideDTO.getLocations().get(0);
         start.setText(departureDestination.getDeparture().getAddress());
         end.setText(departureDestination.getDestination().getAddress());
-        for (int i = rideDTO.getEstimatedTimeInMinutes(); i >= 0; i--) {
-            int SPLASH_TIME_OUT = 2000;
-            int finalI = i;
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
+//        for (int i = rideDTO.getEstimatedTimeInMinutes(); i >= 0; i--) {
+//            int SPLASH_TIME_OUT = 2000;
+//            int finalI = i;
+//            new Timer().schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//
+//                    time.setText(finalI);
+//                    finish(); // da nebi mogao da ode back na splash
+//                }
+//            }, SPLASH_TIME_OUT);
 
-                    time.setText(finalI);
-                    finish(); // da nebi mogao da ode back na splash
-                }
-            }, SPLASH_TIME_OUT);
-
-        }
+//        }
 //        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
 //        stompClient.connect();
 //

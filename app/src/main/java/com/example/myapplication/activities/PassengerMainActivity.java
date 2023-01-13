@@ -128,7 +128,7 @@ public class PassengerMainActivity extends AppCompatActivity {
             if (notificationDTO.getReason().equals("ACCEPT_RIDE")) {
                 Intent intent = new Intent(this, VehicleMovementActivity.class);
                 Log.d("DEBUG", "pre extra");
-                //intent.putExtra("rideId", notificationDTO.getRideId());
+                intent.putExtra("rideId", notificationDTO.getRideId());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -140,8 +140,8 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setContentText(notificationDTO.getMessage())
                         .setSmallIcon(R.drawable.ic_message_icon)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setContentIntent(pendingIntent);
-                        //.setAutoCancel(true);
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
