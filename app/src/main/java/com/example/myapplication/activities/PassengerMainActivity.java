@@ -142,25 +142,42 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                notificationManager.notify(1001, builder.build());
+
+            }
+            if (notificationDTO.getReason().equals("DRIVER_ARRIVED")) {
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                        .setContentTitle("Driver arrived at departure place.")
+                        .setContentText("Come here!")
+                        .setSmallIcon(R.drawable.ic_message_icon)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-                notificationManager.notify(1001, builder.build());
+                notificationManager.notify(5683, builder.build());
             }
         });
 
         // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
         // pritisne na start ride dugme (verovatno ce se dobiti sa beka)
+        // druga notifikacija je kad vozac javi putnicima da je stigao na polaziste
         NotificationDTO data = new NotificationDTO("message", 1, "START_RIDE");
+        NotificationDTO data2 = new NotificationDTO("message", 1, "DRIVER_ARRIVED");
         ObjectMapper objectMapper = new ObjectMapper();
         String json = "asd";
+        String json2 = "asd";
         try {
             json = objectMapper.writeValueAsString(data);
+            json2 = objectMapper.writeValueAsString(data2);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
         Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
+        Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json2).subscribe();
 
 
 
