@@ -16,11 +16,11 @@
             app:titleTextColor="@color/white">
         </androidx.appcompat.widget.Toolbar>
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/passenger_map_container"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="400dp"-->
-<!--            android:orientation="vertical" />-->
+        <LinearLayout
+            android:id="@+id/passenger_map_container"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:orientation="vertical" />
 
 
         <ScrollView
@@ -30,12 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/passenger_map_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:orientation="vertical"
-                    android:layout_marginStart="35dp" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
@@ -111,6 +106,21 @@
                     android:layout_height="wrap_content"
                     android:text="@string/make_reservation"
                     />
+                <TextView
+                    android:id="@+id/headerForTime"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/fillerForTime"
+                    android:layout_marginStart="45dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </ScrollView>

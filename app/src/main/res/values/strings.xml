@@ -50,7 +50,7 @@
     <string name="no">No</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
     <string name="show_path">Show path</string>
-    <string name="ride_booked">RIDE BOOKED!</string>
+    <string name="ride_booked">RIDE MARKED AS PENDING!</string>
     <string name="close">Close</string>
     <string name="drivers_full_name">Drivers full name:</string>
     <string name="drivers_mail">Drivers mail:</string>
@@ -58,6 +58,7 @@
     <string name="vehicle_registration">Vehicle Registration:</string>
     <string name="vehicle_model">Vehicle Model:</string>
     <string name="vehicle_arrives_in">Vehicle arrives in:</string>
+    <string name="arive_time_header">Your vehicle will arive in...</string>
 
 
     <array name="stepper_details">
