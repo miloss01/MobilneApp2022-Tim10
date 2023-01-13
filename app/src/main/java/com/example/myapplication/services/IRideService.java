@@ -29,4 +29,10 @@ public interface IRideService {
     @PUT("ride/{id}/end")
     Call<Void> endRide(@Path("id") Integer id);
 
+    @PUT("ride/{id}/accept")
+    Call<Void> acceptRide(@Path("id") Integer id);
+
+    @PUT("ride/{id}/cancel")
+    Call<Void> cancelRide(@Path("id") Integer id, @Body ReasonDTO reasonDTO);
+
 }

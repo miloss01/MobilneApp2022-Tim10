@@ -66,12 +66,7 @@ public class DriverNoRideFragment extends Fragment {
         Switch toggle = getView().findViewById(R.id.driver_main_toggle);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                boolean success = changeActiveFlag(isChecked, toggle);
-                if (!success) {
-                    toggle.setChecked(!isChecked);
-                    Toast.makeText(getContext(),
-                            "Couldn't change active status", Toast.LENGTH_SHORT).show();
-                }
+                changeActiveFlag(isChecked, toggle);
             }
         });
 
@@ -88,32 +83,30 @@ public class DriverNoRideFragment extends Fragment {
 
     }
 
-    private boolean changeActiveFlag(boolean status, Switch toggle) {
+    private void changeActiveFlag(boolean status, Switch toggle) {
         IAppUserService appUserService = Retrofit.retrofit.create(IAppUserService.class);
         String driverId = Retrofit.sharedPreferences.getString("user_id", null);
         Call<IsActiveDTO> changeCall = appUserService.changeActiveFlag(
                 Integer.valueOf(driverId),
                 new IsActiveDTO(status));
 
-        final boolean[] success = {false};
 
         changeCall.enqueue(new Callback<IsActiveDTO>() {
             @Override
             public void onResponse(Call<IsActiveDTO> call, Response<IsActiveDTO> response) {
-                toggle.setChecked(response.body().isActive());
                 TextView t = getView().findViewById(R.id.driver_main_label_active);
                 if (response.body().isActive()) t.setText("ACTIVE");
                 else t.setText("INACTIVE");
-                success[0] = true;
                 Log.d("DEBUG", "Changed active status");
             }
 
             @Override
             public void onFailure(Call<IsActiveDTO> call, Throwable t) {
+                Toast.makeText(getContext(),
+                        "Couldn't change active status", Toast.LENGTH_SHORT).show();
                 Log.d("DEBUG", "Error changing active status", t);
             }
         });
-        return success[0];
     }
 
 }
