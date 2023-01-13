@@ -26,4 +26,7 @@ public interface IRideService {
     @GET("ride/driver/{driverId}/accepted")
     Call<RideDTO> getDriverAcceptedRide(@Path("driverId") Integer driverId);
 
+    @PUT("ride/{id}/end")
+    Call<Void> endRide(@Path("id") Integer id);
+
 }

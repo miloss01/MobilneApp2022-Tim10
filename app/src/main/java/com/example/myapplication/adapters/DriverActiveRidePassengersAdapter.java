@@ -44,11 +44,6 @@ public class DriverActiveRidePassengersAdapter extends ArrayAdapter<PassengerDTO
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.driver_active_ride_passengerImage);
-//        byte[] imgBytesData = android.util.Base64.decode(passengerDTO.getProfilePicture(), 0);
-//        Bitmap bitmap = BitmapFactory.decodeByteArray(imgBytesData, 0, imgBytesData.length);
-////        imageView.setImageBitmap(BitmapFactory.decodeStream(passengerDTO.getProfilePicture()));
-//        imageView.setImageBitmap(bitmap);
-        Log.i("TAG", "link to PP:" + passengerDTO.getProfilePicture());
         new DownloadImageTask(imageView).execute(passengerDTO.getProfilePicture());
 
         TextView name = (TextView) convertView.findViewById(R.id.driver_active_ride_passengerName);
@@ -62,7 +57,8 @@ public class DriverActiveRidePassengersAdapter extends ArrayAdapter<PassengerDTO
         return passengersList.size();
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {

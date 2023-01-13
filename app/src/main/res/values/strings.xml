@@ -54,6 +54,7 @@
     <string name="panic">panic</string>
     <string name="end_ride">End ride</string>
     <string name="time_elapsed">Time elapsed:</string>
+    <string name="currently_no_active_ride">No ride currently in progress</string>
 
 
     <array name="stepper_details">

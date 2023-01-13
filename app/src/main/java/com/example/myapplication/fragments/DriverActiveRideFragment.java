@@ -1,9 +1,11 @@
 package com.example.myapplication.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,11 +17,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.DriverMainActivity;
 import com.example.myapplication.adapters.DriverActiveRidePassengersAdapter;
+import com.example.myapplication.dialogs.PanicDialog;
 import com.example.myapplication.dto.PassengerDTO;
+import com.example.myapplication.dto.ReasonDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.UserDTO;
+import com.example.myapplication.models.User;
 import com.example.myapplication.services.IPassengerService;
+import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
 
@@ -53,22 +60,26 @@ public class DriverActiveRideFragment extends Fragment {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            seconds += 1;
-                            if (seconds == 60) {
-                                minutes += 1;
-                                if (minutes == 60) {
-                                    hour += 1;
-                                    minutes = 0;
-                                } else hour = minutes / 60;
-                                seconds = 0;
+                    try {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                seconds += 1;
+                                if (seconds == 60) {
+                                    minutes += 1;
+                                    if (minutes == 60) {
+                                        hour += 1;
+                                        minutes = 0;
+                                    } else hour = minutes / 60;
+                                    seconds = 0;
+                                    timerTextView.setText(String.format("%02d", hour) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+                                }
                                 timerTextView.setText(String.format("%02d", hour) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
                             }
-                            timerTextView.setText(String.format("%02d", hour) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-                        }
-                    });
+                        });
+                    } catch (NullPointerException ex) {
+                        timer.cancel();
+                    }
                 }
             }, 0, 1000);
         }
@@ -97,40 +108,14 @@ public class DriverActiveRideFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_driver_active_ride, container, false);
-        passengers = displayPassengers();
-        listView = (ListView) v.findViewById(R.id.driver_active_ride_passengersList);
-        //myLayout.addView(mListView)
-//        ListView mListView = new ListView(getActivity());
-        DriverActiveRidePassengersAdapter adapter = new DriverActiveRidePassengersAdapter(
-                getActivity(),
-                R.layout.driver_active_ride_passenger_cell,
-                passengers);
-        Log.i("TAG", "COUNT: " + adapter.getCount());
-        listView.setAdapter(adapter);
-        adapter.getCount();
-        Log.i("TAG", "COUNT: " + adapter.getCount());
-        Log.i("TAG", "PASSENGERS: " + passengers.size());
-
-        return v;
+        return inflater.inflate(R.layout.fragment_driver_active_ride, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.i("TAG", "Loaded rideDTO in DriverActiveFragment: " + rideDTO.toString());
         displayRideDetails();
-        listView = (ListView) getView().findViewById(R.id.driver_active_ride_passengersList);
-        //myLayout.addView(mListView)
-//        ListView mListView = new ListView(getActivity());
-        DriverActiveRidePassengersAdapter adapter = new DriverActiveRidePassengersAdapter(
-                getActivity(),
-                R.layout.driver_active_ride_passenger_cell,
-                passengers);
-        Log.i("TAG", "COUNT: " + adapter.getCount());
-        listView.setAdapter(adapter);
-        adapter.getCount();
-        Log.i("TAG", "COUNT: " + adapter.getCount());
-        Log.i("TAG", "PASSENGERS: " + passengers.size());
+        setUpButtons();
     }
 
     private void displayRideDetails() {
@@ -153,8 +138,13 @@ public class DriverActiveRideFragment extends Fragment {
         IPassengerService passengerService = Retrofit.retrofit.create(IPassengerService.class);
 
         List<PassengerDTO> passengers = new ArrayList<>();
+        List<UserDTO> userDTOS = rideDTO.getPassengers();
+        Log.d("DEBUG", "number of DTO passengers: " + userDTOS.size());
 
-        for (UserDTO userDTO : rideDTO.getPassengers()) {
+        listView = (ListView) getView().findViewById(R.id.driver_active_ride_passengersList);
+
+        for (UserDTO userDTO : userDTOS) {
+            Log.d("DEBUG", "DTO passenger: " + userDTO.getEmail());
             Call<PassengerDTO> passengerResponseCall = passengerService.getPassenger(userDTO.getId().intValue());
             passengerResponseCall.enqueue(new Callback<PassengerDTO>() {
                 @Override
@@ -163,12 +153,10 @@ public class DriverActiveRideFragment extends Fragment {
                     PassengerDTO passengerDTO = response.body();
                     passengers.add(passengerDTO);
 
-                    Log.d("TAG", "Passenger for ride: " + rideDTO.getId() + " " + passengerDTO.getEmail());
                     DriverActiveRidePassengersAdapter adapter = new DriverActiveRidePassengersAdapter(
                             getActivity(),
                             R.layout.driver_active_ride_passenger_cell,
                             passengers);
-                    Log.i("TAG", "COUNT: " + adapter.getCount());
                     listView.setAdapter(adapter);
                 }
 
@@ -188,11 +176,32 @@ public class DriverActiveRideFragment extends Fragment {
         Button panic = (Button) getView().findViewById(R.id.btn_driver_active_ride_panic);
         panic.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                DialogFragment panicDialog = PanicDialog.newInstance(rideDTO.getId().intValue());
+                panicDialog.show(getActivity().getSupportFragmentManager(), "panic_dialog");
             }
         });
         Button end = (Button) getView().findViewById(R.id.btn_driver_active_ride_end);
-        panic.setOnClickListener(new View.OnClickListener() {
+        end.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                IRideService rideService = Retrofit.retrofit.create(IRideService.class);
+                Call<Void> endRideCall = rideService.endRide(rideDTO.getId().intValue());
+
+                endRideCall.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d("TAG", "Ride ended");
+                        getActivity().finish();
+                        getActivity().overridePendingTransition(0, 0);
+                        startActivity(new Intent(getActivity(), DriverMainActivity.class));
+                        getActivity().overridePendingTransition(0, 0);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d("TAG", "Error when ending ride", t);
+                    }
+                });
             }
         });
     }
