@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RemoteViews;
 import android.widget.Switch;
@@ -42,6 +43,7 @@ import com.example.myapplication.fragments.DriverAcceptedRideFragment;
 import com.example.myapplication.fragments.DriverActiveRideFragment;
 import com.example.myapplication.fragments.DriverNoRideFragment;
 import com.example.myapplication.dto.UserDTO;
+import com.example.myapplication.models.User;
 import com.example.myapplication.receiver.AcceptRideNotificationReceiver;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IDriverService;
@@ -363,6 +365,22 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 simMarker = mMap.addMarker(new MarkerOptions().position(path.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
                 startSimulation();
+
+                NotificationDTO notificationDTO = new NotificationDTO("message", rideDTO.getId().intValue(), "DRIVER_ARRIVED");
+                ObjectMapper objectMapper = new ObjectMapper();
+                String json = "asd";
+                try {
+                    json = objectMapper.writeValueAsString(notificationDTO);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                for (UserDTO passenger : rideDTO.getPassengers()) {
+                    Retrofit.stompClient.send("/ride-notification-passenger/" + passenger.getId(), json);
+                }
+
+                // Driver has arrived to location so ride can be started
+                Button start = (Button) DriverMainActivity.this.findViewById(R.id.btn_driver_accepted_ride_start);
+                start.setEnabled(true);
 
             }
 

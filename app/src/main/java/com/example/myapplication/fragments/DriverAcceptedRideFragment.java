@@ -18,11 +18,16 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.DriverMainActivity;
+import com.example.myapplication.dialogs.CancelRideDialog;
 import com.example.myapplication.dialogs.PanicDialog;
+import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.dto.RideDTO;
+import com.example.myapplication.dto.UserDTO;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.Retrofit;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
 import java.util.List;
@@ -85,11 +90,12 @@ public class DriverAcceptedRideFragment extends Fragment {
         Button cancel = (Button) getView().findViewById(R.id.btn_driver_accepted_ride_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                DialogFragment panicDialog = PanicDialog.newInstance(rideDTO.getId().intValue());
-//                panicDialog.show(getActivity().getSupportFragmentManager(), "panic_dialog");
+                CancelRideDialog cancelRideDialog = CancelRideDialog.newInstance(rideDTO.getId().intValue());
+                cancelRideDialog.show(getActivity().getSupportFragmentManager(), "cancel_dialog");
             }
         });
         Button start = (Button) getView().findViewById(R.id.btn_driver_accepted_ride_start);
+        start.setEnabled(false);
         start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 IRideService rideService = Retrofit.retrofit.create(IRideService.class);
