@@ -95,7 +95,6 @@ public class DriverAcceptedRideFragment extends Fragment {
             }
         });
         Button start = (Button) getView().findViewById(R.id.btn_driver_accepted_ride_start);
-        start.setEnabled(false);
         start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 IRideService rideService = Retrofit.retrofit.create(IRideService.class);

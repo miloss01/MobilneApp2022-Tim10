@@ -210,7 +210,6 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     private void showMarker(Integer i) {
 
         if (i > path.size() - 1) {
-            Log.d("DEBUG", "You have arrived at departure");
             return;
         }
 
@@ -344,11 +343,13 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         .position(departure)
                         .title("Departure: " + departureAddress));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(departure, 14));
+                Log.d("TAG", "Departure: " + departure.toString());
 
                 LatLng destination = new LatLng(destinationLat, destinationLon);
                 mMap.addMarker(new MarkerOptions()
                         .position(destination)
-                        .title("Destination: " +destinationAddress));
+                        .title("Destination: " + destinationAddress));
+                Log.d("TAG", "Destination: " + destination.toString());
 
                 String origin = "" + currentLocation.getLatitude() + "," + currentLocation.getLongitude();
                 String end = "" + departureLat + "," + departureLon;
@@ -366,7 +367,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 
                 startSimulation();
 
-                NotificationDTO notificationDTO = new NotificationDTO("message", rideDTO.getId().intValue(), "DRIVER_ARRIVED");
+                NotificationDTO notificationDTO = new NotificationDTO("Driver arrived at departure location.", rideDTO.getId().intValue(), "DRIVER_ARRIVED");
                 ObjectMapper objectMapper = new ObjectMapper();
                 String json = "asd";
                 try {
@@ -375,12 +376,9 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                     e.printStackTrace();
                 }
                 for (UserDTO passenger : rideDTO.getPassengers()) {
+                    Log.d("DEBUG", "sending notification - driver arrived - to passengerId:" + passenger.getId());
                     Retrofit.stompClient.send("/ride-notification-passenger/" + passenger.getId(), json);
                 }
-
-                // Driver has arrived to location so ride can be started
-                Button start = (Button) DriverMainActivity.this.findViewById(R.id.btn_driver_accepted_ride_start);
-                start.setEnabled(true);
 
             }
 
