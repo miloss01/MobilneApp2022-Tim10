@@ -1,6 +1,7 @@
 package com.example.myapplication.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -153,6 +154,10 @@ public class DriverActiveRideFragment extends Fragment {
                             R.layout.driver_active_ride_passenger_cell,
                             passengers);
                     listView.setAdapter(adapter);
+
+
+
+
                 }
 
                 @Override

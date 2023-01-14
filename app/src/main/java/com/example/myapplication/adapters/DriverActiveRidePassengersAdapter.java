@@ -2,14 +2,17 @@ package com.example.myapplication.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +51,17 @@ public class DriverActiveRidePassengersAdapter extends ArrayAdapter<PassengerDTO
 
         TextView name = (TextView) convertView.findViewById(R.id.driver_active_ride_passengerName);
         name.setText(passengerDTO.getName() + " " + passengerDTO.getSurname());
+
+        Button callBtn = convertView.findViewById(R.id.btn_driver_active_ride_passengerCall);
+        callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                Log.d("DEBUG", "calling passenger with id: " + passengerDTO.getId() + " their number: " + passengerDTO.getTelephoneNumber());
+                intent.setData(Uri.parse("tel:" + passengerDTO.getTelephoneNumber()));
+                getContext().startActivity(intent);
+            }
+        });
 
         return convertView;
     }

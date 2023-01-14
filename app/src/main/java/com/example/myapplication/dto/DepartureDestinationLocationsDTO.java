@@ -1,6 +1,8 @@
 package com.example.myapplication.dto;
 
-public class DepartureDestinationLocationsDTO {
+import java.io.Serializable;
+
+public class DepartureDestinationLocationsDTO implements Serializable {
     private LocationDTO departure;
     private LocationDTO destination;
 

@@ -3,24 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_margin="30dp">
+    android:layout_margin="20dp">
 
     <ImageView
         android:id="@+id/driver_active_ride_passengerImage"
         android:layout_width="60dp"
         android:layout_height="70dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="10dp"/>
 
-    <TextView
-        android:id="@+id/driver_active_ride_passengerName"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
+        android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:textStyle="bold"
-        android:text="Ime Prezime"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/driver_active_ride_passengerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_gravity="bottom"
+            android:textStyle="bold"
+            android:text="Ime Prezime"/>
+
+        <Button
+            android:id="@+id/btn_driver_active_ride_passengerCall"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/white"
+            android:text="Call"
+            android:drawableLeft="@android:drawable/ic_menu_call"
+            />
+    </LinearLayout>
+
+
 
 
 
