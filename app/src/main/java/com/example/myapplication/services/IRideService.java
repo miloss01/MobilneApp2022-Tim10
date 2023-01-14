@@ -23,10 +23,19 @@ public interface IRideService {
     @PUT("ride/{id}/panic")
     Call<Void> sendPanic(@Path("id") Integer id, @Body ReasonDTO reasonDTO);
 
+    @GET("ride/driver/{driverId}/accepted")
+    Call<RideDTO> getDriverAcceptedRide(@Path("driverId") Integer driverId);
+
+    @PUT("ride/{id}/end")
+    Call<Void> endRide(@Path("id") Integer id);
+
     @PUT("ride/{id}/accept")
     Call<Void> acceptRide(@Path("id") Integer id);
 
     @PUT("ride/{id}/cancel")
     Call<Void> cancelRide(@Path("id") Integer id, @Body ReasonDTO reasonDTO);
+
+    @PUT("ride/{id}/start")
+    Call<Void> startRide(@Path("id") Integer id);
 
 }
