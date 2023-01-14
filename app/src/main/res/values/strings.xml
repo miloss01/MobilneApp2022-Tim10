@@ -58,6 +58,7 @@
     <string name="start_ride">Start ride</string>
     <string name="cancel_ride">Cancel ride</string>
     <string name="estimated_time_in_minutes">Estimated time:</string>
+    <string name="quick_message">Quick message</string>
 
 
     <array name="stepper_details">

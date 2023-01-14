@@ -21,13 +21,10 @@ import com.example.myapplication.activities.DriverMainActivity;
 import com.example.myapplication.adapters.DriverActiveRidePassengersAdapter;
 import com.example.myapplication.dialogs.PanicDialog;
 import com.example.myapplication.dto.PassengerDTO;
-import com.example.myapplication.dto.ReasonDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.UserDTO;
-import com.example.myapplication.models.User;
 import com.example.myapplication.services.IPassengerService;
 import com.example.myapplication.services.IRideService;
-import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
 
 import java.io.Serializable;
@@ -175,6 +172,13 @@ public class DriverActiveRideFragment extends Fragment {
             public void onClick(View view) {
                 DialogFragment panicDialog = PanicDialog.newInstance(rideDTO.getId().intValue());
                 panicDialog.show(getActivity().getSupportFragmentManager(), "panic_dialog");
+            }
+        });
+        Button quickMessage = (Button) getView().findViewById(R.id.btn_driver_active_quickMessage);
+        quickMessage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                DialogFragment panicDialog = PanicDialog.newInstance(rideDTO.getId().intValue());
+                panicDialog.show(getActivity().getSupportFragmentManager(), "quick_message_dialog");
             }
         });
         Button end = (Button) getView().findViewById(R.id.btn_driver_active_ride_end);

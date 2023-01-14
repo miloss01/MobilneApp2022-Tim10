@@ -90,7 +90,6 @@ public class DriverNoRideFragment extends Fragment {
                 Integer.valueOf(driverId),
                 new IsActiveDTO(status));
 
-
         changeCall.enqueue(new Callback<IsActiveDTO>() {
             @Override
             public void onResponse(Call<IsActiveDTO> call, Response<IsActiveDTO> response) {
