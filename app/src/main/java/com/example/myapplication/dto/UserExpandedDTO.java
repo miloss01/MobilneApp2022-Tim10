@@ -1,8 +1,6 @@
 package com.example.myapplication.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-public class UserExtendedDTO {
+public class UserExpandedDTO {
     private Integer id;
     private String name;
     private String surname;
@@ -10,12 +8,11 @@ public class UserExtendedDTO {
     private String telephoneNumber;
     private String email;
     private String address;
-    private String password;
 
-    public UserExtendedDTO() {
+    public UserExpandedDTO() {
     }
 
-    public UserExtendedDTO(Integer id, String name, String surname, String profilePicture, String telephoneNumber, String email, String address, String password) {
+    public UserExpandedDTO(Integer id, String name, String surname, String profilePicture, String telephoneNumber, String email, String address) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -23,7 +20,6 @@ public class UserExtendedDTO {
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
-        this.password = password;
     }
 
     public Integer getId() {
@@ -80,13 +76,5 @@ public class UserExtendedDTO {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

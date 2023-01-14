@@ -9,6 +9,7 @@
     android:paddingRight="16dp">
 
     <ImageView
+        android:id="@+id/driver_image"
         android:layout_width="110dp"
         android:layout_height="80dp"
         android:src="@drawable/avataaars_js"
@@ -16,6 +17,7 @@
         android:layout_marginTop="20dp"/>
 
     <Button
+        android:id="@+id/driver_change_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -91,6 +93,7 @@
         android:text="@string/pets_allowed"/>
 
     <Button
+        android:id="@+id/driver_send_change_request"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
