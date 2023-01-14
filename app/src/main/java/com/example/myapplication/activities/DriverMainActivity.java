@@ -428,6 +428,8 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 //                Log.d("TAG", "Vehicle for map: " + VehicleDTO);
                 transitionToNoRideFragment();
 
+                if (vehicle == null) return;
+
                 currentLocation = vehicle.getCurrentLocation();
 
                 LatLng vehicleLatLng = new LatLng(vehicle.getCurrentLocation().getLatitude(), vehicle.getCurrentLocation().getLongitude());

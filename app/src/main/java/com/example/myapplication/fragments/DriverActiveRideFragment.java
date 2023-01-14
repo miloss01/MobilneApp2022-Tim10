@@ -20,6 +20,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.activities.DriverMainActivity;
 import com.example.myapplication.adapters.DriverActiveRidePassengersAdapter;
 import com.example.myapplication.dialogs.PanicDialog;
+import com.example.myapplication.dialogs.QuickMessageDialog;
 import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.UserDTO;
@@ -177,8 +178,8 @@ public class DriverActiveRideFragment extends Fragment {
         Button quickMessage = (Button) getView().findViewById(R.id.btn_driver_active_quickMessage);
         quickMessage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                DialogFragment panicDialog = PanicDialog.newInstance(rideDTO.getId().intValue());
-                panicDialog.show(getActivity().getSupportFragmentManager(), "quick_message_dialog");
+                DialogFragment messageDialog = QuickMessageDialog.newInstance(rideDTO);
+                messageDialog.show(getActivity().getSupportFragmentManager(), "quick_message_dialog");
             }
         });
         Button end = (Button) getView().findViewById(R.id.btn_driver_active_ride_end);
