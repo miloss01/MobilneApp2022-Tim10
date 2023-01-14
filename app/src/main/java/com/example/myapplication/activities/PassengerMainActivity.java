@@ -173,6 +173,19 @@ public class PassengerMainActivity extends AppCompatActivity {
 
                 notificationManager.notify(5683, builder.build());
             }
+            if (notificationDTO.getReason().equals("DRIVER_CANCEL")) {
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                        .setContentTitle("Ride canceled.")
+                        .setContentText(notificationDTO.getMessage())
+                        .setSmallIcon(R.drawable.ic_message_icon)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+                notificationManager.notify(5684, builder.build());
+            }
         });
 
         // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
@@ -201,54 +214,42 @@ public class PassengerMainActivity extends AppCompatActivity {
         TextView header = this.findViewById(R.id.headerForTime);
         TextView time = this.findViewById(R.id.fillerForTime);
         header.setText(R.string.arive_time_header);
+        time.setText(4 + "");
 //
 //        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
 //        stompClient.connect();
 //
 //        Disposable subscribe = stompClient.topic("/vehicle-time").subscribe(topicMessage -> {
 //            Log.d("TAG", topicMessage.getPayload());
-                new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                time.setText(5 + "");
-                            }
-                        },
-                        4000);
-        new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                new Runnable() {
-                    public void run() {
-                        time.setText(4 + "");
-                    }
-                },
-                4000*2);
+
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
                         time.setText(3 + "");
                     }
                 },
-                4000*3);
+                4000);
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
                         time.setText(2 + "");
                     }
                 },
-                4000*4);
+                4000*2);
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
                         time.setText(1 + "");
                     }
                 },
-                4000*5);
+                4000*3);
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
                         time.setText(0 + "");
                     }
                 },
-                4000*6);
+                4000*4);
 
             new android.os.Handler(Looper.getMainLooper()).postDelayed(
                     new Runnable() {
@@ -267,7 +268,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                             Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
                         }
                     },
-                    4000 * 7);
+                    4000 * 5);
 //
 //        });
 
