@@ -170,7 +170,7 @@
                 android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/passenger_start_message_btn"
+                android:id="@+id/passenger_message_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/passenger_current_ride_map"

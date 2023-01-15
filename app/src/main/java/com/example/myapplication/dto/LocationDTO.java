@@ -1,12 +1,15 @@
 package com.example.myapplication.dto;
 
-public class LocationDTO {
+import java.io.Serializable;
+
+public class LocationDTO implements Serializable {
 
     private String address;
     private double latitude;
     private double longitude;
 
-    public LocationDTO() {}
+    public LocationDTO() {
+    }
 
     public LocationDTO(String address, double latitude, double longitude) {
         this.address = address;

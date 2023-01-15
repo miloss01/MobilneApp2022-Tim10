@@ -10,12 +10,14 @@
     tools:context=".activities.PassengerRegisterActivity">
 
     <EditText
+        android:id="@+id/reg_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/name"
         android:layout_marginTop="15dp"/>
 
     <EditText
+        android:id="@+id/reg_last_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/last_name"
@@ -23,6 +25,7 @@
         android:layout_marginTop="15dp"/>
 
     <EditText
+        android:id="@+id/reg_phone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/phone"
@@ -30,6 +33,7 @@
         android:layout_marginTop="15dp"/>
 
     <EditText
+        android:id="@+id/reg_email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/email"
@@ -37,14 +41,24 @@
         android:layout_marginTop="15dp"/>
 
     <EditText
+        android:id="@+id/reg_adress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/address"
+        android:minHeight="48dp"
+        android:layout_marginTop="15dp"/>
+
+    <EditText
+        android:id="@+id/reg_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp" />
 
     <EditText
+        android:id="@+id/reg_repeat_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/repeat_password"

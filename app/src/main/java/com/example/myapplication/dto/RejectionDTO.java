@@ -1,11 +1,14 @@
 package com.example.myapplication.dto;
 
-public class RejectionDTO {
+import java.io.Serializable;
+
+public class RejectionDTO implements Serializable {
 
     private String reason;
     private String timeOfRejection;
 
-    public RejectionDTO() {}
+    public RejectionDTO() {
+    }
 
     public RejectionDTO(String reason, String timeOfRejection) {
         this.reason = reason;

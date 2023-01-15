@@ -36,9 +36,48 @@
     <string name="inbox">Inbox</string>
     <string name="add_to_favorite">Add to Favorite</string>
     <string name="start_new_ride">Start new ride</string>
+    <string name="beginning_location">Beginning location</string>
+    <string name="destination">Destination</string>
+    <string name="find_optimal">FIND OPTIMAL</string>
+    <string name="make_reservation">Make reservation</string>
+    <string name="icon">icon</string>
+    <string name="pick_time">Pick time</string>
+    <string name="pet_friendly">Pet friendly</string>
+    <string name="children_friendly">Children friendly</string>
     <string name="oops" />
-    <string name="location_disabled_message">Location is disabled</string>
+    <string name="location_disabled_message">Enable Location</string>
     <string name="sure">Sure</string>
     <string name="no">No</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="show_path">Show path</string>
+    <string name="ride_booked">RIDE MARKED AS PENDING!</string>
+    <string name="close">Close</string>
+    <string name="drivers_full_name">Drivers full name:</string>
+    <string name="drivers_mail">Drivers mail:</string>
+    <string name="drivers_phone">Drivers phone:</string>
+    <string name="vehicle_registration">Vehicle Registration:</string>
+    <string name="vehicle_model">Vehicle Model:</string>
+    <string name="vehicle_arrives_in">Vehicle arrives in:</string>
+    <string name="arive_time_header">Your vehicle will arive in...</string>
+    <string name="address">Address</string>
+    <string name="save_changes">Save changes</string>
+    <string name="pets_allowed">Pets allowed</string>
+    <string name="baby_seat_available">Baby seat available</string>
+    <string name="seat_number">Seat number</string>
+    <string name="departure">Departure</string>
+    <string name="panic">panic</string>
+    <string name="end_ride">End ride</string>
+    <string name="time_elapsed">Time elapsed:</string>
+    <string name="currently_no_active_ride">No ride currently in progress</string>
+    <string name="start_ride">Start ride</string>
+    <string name="cancel_ride">Cancel ride</string>
+    <string name="estimated_time_in_minutes">Estimated time:</string>
+    <string name="quick_message">Quick message</string>
+
+
+    <array name="stepper_details">
+        <item>Location and time</item>
+        <item>Additional preferences</item>
+    </array>
+
 </resources>

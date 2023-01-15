@@ -1,11 +1,13 @@
 package com.example.myapplication.dto;
 
-public class DepartureDestinationLocationsDTO {
+import java.io.Serializable;
 
+public class DepartureDestinationLocationsDTO implements Serializable {
     private LocationDTO departure;
     private LocationDTO destination;
 
-    public DepartureDestinationLocationsDTO() {}
+    public DepartureDestinationLocationsDTO() {
+    }
 
     public DepartureDestinationLocationsDTO(LocationDTO departure, LocationDTO destination) {
         this.departure = departure;
@@ -27,6 +29,7 @@ public class DepartureDestinationLocationsDTO {
     public void setDestination(LocationDTO destination) {
         this.destination = destination;
     }
+
 
     @Override
     public String toString() {

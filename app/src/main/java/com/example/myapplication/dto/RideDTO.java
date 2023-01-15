@@ -2,10 +2,11 @@ package com.example.myapplication.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RideDTO {
-
+public class RideDTO implements Serializable {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
     private ArrayList<DepartureDestinationLocationsDTO> locations;
     private String startTime;
@@ -17,6 +18,7 @@ public class RideDTO {
     private String vehicleType;
     private boolean babyTransport;
     private boolean petTransport;
+    @JsonInclude(JsonInclude.Include. NON_NULL)
     private String status;
     private RejectionDTO rejection;
 

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/passenger_main_toolbar"
@@ -22,103 +19,124 @@
         <LinearLayout
             android:id="@+id/passenger_map_container"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="330dp"
             android:orientation="vertical" />
 
-<!--        <ImageView-->
-<!--            android:layout_width="400dp"-->
-<!--            android:layout_height="500dp"-->
-<!--            android:layout_gravity="left"-->
-<!--            android:src="@drawable/examplemapvertical" />-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/white">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--                <LinearLayout-->
+            <!--                    android:id="@+id/passenger_map_container"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="400dp"-->
+            <!--                    android:orientation="vertical" />-->
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="left"
-                android:layout_marginTop="200dp"
-                android:src="@drawable/ic_play_circle" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:background="@color/white">
 
-            <EditText
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:hint="Beginning location" />
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="200dp"
+                    android:src="@drawable/ic_play_circle" />
+
+                <EditText
+                    android:id="@+id/pass_departure"
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="10dp"
+                    android:hint="@string/beginning_location" />
+
+                <Button
+                    android:id="@+id/add_departure_to_favoutites_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="45dp"
+                    android:background="@drawable/ic_heart" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:background="@color/white">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="200dp"
+                    android:src="@drawable/ic_pin_drop" />
+
+                <EditText
+                    android:id="@+id/pass_destination"
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="10dp"
+                    android:hint="@string/destination" />
+
+                <Button
+                    android:id="@+id/add_destination_to_fav_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="45dp"
+                    android:background="@drawable/ic_heart" />
+
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/add_location_btn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="45dp"
-                android:background="@drawable/ic__add_circle" />
+                android:id="@+id/pass_main_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/show_path" />
 
+            <Button
+                android:id="@+id/open_ride_creation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/make_reservation" />
+
+            <TextView
+                android:id="@+id/headerForTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/fillerForTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="left"
-                android:layout_marginTop="200dp"
-                android:src="@drawable/ic_pin_drop" />
-
-            <EditText
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:hint="Destination" />
-
-        </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FIND OPTIMAL"
-            android:textColor="@color/black"
-            android:layout_marginTop="20dp"
-            android:paddingStart="20dp"/>
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingStart="20dp">
-            <RadioButton android:id="@+id/radio_optimal_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="time"
-                android:layout_marginEnd="20dp"/>
-            <RadioButton android:id="@+id/radio_optimal_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="distance"
-                android:layout_marginEnd="20dp"/>
-            <RadioButton android:id="@+id/radio_optimal_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="price"
-                />
-        </RadioGroup>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="10dp"/>
+    </ScrollView>
 
 
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
