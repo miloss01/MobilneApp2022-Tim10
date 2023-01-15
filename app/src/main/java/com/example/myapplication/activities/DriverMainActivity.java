@@ -490,7 +490,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 acceptIntent.setAction("ACCEPT_RIDE");
                 acceptIntent.putExtra("rideId", rideDTO.getId());
                 PendingIntent acceptPendingIntent =
-                        PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_MUTABLE);
+                        PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 Intent denyIntent = new Intent(this, AcceptRideNotificationReceiver.class);
                 denyIntent.setAction("DENY_RIDE");
@@ -501,7 +501,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         .build();
 
                 PendingIntent replyPendingIntent =
-                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_IMMUTABLE);
+                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 NotificationCompat.Action denyAction =
                         new NotificationCompat.Action.Builder(R.drawable.ic_message_icon,
