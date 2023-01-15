@@ -175,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/passenger_current_ride_map"
                 android:background="#3F51B5"
-                android:text="SMS"
+                android:text="Message"
                 android:textColor="@color/white" />
 
             <Button

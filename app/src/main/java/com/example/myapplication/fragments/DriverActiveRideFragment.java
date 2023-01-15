@@ -181,7 +181,7 @@ public class DriverActiveRideFragment extends Fragment {
         quickMessage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 QuickMessageDialog.context = getContext();
-                DialogFragment messageDialog = QuickMessageDialog.newInstance(rideDTO);
+                DialogFragment messageDialog = QuickMessageDialog.newInstance(rideDTO, true);
                 messageDialog.show(getActivity().getSupportFragmentManager(), "quick_message_dialog");
             }
         });

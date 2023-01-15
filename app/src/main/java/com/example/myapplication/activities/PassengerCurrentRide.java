@@ -1,5 +1,7 @@
 package com.example.myapplication.activities;
 
+import static java.security.AccessController.getContext;
+
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -23,6 +25,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.dialogs.MakeReviewDialog;
 import com.example.myapplication.dialogs.PanicDialog;
+import com.example.myapplication.dialogs.QuickMessageDialog;
 import com.example.myapplication.dto.DriverDTO;
 import com.example.myapplication.dto.IsActiveDTO;
 import com.example.myapplication.dto.NotificationDTO;
@@ -190,11 +193,13 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
                         messageBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(Intent.ACTION_SEND);
-                                intent.setData(Uri.parse("smsto:" + driverDTO.getTelephoneNumber()));
-                                if (intent.resolveActivity(getPackageManager()) != null) {
-                                    startActivity(intent);
-                                }
+//                                Intent intent = new Intent(Intent.ACTION_SEND);
+//                                intent.setData(Uri.parse("smsto:" + driverDTO.getTelephoneNumber()));
+//                                if (intent.resolveActivity(getPackageManager()) != null) {
+//                                    startActivity(intent);
+//                                }
+                                DialogFragment messageDialog = QuickMessageDialog.newInstance(rideDTO, false);
+                                messageDialog.show(getSupportFragmentManager(), "quick_message_dialog");
                             }
                         });
 

@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.dto.LocationDTO;
+import com.example.myapplication.dto.MessageSentDTO;
 import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.fragments.MapFragment;
@@ -188,23 +189,43 @@ public class PassengerMainActivity extends AppCompatActivity {
             }
         });
 
+        Retrofit.stompClient.topic("/ride-notification-message/" + passengerId).subscribe(topicMessage -> {
+
+            Log.d("TAG", topicMessage.getPayload());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                    .setContentTitle("You have received message.")
+                    .setContentText(messageSentDTO.getMessage())
+                    .setSmallIcon(R.drawable.ic_message_icon)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+            notificationManager.notify(9832, builder.build());
+
+        });
+
         // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
         // pritisne na start ride dugme (verovatno ce se dobiti sa beka)
         // druga notifikacija je kad vozac javi putnicima da je stigao na polaziste
-//        NotificationDTO data = new NotificationDTO("message", 1, "START_RIDE");
-//        NotificationDTO data2 = new NotificationDTO("message", 1, "DRIVER_ARRIVED");
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String json = "asd";
-//        String json2 = "asd";
-//        try {
-//            json = objectMapper.writeValueAsString(data);
-//            json2 = objectMapper.writeValueAsString(data2);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
-//        Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json2).subscribe();
+        NotificationDTO data = new NotificationDTO("message", 1, "START_RIDE");
+        NotificationDTO data2 = new NotificationDTO("message", 1, "DRIVER_ARRIVED");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = "asd";
+        String json2 = "asd";
+        try {
+            json = objectMapper.writeValueAsString(data);
+            json2 = objectMapper.writeValueAsString(data2);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
+        Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json2).subscribe();
 
 
 

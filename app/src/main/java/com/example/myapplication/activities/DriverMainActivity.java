@@ -35,6 +35,7 @@ import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
 import com.example.myapplication.dto.ErrorMessage;
 import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.LoginDTO;
+import com.example.myapplication.dto.MessageSentDTO;
 import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.TokenResponseDTO;
@@ -130,6 +131,26 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 //        });
 
         subscribeToAcceptRide();
+
+        Retrofit.stompClient.topic("/ride-notification-message/" + Retrofit.sharedPreferences.getString("user_id", null)).subscribe(topicMessage -> {
+
+            Log.d("TAG", topicMessage.getPayload());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                    .setContentTitle("You have received message.")
+                    .setContentText(messageSentDTO.getMessage())
+                    .setSmallIcon(R.drawable.ic_message_icon)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+            notificationManager.notify(9832, builder.build());
+
+        });
     }
 
     @Override
@@ -294,10 +315,10 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 //        stompClient.connect();
 
 
-        Retrofit.stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
-            Log.d("TAG", topicMessage.getPayload());
-
-        });
+//        Retrofit.stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+//            Log.d("TAG", topicMessage.getPayload());
+//
+//        });
     }
 
     private void showAcceptedRide() {
@@ -439,15 +460,16 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 //        stompClient.connect();
 
 
-        Retrofit.stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
-            Log.d("TAG", topicMessage.getPayload());
-        });
+//        Retrofit.stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+//            Log.d("TAG", topicMessage.getPayload());
+//        });
     }
 
     @SuppressLint("CheckResult")
     private void subscribeToAcceptRide() {
+        Log.d("TAG", "poz");
         //String driverId = Retrofit.sharedPreferences.getString("user_id", null);
-        Retrofit.stompClient.topic("/ride-notification-driver-request-mob/" + driverId).subscribe(topicMessage -> {
+        Retrofit.stompClient.topic("/ride-notification-driver-request-mob/" + Retrofit.sharedPreferences.getString("user_id", null)).subscribe(topicMessage -> {
             Log.d("TAG", "doslo" + topicMessage.getPayload());
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -479,7 +501,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         .build();
 
                 PendingIntent replyPendingIntent =
-                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_MUTABLE);
+                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_IMMUTABLE);
 
                 NotificationCompat.Action denyAction =
                         new NotificationCompat.Action.Builder(R.drawable.ic_message_icon,
