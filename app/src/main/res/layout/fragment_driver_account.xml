@@ -9,6 +9,7 @@
     android:paddingRight="16dp">
 
     <ImageView
+        android:id="@+id/driver_image"
         android:layout_width="110dp"
         android:layout_height="80dp"
         android:src="@drawable/avataaars_js"
@@ -16,6 +17,7 @@
         android:layout_marginTop="20dp"/>
 
     <Button
+        android:id="@+id/driver_change_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -29,34 +31,73 @@
         android:layout_gravity="center"
         />
     <EditText
+        android:id="@+id/driver_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/name"
         android:layout_marginTop="15dp"/>
 
     <EditText
+        android:id="@+id/driver_lastName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/last_name"
         android:minHeight="48dp" />
 
     <EditText
+        android:id="@+id/driver_phone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/phone"
         android:minHeight="48dp" />
 
     <EditText
+        android:id="@+id/driver_email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/email"
         android:minHeight="48dp" />
+    <EditText
+        android:id="@+id/driver_adress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/address"
+        android:minHeight="48dp" />
+    <EditText
+        android:id="@+id/driver_vehicle_model"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/vehicle_model"
+        android:minHeight="48dp" />
+    <EditText
+        android:id="@+id/driver_vehicle_registration"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/vehicle_registration"
+        android:minHeight="48dp" />
+    <EditText
+        android:id="@+id/driver_seatNum"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/seat_number"
+        android:minHeight="48dp" />
+    <CheckBox
+        android:id="@+id/driver_baby_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/baby_seat_available"/>
+    <CheckBox
+        android:id="@+id/driver_pet_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pets_allowed"/>
 
     <Button
+        android:id="@+id/driver_send_change_request"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:layout_gravity="center"
-        android:text="Save changes"/>
+        android:text="@string/save_changes"/>
 
 </LinearLayout>

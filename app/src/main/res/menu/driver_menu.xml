@@ -16,4 +16,9 @@
         android:title="Account"
         android:orderInCategory="300"
         app:showAsAction="never" />
+
+    <item android:id="@+id/driver_logout_account"
+        android:title="Logout"
+        android:orderInCategory="300"
+        app:showAsAction="never" />
 </menu>
