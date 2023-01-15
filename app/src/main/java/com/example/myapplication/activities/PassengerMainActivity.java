@@ -214,7 +214,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         TextView header = this.findViewById(R.id.headerForTime);
         TextView time = this.findViewById(R.id.fillerForTime);
         header.setText(R.string.arive_time_header);
-        time.setText(4 + "");
+        time.setText(4 + " min");
 //
 //        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
 //        stompClient.connect();
@@ -225,31 +225,31 @@ public class PassengerMainActivity extends AppCompatActivity {
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
-                        time.setText(3 + "");
+                        time.setText(3 + " min");
                     }
                 },
-                4000);
+                3000);
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
-                        time.setText(2 + "");
+                        time.setText(2 + " min");
                     }
                 },
-                4000*2);
+                3000*2);
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
-                        time.setText(1 + "");
+                        time.setText(1 + " min");
                     }
                 },
-                4000*3);
+                3000*3);
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
-                        time.setText(0 + "");
+                        time.setText(0 + " min");
                     }
                 },
-                4000*4);
+                3000*4);
 
             new android.os.Handler(Looper.getMainLooper()).postDelayed(
                     new Runnable() {
@@ -268,7 +268,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                             Retrofit.stompClient.send("/ride-notification-passenger/" + passengerId, json).subscribe();
                         }
                     },
-                    4000 * 5);
+                    3000 * 5);
 //
 //        });
 
