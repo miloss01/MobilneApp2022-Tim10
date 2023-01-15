@@ -77,8 +77,6 @@ public class CancelRideDialog extends DialogFragment {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d("TAG", "Ride cancelled");
-                startActivity(new Intent(getActivity(), DriverMainActivity.class));
-                activity.finish();
             }
 
             @Override
@@ -86,6 +84,8 @@ public class CancelRideDialog extends DialogFragment {
                 Log.d("TAG", "Error when cancelling ride", t);
             }
         });
+        activity.finish();
+        startActivity(new Intent(activity, DriverMainActivity.class));
     }
 
 }
