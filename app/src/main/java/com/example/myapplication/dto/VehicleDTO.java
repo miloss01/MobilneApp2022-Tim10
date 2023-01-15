@@ -8,6 +8,13 @@ public class VehicleDTO {
     private String vehicleType;
     private String model;
     private String licenseNumber;
+    private boolean babyTransport;
+    private LocationDTO currentLocation;
+    private Integer passengerSeats;
+    private boolean petTransport;
+
+    public VehicleDTO() {
+    }
 
     public VehicleDTO(Integer id, Integer driverId, String vehicleType, String model, String licenseNumber, LocationDTO currentLocation, Integer passengerSeats, Boolean babyTransport, Boolean petTransport) {
         this.id = id;
@@ -19,9 +26,6 @@ public class VehicleDTO {
         this.passengerSeats = passengerSeats;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
-    }
-
-    public VehicleDTO() {
     }
 
     public Integer getId() {
@@ -96,9 +100,19 @@ public class VehicleDTO {
         this.petTransport = petTransport;
     }
 
-    private LocationDTO currentLocation;
-    private Integer passengerSeats;
-    private Boolean babyTransport;
-    private Boolean petTransport;
+    @Override
+    public String toString() {
+        return "VehicleDTO{" +
+                "id=" + id +
+                ", driverId=" + driverId +
+                ", vehicleType='" + vehicleType + '\'' +
+                ", model='" + model + '\'' +
+                ", licenseNumber='" + licenseNumber + '\'' +
+                ", babyTransport=" + babyTransport +
+                ", currentLocation=" + currentLocation +
+                ", passengerSeats=" + passengerSeats +
+                ", petTransport=" + petTransport +
+                '}';
+    }
 
 }

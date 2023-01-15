@@ -90,6 +90,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mMap;
     private List<LatLng> path = new ArrayList();
     private Marker simMarker;
+    private String driverId;
     private LocationDTO currentLocation;
 
     @Override
@@ -129,31 +130,18 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 //        });
 
         subscribeToAcceptRide();
+    }
 
-        // ovaj deo je samo za testiranje, notifikacija na ovaj kanal se salje kad vozac
-        // dobije voznju da prihvati ili odbije (verovatno ce se dobiti sa beka pri zakazivanju)
-        RideDTO rideDTO = new RideDTO();
-        rideDTO.setId(1L);
-        DepartureDestinationLocationsDTO departureDestinationLocationsDTO = new DepartureDestinationLocationsDTO(new LocationDTO("adresa1", 0, 0), new LocationDTO("adresa2", 0, 0));
-        ArrayList<DepartureDestinationLocationsDTO> locations = new ArrayList<>();
-        locations.add(departureDestinationLocationsDTO);
-        rideDTO.setLocations(locations);
-        rideDTO.setEstimatedTimeInMinutes(25);
-        rideDTO.setTotalCost(250);
-        ArrayList<UserDTO> passengers = new ArrayList<>();
-        passengers.add(new UserDTO(2L, "asd@asd.com"));
-        passengers.add(new UserDTO(3L, "Asd2asd.com"));
-        rideDTO.setPassengers(passengers);
-        rideDTO.setDriver(new UserDTO(2L, "dr@asd.com"));
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = "asd";
-        try {
-            json = objectMapper.writeValueAsString(rideDTO);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
-        Retrofit.stompClient.send("/ride-notification-driver-request-mob/" + driverId, json).subscribe();
+    @Override
+    public void onResume(){
+        super.onResume();
+        driverId = Retrofit.sharedPreferences.getString("user_id", null);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        driverId = Retrofit.sharedPreferences.getString("user_id", null);
     }
 
     @Override
@@ -302,11 +290,11 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
-        stompClient.connect();
+//        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
+//        stompClient.connect();
 
 
-        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+        Retrofit.stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
             Log.d("TAG", topicMessage.getPayload());
 
         });
@@ -447,18 +435,18 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
-        stompClient.connect();
+//        StompClient stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.websocketBaseUrl);
+//        stompClient.connect();
 
 
-        stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
+        Retrofit.stompClient.topic("/vehicle-location").subscribe(topicMessage -> {
             Log.d("TAG", topicMessage.getPayload());
         });
     }
 
     @SuppressLint("CheckResult")
     private void subscribeToAcceptRide() {
-        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+        //String driverId = Retrofit.sharedPreferences.getString("user_id", null);
         Retrofit.stompClient.topic("/ride-notification-driver-request-mob/" + driverId).subscribe(topicMessage -> {
             Log.d("TAG", "doslo" + topicMessage.getPayload());
 
@@ -480,7 +468,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 acceptIntent.setAction("ACCEPT_RIDE");
                 acceptIntent.putExtra("rideId", rideDTO.getId());
                 PendingIntent acceptPendingIntent =
-                        PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent.getBroadcast(this, 0, acceptIntent, PendingIntent.FLAG_MUTABLE);
 
                 Intent denyIntent = new Intent(this, AcceptRideNotificationReceiver.class);
                 denyIntent.setAction("DENY_RIDE");
@@ -491,7 +479,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         .build();
 
                 PendingIntent replyPendingIntent =
-                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent.getBroadcast(this, 2, denyIntent, PendingIntent.FLAG_MUTABLE);
 
                 NotificationCompat.Action denyAction =
                         new NotificationCompat.Action.Builder(R.drawable.ic_message_icon,

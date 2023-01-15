@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,12 +18,15 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
+import com.example.myapplication.dto.DriverDTO;
 import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.RideCreationDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.UserDTO;
+import com.example.myapplication.dto.VehicleDTO;
 import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.fragments.TimePickerFragment;
+import com.example.myapplication.services.IDriverService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
@@ -221,23 +225,112 @@ public class RideCreationActivity extends AppCompatActivity {
         reservation.enqueue(new Callback<RideDTO>() {
             @Override
             public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                if (response.code() == 204)
+                    Snackbar.make(stepView, "No vehicles available", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 if (response.code() != 200)
                     return;
                 RideDTO rideDTO = response.body();
-                assert rideDTO != null;
-                Log.d("TAG", rideDTO.toString());
-                Snackbar.make(stepView, "Ride evidenced as pending", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Log.d("TAG", String.valueOf(rideDTO == null));
+                if (rideDTO == null) {
+                    Snackbar.make(stepView, "Ride could not be booked", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else{
+                    Log.d("TAG", rideDTO.toString());
+                    showInformation(rideDTO);
+                }
+
             }
 
             @Override
             public void onFailure(Call<RideDTO> call, Throwable t) {
                 Log.d("TAG", "greska");
-                Snackbar.make(stepView, "Ride could not be booked", Snackbar.LENGTH_LONG)
+                Snackbar.make(stepView, "Cannot create a ride while you have one already pending!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
     }
 
+
+        public void showInformation(RideDTO rideDTO){
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            final View newLocationPopup = getLayoutInflater().inflate(R.layout.new_location, null);
+
+            Button cancel_location_btn = (Button) newLocationPopup.findViewById(R.id.cancel_location_btn);
+
+            fillDriver(newLocationPopup, rideDTO.getDriver().getId());
+            fillVehicle(newLocationPopup, rideDTO.getDriver().getId());
+
+            dialogBuilder.setView(newLocationPopup);
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
+
+
+            //simulacija
+//            NotificationDTO data = new NotificationDTO("Driver has accepted your ride request! You'll be riding with Neko", 1, "ACCEPT_RIDE");
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String json = "asd";
+//            try {
+//                json = objectMapper.writeValueAsString(data);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//
+//            Retrofit.stompClient.send("/ride-notification-passenger/" + Retrofit.sharedPreferences.getString("user_id", null), json).subscribe();
+
+
+        cancel_location_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void fillVehicle(View newLocationPopup, Long id) {
+        TextView vehicleReg = (TextView) newLocationPopup.findViewById(R.id.vehicle_registration);
+        TextView vehicleModel = (TextView) newLocationPopup.findViewById(R.id.vehicle_model);
+        IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Call<VehicleDTO> reservation = driverService.getVehicleByDriverId(Math.toIntExact(id));
+        reservation.enqueue(new Callback<VehicleDTO>() {
+            @Override
+            public void onResponse(Call<VehicleDTO> call, Response<VehicleDTO> response) {
+                if (response.code() != 200)
+                    return;
+                VehicleDTO vehicleDTO = response.body();
+                vehicleReg.setText(vehicleDTO.getLicenseNumber());
+                vehicleModel.setText(vehicleDTO.getModel());
+            }
+
+            @Override
+            public void onFailure(Call<VehicleDTO> call, Throwable t) {
+                Log.d("TAG", "greska vo");
+            }
+        });
+    }
+
+    private void fillDriver(View newLocationPopup, Long id) {
+        TextView driverName = (TextView) newLocationPopup.findViewById(R.id.driver_name);
+        TextView driverMail = (TextView) newLocationPopup.findViewById(R.id.driver_mail);
+        TextView driverPhone = (TextView) newLocationPopup.findViewById(R.id.driver_phone);
+        IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Call<DriverDTO> callback = driverService.getDriver(Math.toIntExact(id));
+        callback.enqueue(new Callback<DriverDTO>() {
+            @Override
+            public void onResponse(Call<DriverDTO> call, Response<DriverDTO> response) {
+                if (response.code() != 200)
+                    return;
+                DriverDTO driver = response.body();
+                assert driver != null;
+                driverName.setText(driver.getName() + " " + driver.getSurname());
+                driverMail.setText(driver.getEmail());
+                driverPhone.setText(driver.getTelephoneNumber());
+            }
+
+            @Override
+            public void onFailure(Call<DriverDTO> call, Throwable t) {
+
+            }
+        });
+    }
 
 }

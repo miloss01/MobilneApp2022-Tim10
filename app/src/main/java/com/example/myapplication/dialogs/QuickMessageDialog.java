@@ -82,8 +82,7 @@ public class QuickMessageDialog extends DialogFragment {
                 @Override
                 public void onResponse(Call<MessageReceivedDTO> call, Response<MessageReceivedDTO> response) {
                     Log.d("DEBUG", "Sent message to passengerId: " + receiverId);
-                    Toast.makeText(context,
-                            "Message sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Message sent", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
