@@ -26,10 +26,19 @@ public interface IRideService {
     @GET("ride/{id}")
     Call<RideDTO> getRideById(@Path("id") Integer id);
 
+    @GET("ride/driver/{driverId}/accepted")
+    Call<RideDTO> getDriverAcceptedRide(@Path("driverId") Integer driverId);
+
+    @PUT("ride/{id}/end")
+    Call<Void> endRide(@Path("id") Integer id);
+
     @PUT("ride/{id}/accept")
     Call<Void> acceptRide(@Path("id") Integer id);
 
     @PUT("ride/{id}/cancel")
     Call<Void> cancelRide(@Path("id") Integer id, @Body ReasonDTO reasonDTO);
+
+    @PUT("ride/{id}/start")
+    Call<Void> startRide(@Path("id") Integer id);
 
 }

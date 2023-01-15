@@ -20,4 +20,7 @@ public interface IDriverService {
     @PUT("driver/change-request/{driverId}")
     Call<ChangeRequestDTO> updateChangeRequest(@Path("driverId") Integer driverId, @Body ChangeRequestDTO requestDTO);
 
+    @GET("driver/{id}/vehicle")
+    Call<VehicleDTO> getVehicle(@Path("id") Integer id);
+
 }
