@@ -1,10 +1,12 @@
 package com.example.myapplication.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
@@ -26,6 +28,11 @@ import retrofit2.Response;
 public class CancelRideDialog extends DialogFragment {
 
     public Integer rideId;
+    private Activity activity;
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
     public CancelRideDialog() {
     }
@@ -70,10 +77,8 @@ public class CancelRideDialog extends DialogFragment {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d("TAG", "Ride cancelled");
-                getActivity().finish();
-                getActivity().overridePendingTransition(0, 0);
+                activity.finish();
                 startActivity(new Intent(getActivity(), DriverMainActivity.class));
-                getActivity().overridePendingTransition(0, 0);
             }
 
             @Override

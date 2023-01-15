@@ -91,6 +91,7 @@ public class DriverAcceptedRideFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 CancelRideDialog cancelRideDialog = CancelRideDialog.newInstance(rideDTO.getId().intValue());
+                cancelRideDialog.setActivity(getActivity());
                 cancelRideDialog.show(getActivity().getSupportFragmentManager(), "cancel_dialog");
             }
         });
