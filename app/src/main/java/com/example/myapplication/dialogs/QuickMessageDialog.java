@@ -1,6 +1,7 @@
 package com.example.myapplication.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import retrofit2.Response;
 public class QuickMessageDialog extends DialogFragment {
 
     public RideDTO rideDTO;
+    public static Context context;
 
     public QuickMessageDialog() {
     }
@@ -80,13 +82,13 @@ public class QuickMessageDialog extends DialogFragment {
                 @Override
                 public void onResponse(Call<MessageReceivedDTO> call, Response<MessageReceivedDTO> response) {
                     Log.d("DEBUG", "Sent message to passengerId: " + receiverId);
-                    Toast.makeText(getContext(),
+                    Toast.makeText(context,
                             "Message sent", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<MessageReceivedDTO> call, Throwable t) {
-                    Toast.makeText(getContext(),
+                    Toast.makeText(context,
                             "Couldn't send message", Toast.LENGTH_SHORT).show();
                     Log.d("DEBUG", "Error sending message", t);
                 }

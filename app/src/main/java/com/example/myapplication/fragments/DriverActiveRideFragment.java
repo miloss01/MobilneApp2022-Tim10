@@ -155,9 +155,6 @@ public class DriverActiveRideFragment extends Fragment {
                             passengers);
                     listView.setAdapter(adapter);
 
-
-
-
                 }
 
                 @Override
@@ -183,6 +180,7 @@ public class DriverActiveRideFragment extends Fragment {
         Button quickMessage = (Button) getView().findViewById(R.id.btn_driver_active_quickMessage);
         quickMessage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                QuickMessageDialog.context = getContext();
                 DialogFragment messageDialog = QuickMessageDialog.newInstance(rideDTO);
                 messageDialog.show(getActivity().getSupportFragmentManager(), "quick_message_dialog");
             }
