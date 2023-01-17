@@ -18,13 +18,15 @@ public class RideDTO implements Serializable {
     private String vehicleType;
     private boolean babyTransport;
     private boolean petTransport;
-    @JsonInclude(JsonInclude.Include. NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String status;
     private RejectionDTO rejection;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String scheduleTime;
 
     public RideDTO() {}
 
-    public RideDTO(Long id, ArrayList<DepartureDestinationLocationsDTO> locations, String startTime, String endTime, int totalCost, UserDTO driver, ArrayList<UserDTO> passengers, int estimatedTimeInMinutes, String vehicleType, boolean babyTransport, boolean petTransport, String status, RejectionDTO rejection) {
+    public RideDTO(Long id, ArrayList<DepartureDestinationLocationsDTO> locations, String startTime, String endTime, int totalCost, UserDTO driver, ArrayList<UserDTO> passengers, int estimatedTimeInMinutes, String vehicleType, boolean babyTransport, boolean petTransport, String status, RejectionDTO rejection, String scheduleTime) {
         this.id = id;
         this.locations = locations;
         this.startTime = startTime;
@@ -38,6 +40,7 @@ public class RideDTO implements Serializable {
         this.petTransport = petTransport;
         this.status = status;
         this.rejection = rejection;
+        this.scheduleTime = scheduleTime;
     }
 
     public Long getId() {
@@ -144,6 +147,14 @@ public class RideDTO implements Serializable {
         this.rejection = rejection;
     }
 
+    public String getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(String scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+
     @Override
     public String toString() {
         return "RideDTO{" +
@@ -160,6 +171,7 @@ public class RideDTO implements Serializable {
                 ", petTransport=" + petTransport +
                 ", status='" + status + '\'' +
                 ", rejection=" + rejection +
+                ", scheduleTime='" + scheduleTime + '\'' +
                 '}';
     }
 }

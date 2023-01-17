@@ -1,6 +1,7 @@
 package com.example.myapplication.services;
 
 import com.example.myapplication.dto.ChangeRequestDTO;
+import com.example.myapplication.dto.RideResponseDTO;
 import com.example.myapplication.dto.VehicleDTO;
 import com.example.myapplication.dto.DriverDTO;
 
@@ -22,5 +23,8 @@ public interface IDriverService {
 
     @GET("driver/{id}/vehicle")
     Call<VehicleDTO> getVehicle(@Path("id") Integer id);
+
+    @GET("driver/{id}/ride")
+    Call<RideResponseDTO> getDriversRides(@Path("id") Integer id);
 
 }

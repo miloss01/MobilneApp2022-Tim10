@@ -22,14 +22,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"></TextView>
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/driver_ride_history_startTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#6A6767"
-                android:textSize="9sp"></TextView>
+                android:textSize="9sp"/>
 
             <TextView
                 android:id="@+id/driver_ride_history_destination"
@@ -38,14 +38,14 @@
                 android:layout_below="@id/driver_ride_history_departure"
                 android:layout_marginTop="5sp"
                 android:textColor="@color/black"
-                android:textSize="12sp"></TextView>
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/driver_ride_history_endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#6A6767"
-                android:textSize="9sp"></TextView>
+                android:textSize="9sp"/>
 
         </LinearLayout>
 
@@ -60,21 +60,7 @@
                 android:id="@+id/driver_ride_history_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/teal_200"></TextView>
-
-            <TextView
-                android:id="@+id/driver_ride_history_kilometers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2sp"
-                android:textColor="@color/black"></TextView>
-
-            <TextView
-                android:id="@+id/driver_ride_history_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2sp"
-                android:textColor="@color/black"></TextView>
+                android:textColor="@color/green"/>
 
         </LinearLayout>
 

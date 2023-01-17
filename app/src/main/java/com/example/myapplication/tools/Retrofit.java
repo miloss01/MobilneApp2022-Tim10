@@ -19,7 +19,7 @@ public class Retrofit {
 
     public static OkHttpClient client = new OkHttpClient().newBuilder()
             .addInterceptor(jwtInterceptor)
-            .addInterceptor(new ErrorInterceptor())
+//            .addInterceptor(new ErrorInterceptor())
             .build();
 
     public static retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
