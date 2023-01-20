@@ -26,15 +26,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_one_message">OneMessageActivity</string>
-    <string name="rating">Rating</string>
     <string name="passengers">Passengers</string>
-    <string name="contact_driver">Contact driver</string>
+    <string name="contact_driver">Contact driver\nfrom inbox</string>
     <string name="update_balance">Update balance</string>\
     <string name="balance">Balance</string>
     <string name="fav_routes">Favourite routes</string>
     <string name="ride_stats">Ride stats</string>
     <string name="inbox">Inbox</string>
-    <string name="add_to_favorite">Add to Favorite</string>
+    <string name="add_to_favorite">Add to Favorites</string>
     <string name="start_new_ride">Start new ride</string>
     <string name="beginning_location">Beginning location</string>
     <string name="destination">Destination</string>
@@ -73,7 +72,8 @@
     <string name="cancel_ride">Cancel ride</string>
     <string name="estimated_time_in_minutes">Estimated time:</string>
     <string name="quick_message">Quick message</string>
-
+    <string name="driver">Driver</string>
+    <string name="name_for_favorite_route">Name for favorite route</string>
 
     <array name="stepper_details">
         <item>Location and time</item>

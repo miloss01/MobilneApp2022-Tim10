@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:orientation="horizontal">
+    android:layout_height="140dp"
+    android:orientation="horizontal"
+    android:paddingTop="20dp">
 
     <TextView
         android:id="@+id/textview_ridecell_time"
@@ -25,20 +26,29 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textview_ridecell_vehicle"
+        android:id="@+id/textview_ridecell_departure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:text="Honda Civic 10"
-        android:textSize="15sp" />
+        android:textSize="18sp"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="30dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="Address 1, City"
+        />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/textview_ridecell_destination"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/examplemap" />
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="55dp"
+        android:layout_marginStart="30dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="Address 12, City"
+        />
+
+
 
 </RelativeLayout>

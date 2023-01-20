@@ -434,7 +434,6 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 
 
                 VehicleDTO vehicle = response.body();
-//                Log.d("TAG", "Vehicle for map: " + VehicleDTO);
                 transitionToNoRideFragment();
 
                 if (vehicle == null) return;

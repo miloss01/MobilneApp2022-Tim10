@@ -1,4 +1,5 @@
 package com.example.myapplication.services;
+import com.example.myapplication.dto.FavoriteLocationDTO;
 import com.example.myapplication.dto.ReasonDTO;
 import com.example.myapplication.dto.RideCreationDTO;
 import com.example.myapplication.dto.RideDTO;
@@ -40,5 +41,8 @@ public interface IRideService {
 
     @PUT("ride/{id}/start")
     Call<Void> startRide(@Path("id") Integer id);
+
+    @POST("ride/favorites")
+    Call<FavoriteLocationDTO> saveFavoriteLocation(@Body FavoriteLocationDTO locationDTO);
 
 }
