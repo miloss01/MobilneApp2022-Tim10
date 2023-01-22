@@ -197,7 +197,7 @@ public class PassengerMainActivity extends AppCompatActivity {
             MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
-                    .setContentTitle("You have received message.")
+                    .setContentTitle("New message.")
                     .setContentText(messageSentDTO.getMessage())
                     .setSmallIcon(R.drawable.ic_message_icon)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
