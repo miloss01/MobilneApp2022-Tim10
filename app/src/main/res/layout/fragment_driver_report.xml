@@ -41,6 +41,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <Button
+            android:id="@+id/report_driver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Generate report" />
@@ -54,14 +55,20 @@
             android:textColor="@color/black"
             android:layout_marginTop="15dp"/>
 
-        <ImageView
-            android:layout_width="fill_parent"
+<!--        <ImageView-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:src="@drawable/produce_monthly_crop"-->
+<!--            android:layout_gravity="left"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:contentDescription="TODO" />-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart_km"
             android:layout_height="200dp"
-            android:src="@drawable/produce_monthly_crop"
-            android:layout_gravity="left"
-            android:layout_marginTop="20dp"
-            android:contentDescription="TODO" />
+            android:layout_width="match_parent"/>
+
         <TextView
+            android:id="@+id/total_km_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -69,6 +76,7 @@
             android:textColor="@color/black"
             android:layout_marginTop="15dp"/>
         <TextView
+            android:id="@+id/average_km_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -85,15 +93,19 @@
             android:textColor="@color/black"
             android:layout_marginTop="15dp"/>
 
-        <ImageView
-            android:layout_width="fill_parent"
+<!--        <ImageView-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:src="@drawable/produce_monthly_crop"-->
+<!--            android:layout_gravity="left"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:contentDescription="TODO" />-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart_ride"
             android:layout_height="200dp"
-            android:src="@drawable/produce_monthly_crop"
-            android:layout_gravity="left"
-            android:layout_marginTop="20dp"
-            android:contentDescription="TODO" />
-
+            android:layout_width="match_parent"/>
         <TextView
+            android:id="@+id/total_ride_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -101,6 +113,7 @@
             android:textColor="@color/black"
             android:layout_marginTop="15dp"/>
         <TextView
+            android:id="@+id/average_ride_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
