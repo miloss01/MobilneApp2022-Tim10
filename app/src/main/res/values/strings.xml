@@ -74,6 +74,7 @@
     <string name="quick_message">Quick message</string>
     <string name="driver">Driver</string>
     <string name="name_for_favorite_route">Name for favorite route</string>
+    <string name="change_profile_picture">Change profile picture</string>
 
     <array name="stepper_details">
         <item>Location and time</item>

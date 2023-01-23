@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,8 +44,16 @@ public class RidePassengersAdapter extends ArrayAdapter<PassengerDTO> {
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.driver_active_ride_passengerImage);
-        new DownloadImageTask(imageView).execute(passengerDTO.getProfilePicture());
-
+        if (passengerDTO.getProfilePicture() != null) {
+            if (!passengerDTO.getProfilePicture().startsWith("data")) new RidePassengersAdapter.DownloadImageTask(imageView).execute(passengerDTO.getProfilePicture());
+            else {
+                final String encodedString = passengerDTO.getProfilePicture();
+                final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",")  + 1);
+                final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                imageView.setImageBitmap(decodedBitmap);
+            }
+        }
         TextView name = (TextView) convertView.findViewById(R.id.driver_active_ride_passengerName);
         name.setText(passengerDTO.getName() + " " + passengerDTO.getSurname());
 

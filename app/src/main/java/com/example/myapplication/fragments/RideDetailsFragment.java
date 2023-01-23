@@ -1,6 +1,8 @@
 package com.example.myapplication.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -11,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,8 +170,17 @@ public class RideDetailsFragment extends Fragment implements OnMapReadyCallback 
                 driverName.setText(ret);
 
                 ImageView imageView = (ImageView) getView().findViewById(R.id.img_ridedetails_driverphoto);
-                new RidePassengersAdapter.DownloadImageTask(imageView).execute(driverDTO.getProfilePicture());
+                if (driverDTO.getProfilePicture() != null) {
+                    if (!driverDTO.getProfilePicture().startsWith("data")) new RidePassengersAdapter.DownloadImageTask(imageView).execute(driverDTO.getProfilePicture());
+                    else {
+                        final String encodedString = driverDTO.getProfilePicture();
+                        final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",")  + 1);
+                        final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                        imageView.setImageBitmap(decodedBitmap);
+                    }
 
+                }
                 Button messageBtn = getView().findViewById(R.id.btn_ridedetails_contactdriver);
                 messageBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
