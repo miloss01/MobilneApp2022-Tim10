@@ -2,6 +2,7 @@ package com.example.myapplication.services;
 
 import com.example.myapplication.dto.ChangeRequestDTO;
 import com.example.myapplication.dto.ReportDTO;
+import com.example.myapplication.dto.StatisticsDTO;
 import com.example.myapplication.dto.VehicleDTO;
 import com.example.myapplication.dto.DriverDTO;
 
@@ -31,4 +32,12 @@ public interface IDriverService {
     @GET("ride/report-distance/{driverId}/{from}/{to}")
     Call<ReportDTO> getDistanceReport(@Path("driverId") Integer driverId, @Path("from") String from, @Path("to") String to);
 
+    @GET("ride/statistic-month/{driverId}")
+    Call<StatisticsDTO> getMonthStatistics(@Path("driverId") Integer driverId);
+
+    @GET("ride/statistic-day/{driverId}")
+    Call<StatisticsDTO> getDayStatistics(@Path("driverId") Integer driverId);
+
+    @GET("ride/statistic-year/{driverId}")
+    Call<StatisticsDTO> getYearStatistics(@Path("driverId") Integer driverId);
 }

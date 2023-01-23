@@ -12,6 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.dto.StatisticsDTO;
+import com.example.myapplication.services.IDriverService;
+import com.example.myapplication.services.IRideService;
+import com.example.myapplication.tools.Retrofit;
+import com.google.android.material.snackbar.Snackbar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DriverStatisticFragment extends Fragment {
@@ -19,6 +28,7 @@ public class DriverStatisticFragment extends Fragment {
     private TextView acceptanceRateTextView;
     private TextView workingHoursTextView;
     private TextView incomeTextView;
+    private TextView kmTextView;
 
 
     public DriverStatisticFragment() {
@@ -46,6 +56,7 @@ public class DriverStatisticFragment extends Fragment {
         incomeTextView = view.findViewById(R.id.incoome);
         workingHoursTextView = view.findViewById(R.id.working_h);
         acceptanceRateTextView = view.findViewById(R.id.acceptance);
+        kmTextView = view.findViewById(R.id.kilometers_stat);
         view.findViewById(R.id.radio_day_stat).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,14 +79,86 @@ public class DriverStatisticFragment extends Fragment {
     }
 
     private void updateYearStatistics() {
-        acceptanceRateTextView.setText("god");
+        IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Call<StatisticsDTO> call = driverService.getYearStatistics(Integer.valueOf(Retrofit.sharedPreferences.getString("user_id", null)));
+        call.enqueue(new Callback<StatisticsDTO>() {
+            @Override
+            public void onResponse(Call<StatisticsDTO> call, Response<StatisticsDTO> response) {
+                if (response.code() != 200){
+                    Snackbar.make(view, "No good" + response.code(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                StatisticsDTO statisticsDTO = response.body();
+                acceptanceRateTextView.setText("Average aceptance: " + statisticsDTO.getAcceptanceRate() + "%");
+                workingHoursTextView.setText("Average working hours: " + statisticsDTO.getWorkingHours()/60);
+                kmTextView.setText("Average kilometers driven: " + statisticsDTO.getKilometers());
+                incomeTextView.setText("Average income: " + statisticsDTO.getIncome() + "din");
+
+            }
+
+            @Override
+            public void onFailure(Call<StatisticsDTO> call, Throwable t) {
+                Snackbar.make(view, "No good nana", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
     }
 
     private void updateMonthStatistics() {
-        acceptanceRateTextView.setText("god");
+        IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Call<StatisticsDTO> call = driverService.getMonthStatistics(Integer.valueOf(Retrofit.sharedPreferences.getString("user_id", null)));
+        call.enqueue(new Callback<StatisticsDTO>() {
+            @Override
+            public void onResponse(Call<StatisticsDTO> call, Response<StatisticsDTO> response) {
+                if (response.code() != 200){
+                    Snackbar.make(view, "No good" + response.code(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                StatisticsDTO statisticsDTO = response.body();
+                acceptanceRateTextView.setText("Average aceptance: " + statisticsDTO.getAcceptanceRate() + "%");
+                workingHoursTextView.setText("Average working hours: " + statisticsDTO.getWorkingHours()/60);
+                kmTextView.setText("Average kilometers driven: " + statisticsDTO.getKilometers());
+                incomeTextView.setText("Average income: " + statisticsDTO.getIncome() + "din");
+
+            }
+
+            @Override
+            public void onFailure(Call<StatisticsDTO> call, Throwable t) {
+                Snackbar.make(view, "No good nana", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
     }
 
     private void updatedayStatistics() {
-        acceptanceRateTextView.setText("god");
+        IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Call<StatisticsDTO> call = driverService.getDayStatistics(Integer.valueOf(Retrofit.sharedPreferences.getString("user_id", null)));
+        call.enqueue(new Callback<StatisticsDTO>() {
+            @Override
+            public void onResponse(Call<StatisticsDTO> call, Response<StatisticsDTO> response) {
+                if (response.code() != 200){
+                    Snackbar.make(view, "No good" + response.code(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                StatisticsDTO statisticsDTO = response.body();
+                acceptanceRateTextView.setText("Average aceptance: " + statisticsDTO.getAcceptanceRate() + "%");
+                workingHoursTextView.setText("Average working hours: " + statisticsDTO.getWorkingHours()/60);
+                kmTextView.setText("Average kilometers driven: " + statisticsDTO.getKilometers());
+                incomeTextView.setText("Average income: " + statisticsDTO.getIncome() + "din");
+
+            }
+
+            @Override
+            public void onFailure(Call<StatisticsDTO> call, Throwable t) {
+                Snackbar.make(view, "No good nana", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
     }
 }
