@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dto.FavoriteLocationDTO;
@@ -29,9 +31,11 @@ import retrofit2.Response;
 public class AddFavoriteDialog extends DialogFragment {
 
     RideDTO ride;
+    static FragmentActivity parent;
 
-    public static AddFavoriteDialog newInstance(RideDTO ride) {
+    public static AddFavoriteDialog newInstance(RideDTO ride, FragmentActivity fragmentActivity) {
         AddFavoriteDialog d = new AddFavoriteDialog();
+        AddFavoriteDialog.parent = fragmentActivity;
 
         Bundle args = new Bundle();
         args.putSerializable("ride", ride);
@@ -61,12 +65,17 @@ public class AddFavoriteDialog extends DialogFragment {
                         fav.enqueue(new Callback<FavoriteLocationDTO>() {
                             @Override
                             public void onResponse(Call<FavoriteLocationDTO> call, Response<FavoriteLocationDTO> response) {
-
+                                if (response.code() == 200) Toast.makeText(parent, "Favorite location saved!", Toast.LENGTH_LONG).show();
+                                if (response.code() == 400) Toast.makeText(parent, "Number of favorite locations can't exceed 10.", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onFailure(Call<FavoriteLocationDTO> call, Throwable t) {
-
+                                try {
+                                    Toast.makeText(parent, "Error when saving favorite location.", Toast.LENGTH_LONG).show();
+                                } catch (Exception exception) {
+                                    System.out.println(exception.toString());
+                                }
                             }
                         });
 

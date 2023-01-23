@@ -75,6 +75,8 @@
     <string name="driver">Driver</string>
     <string name="name_for_favorite_route">Name for favorite route</string>
     <string name="change_profile_picture">Change profile picture</string>
+    <string name="ride_again">Ride again</string>
+    <string name="delete">Delete</string>
 
     <array name="stepper_details">
         <item>Location and time</item>

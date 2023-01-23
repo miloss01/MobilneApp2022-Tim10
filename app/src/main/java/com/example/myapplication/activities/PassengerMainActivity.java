@@ -80,6 +80,12 @@ public class PassengerMainActivity extends AppCompatActivity {
 
         //if (gotNotification)  fillDataTime();
 
+        Intent i = getIntent();
+        if (i != null && i.hasExtra("DEPARTURE") && i.hasExtra("DESTINATION")) {
+            departure.setText(i.getStringExtra("DEPARTURE"));
+            destination.setText(i.getStringExtra("DESTINATION"));
+        }
+
         findViewById(R.id.pass_main_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

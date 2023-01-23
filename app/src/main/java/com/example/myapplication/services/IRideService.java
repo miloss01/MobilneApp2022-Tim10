@@ -1,10 +1,15 @@
 package com.example.myapplication.services;
 import com.example.myapplication.dto.FavoriteLocationDTO;
+import com.example.myapplication.dto.FavoriteLocationResponseDTO;
 import com.example.myapplication.dto.ReasonDTO;
 import com.example.myapplication.dto.RideCreationDTO;
 import com.example.myapplication.dto.RideDTO;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -44,5 +49,11 @@ public interface IRideService {
 
     @POST("ride/favorites")
     Call<FavoriteLocationDTO> saveFavoriteLocation(@Body FavoriteLocationDTO locationDTO);
+
+    @GET("ride/favorites")
+    Call<List<FavoriteLocationResponseDTO>> getFavoriteLocations();
+
+    @DELETE("ride/favorites/{id}")
+    Call<String> deleteFavoriteLocation(@Path("id") Integer id);
 
 }

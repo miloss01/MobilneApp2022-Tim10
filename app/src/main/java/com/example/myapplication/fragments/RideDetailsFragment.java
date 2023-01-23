@@ -26,7 +26,9 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.DriverInboxActivity;
+import com.example.myapplication.activities.DriverMainActivity;
 import com.example.myapplication.activities.PassengerInboxActivity;
+import com.example.myapplication.activities.PassengerMainActivity;
 import com.example.myapplication.activities.RideDetailsActivity;
 import com.example.myapplication.adapters.RidePassengersAdapter;
 import com.example.myapplication.dialogs.AddFavoriteDialog;
@@ -96,6 +98,7 @@ public class RideDetailsFragment extends Fragment implements OnMapReadyCallback 
         displayAccounts();
         setUpReviewButton();
         setUpFavoriteButton();
+        setUpRideAgainButton();
     }
 
     @Override
@@ -274,9 +277,21 @@ public class RideDetailsFragment extends Fragment implements OnMapReadyCallback 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment addFavoriteDialog = AddFavoriteDialog.newInstance(ride);
+                DialogFragment addFavoriteDialog = AddFavoriteDialog.newInstance(ride, getActivity());
                 addFavoriteDialog.show(getParentFragmentManager(), "dialog_add_favorite");
+            }
+        });
+    }
 
+    private void setUpRideAgainButton() {
+        Button btn = getView().findViewById(R.id.btn_ridedetails_startnew);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), PassengerMainActivity.class);
+                i.putExtra("DESTINATION", ride.getLocations().get(0).getDestination().getAddress());
+                i.putExtra("DEPARTURE", ride.getLocations().get(0).getDeparture().getAddress());
+                startActivity(i);
             }
         });
     }

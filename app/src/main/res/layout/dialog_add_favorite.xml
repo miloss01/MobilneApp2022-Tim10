@@ -5,8 +5,10 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:layout_height="60dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:inputType="text"
         android:id="@+id/edit_text_add_favorite_name"
         android:hint="@string/name_for_favorite_route"/>
