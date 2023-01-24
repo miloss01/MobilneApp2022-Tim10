@@ -3,10 +3,14 @@ package com.example.myapplication.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -38,11 +45,12 @@ import retrofit2.Response;
 
 public class DriverInboxActivity extends AppCompatActivity {
 
-    public static ArrayList<Message> messagesList = new ArrayList<Message>();
     private HashMap<Long, MessageReceivedDTO> filteredRecentPerUser = new HashMap<>();
     private HashMap<Long, PassengerDTO> users = new HashMap<>();  // users interacted with
     private ListView listView;
     private Long driverId;
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,12 @@ public class DriverInboxActivity extends AppCompatActivity {
         });
 
         setupData();
+
+        Spinner spinner = findViewById(R.id.spinner_driverinbox);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+                getResources().getStringArray(R.array.spiner_pass_inbox_options));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     private void setupData(){
@@ -87,26 +101,43 @@ public class DriverInboxActivity extends AppCompatActivity {
     private void setupList(){
         listView = findViewById(R.id.driver_inbox_view);
         ArrayList<MessageReceivedDTO> messages = new ArrayList<>(this.filteredRecentPerUser.values());
+        messages.sort((message1, message2) -> {
+            LocalDateTime t1 = LocalDateTime.parse(message1.getTimeOfSending(), formatter);
+            LocalDateTime t2 = LocalDateTime.parse(message2.getTimeOfSending(), formatter);
+            return t1.isBefore(t2) ? 1 : -1;
+        });
         DriverInboxAdapter adapter = new DriverInboxAdapter(getApplicationContext(),
                 R.layout.driver_inbox_cell, messages, this.users, this.driverId);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(DriverInboxActivity.this, DriverChatActivity.class);
+
+                Integer userId;
+                if (!Objects.equals(messages.get(i).getReceiverId(), DriverInboxActivity.this.driverId)) userId = messages.get(i).getReceiverId().intValue();
+                else userId = messages.get(i).getSenderId().intValue();
+
+                intent.putExtra("PASSENGER", DriverInboxActivity.this.users.get(userId.longValue()));
+                intent.putExtra("DRIVER_ID", DriverInboxActivity.this.driverId);
+
+                startActivity(intent);
+            }
+        });
     }
 
     // Get most recent message for every user that messages were exchanged with
     private void filterMessagesPerUser(ArrayList<MessageReceivedDTO> messages) {
         IPassengerService passengerService = Retrofit.retrofit.create(IPassengerService.class);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
         // All messages ever exchanged by driver
         for (MessageReceivedDTO message : messages) {
 
-            Log.i("TAG", message.getMessage());
             // Extracting the other user in message for info to display
             Integer userId = null;
             if (!Objects.equals(message.getReceiverId(), this.driverId)) userId = message.getReceiverId().intValue();
             else userId = message.getSenderId().intValue();
             Call<PassengerDTO> passengerCall = passengerService.getPassenger(userId);
-            Log.i("TAG", "userId " + userId.toString());
             passengerCall.enqueue(new Callback<PassengerDTO>() {
                 @Override
                 public void onResponse(Call<PassengerDTO> call, Response<PassengerDTO> response) {
@@ -115,20 +146,16 @@ public class DriverInboxActivity extends AppCompatActivity {
 
                         // Getting the most recent message for display in chat preview
                         if (DriverInboxActivity.this.filteredRecentPerUser.containsKey(passenger.getId())) {
-                            Log.i("TAG", "userId is already there");
                             try {
                                 LocalDateTime currentMessageTime = LocalDateTime.parse(message.getTimeOfSending(), formatter);
                                 LocalDateTime mostRecentMessageTime = LocalDateTime.parse(DriverInboxActivity.this.filteredRecentPerUser.get(passenger.getId()).getTimeOfSending(), formatter);
                                 if (currentMessageTime.isAfter(mostRecentMessageTime)) {
-                                    Log.i("TAG", "userId is updated to newer message");
                                     DriverInboxActivity.this.filteredRecentPerUser.put(passenger.getId(), message);
                                 }
                             } catch (DateTimeParseException ex) {
-                                Log.i("TAG", ex.toString());
                                 DriverInboxActivity.this.filteredRecentPerUser.put(passenger.getId(), message);
                             }
                         } else {
-                            Log.i("TAG", "userId is put 1st time");
                             DriverInboxActivity.this.users.put(passenger.getId(), passenger);
                             DriverInboxActivity.this.filteredRecentPerUser.put(passenger.getId(), message);
                         }

@@ -82,5 +82,6 @@
         <item>Location and time</item>
         <item>Additional preferences</item>
     </array>
+    <string name="title_activity_driver_chat">DriverChatActivity</string>
 
 </resources>
