@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dto.MessageReceivedDTO;
-import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.dto.UserExpandedDTO;
 
 import java.util.ArrayList;
@@ -21,17 +20,17 @@ public class DriverMessagesAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private ArrayList<MessageReceivedDTO> mMessageList;
     private UserExpandedDTO user;
-    private Long driverId;
+    private Long personalId;
 
     private static final int VIEW_MESSAGE_ME = 1;
     private static final int VIEW_MESSAGE_OTHER = 2;
 
     public DriverMessagesAdapter(Context context, ArrayList<MessageReceivedDTO> messageList,
-                                 UserExpandedDTO passenger, Long driverId) {
+                                 UserExpandedDTO passenger, Long personalId) {
         mContext = context;
         mMessageList = messageList;
         this.user = passenger;
-        this.driverId = driverId;
+        this.personalId = personalId;
     }
 
     @NonNull
@@ -55,7 +54,7 @@ public class DriverMessagesAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         MessageReceivedDTO message = (MessageReceivedDTO) mMessageList.get(position);
-        Long userId = Objects.equals(driverId, message.getSenderId()) ? message.getReceiverId() : message.getSenderId();
+        Long userId = Objects.equals(personalId, message.getSenderId()) ? message.getReceiverId() : message.getSenderId();
 
         if (Objects.equals(message.getSenderId(), userId)) {
             return VIEW_MESSAGE_OTHER;  // Passenger sent the message

@@ -3,8 +3,6 @@ package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +19,6 @@ import com.example.myapplication.adapters.DriverMessagesAdapter;
 import com.example.myapplication.dto.MessageReceivedDTO;
 import com.example.myapplication.dto.MessageResponseDTO;
 import com.example.myapplication.dto.MessageSentDTO;
-import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.dto.UserExpandedDTO;
 import com.example.myapplication.services.IAppUserService;
 import com.example.myapplication.tools.Retrofit;
@@ -40,7 +37,7 @@ public class DriverChatActivity extends AppCompatActivity {
     private DriverMessagesAdapter mMessageAdapter;
     private ArrayList<MessageReceivedDTO> messageList = new ArrayList<>();
     private UserExpandedDTO user;
-    private Long driverId;
+    private Long personalId;
     private RecyclerView recyclerView;
     private String messageType;
 
@@ -64,18 +61,13 @@ public class DriverChatActivity extends AppCompatActivity {
         Intent i = getIntent();
         if (i != null && i.hasExtra("USER") && i.hasExtra("DRIVER_ID") && i.hasExtra("MESSAGE_TYPE")) {
             this.user = (UserExpandedDTO) i.getSerializableExtra("USER");
-            this.driverId = i.getLongExtra("DRIVER_ID", 0);
+            this.personalId = i.getLongExtra("DRIVER_ID", 0);
             this.messageType = i.getStringExtra("MESSAGE_TYPE");
             getSupportActionBar().setTitle("Chat - " + user.getName() + " " + user.getSurname());
-        }
-//        else if (i != null && i.hasExtra("DRIVER_ID") && i.hasExtra("MESSAGE_TYPE") ) {
-//            this.driverId = i.getLongExtra("DRIVER_ID", 0);
-//            this.messageType = i.getStringExtra("MESSAGE_TYPE");
-//            getSupportActionBar().setTitle("Chat - SUPPORT");
-//        }
+        } else return;
 
         IAppUserService appUserService = Retrofit.retrofit.create(IAppUserService.class);
-        Call<MessageResponseDTO> messagesCall = appUserService.getMessages(this.driverId.intValue());
+        Call<MessageResponseDTO> messagesCall = appUserService.getMessages(this.personalId.intValue());
 
         messagesCall.enqueue(new Callback<MessageResponseDTO>() {
             @Override
@@ -84,7 +76,7 @@ public class DriverChatActivity extends AppCompatActivity {
                     filterMessagesWithPassenger(DriverChatActivity.this.user.getId().longValue(), response.body().getResults());
 
                     mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_driverchat);
-                    mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, user, driverId);
+                    mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, user, personalId);
                     mMessageRecycler.setLayoutManager(new LinearLayoutManager(DriverChatActivity.this));
                     mMessageRecycler.setAdapter(mMessageAdapter);
                     recyclerView.scrollToPosition(messageList.size() - 1);
@@ -174,7 +166,7 @@ public class DriverChatActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     DriverChatActivity.this.sortMessages();
-                    DriverChatActivity.this.mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, user, driverId);
+                    DriverChatActivity.this.mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, user, personalId);
                     DriverChatActivity.this.mMessageRecycler.setAdapter(mMessageAdapter);
                     DriverChatActivity.this.recyclerView.scrollToPosition(messageList.size() - 1);
                 }

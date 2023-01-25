@@ -344,7 +344,8 @@ public class PassengerMainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_passenger_inbox) {
-            this.startActivity(new Intent(this, PassengerInboxActivity.class));
+//            this.startActivity(new Intent(this, PassengerInboxActivity.class));
+            this.startActivity(new Intent(PassengerMainActivity.this, DriverInboxActivity.class));
             return true;
         }
         if (id == R.id.action_passenger_logout) {

@@ -39,7 +39,7 @@ public class DriverInboxActivity extends AppCompatActivity {
     private HashMap<Long, MessageReceivedDTO> filteredRecentPerUser = new HashMap<>();
     private HashMap<Long, UserExpandedDTO> users = new HashMap<>();  // users interacted with
     private ListView listView;
-    private Long driverId;
+    private Long personalId;
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public Spinner filterSpinner;
     public String filter = "all";
@@ -75,8 +75,8 @@ public class DriverInboxActivity extends AppCompatActivity {
     private void setupData(){
         IAppUserService appUserService = Retrofit.retrofit.create(IAppUserService.class);
         String driverId = Retrofit.sharedPreferences.getString("user_id", null);
-        this.driverId = Long.valueOf(driverId);
-        Call<MessageResponseDTO> messagesCall = appUserService.getMessages(this.driverId.intValue());
+        this.personalId = Long.valueOf(driverId);
+        Call<MessageResponseDTO> messagesCall = appUserService.getMessages(this.personalId.intValue());
 
         messagesCall.enqueue(new Callback<MessageResponseDTO>() {
             @Override
@@ -112,7 +112,7 @@ public class DriverInboxActivity extends AppCompatActivity {
             return 0;
         });
         DriverInboxAdapter adapter = new DriverInboxAdapter(getApplicationContext(),
-                R.layout.driver_inbox_cell, messages, this.users, this.driverId);
+                R.layout.driver_inbox_cell, messages, this.users, this.personalId);
         listView.setAdapter(adapter);
         ArrayList<MessageReceivedDTO> finalMessages = messages;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -121,11 +121,11 @@ public class DriverInboxActivity extends AppCompatActivity {
                 Intent intent = new Intent(DriverInboxActivity.this, DriverChatActivity.class);
 
                 Integer userId;
-                if (!Objects.equals(finalMessages.get(i).getReceiverId(), DriverInboxActivity.this.driverId)) userId = finalMessages.get(i).getReceiverId().intValue();
+                if (!Objects.equals(finalMessages.get(i).getReceiverId(), DriverInboxActivity.this.personalId)) userId = finalMessages.get(i).getReceiverId().intValue();
                 else userId = finalMessages.get(i).getSenderId().intValue();
 
                 intent.putExtra("USER", DriverInboxActivity.this.users.get(userId.longValue()));
-                intent.putExtra("DRIVER_ID", DriverInboxActivity.this.driverId);
+                intent.putExtra("DRIVER_ID", DriverInboxActivity.this.personalId);
                 intent.putExtra("MESSAGE_TYPE", finalMessages.get(i).getType());
 
                 startActivity(intent);
@@ -169,7 +169,7 @@ public class DriverInboxActivity extends AppCompatActivity {
 
             // Extracting the other user in message for info to display
             Integer userId = null;
-            if (!Objects.equals(message.getReceiverId(), this.driverId)) userId = message.getReceiverId().intValue();
+            if (!Objects.equals(message.getReceiverId(), this.personalId)) userId = message.getReceiverId().intValue();
             else userId = message.getSenderId().intValue();
             Call<UserExpandedDTO> passengerCall = appUserService.getById(userId);
             passengerCall.enqueue(new Callback<UserExpandedDTO>() {
