@@ -179,7 +179,7 @@ public class DriverInboxActivity extends AppCompatActivity {
                         UserExpandedDTO user = response.body();
 
                         // Getting the most recent message for display in chat preview
-                        if (DriverInboxActivity.this.filteredRecentPerUser.containsKey(user.getId())) {
+                        if (DriverInboxActivity.this.filteredRecentPerUser.containsKey(user.getId().longValue())) {
                             try {
                                 LocalDateTime currentMessageTime = LocalDateTime.parse(message.getTimeOfSending());
                                 LocalDateTime mostRecentMessageTime = LocalDateTime.parse(DriverInboxActivity.this.filteredRecentPerUser.get(user.getId().longValue()).getTimeOfSending());

@@ -3,9 +3,12 @@ package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +25,7 @@ import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.dto.UserExpandedDTO;
 import com.example.myapplication.services.IAppUserService;
 import com.example.myapplication.tools.Retrofit;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -84,6 +88,8 @@ public class DriverChatActivity extends AppCompatActivity {
                     mMessageRecycler.setLayoutManager(new LinearLayoutManager(DriverChatActivity.this));
                     mMessageRecycler.setAdapter(mMessageAdapter);
                     recyclerView.scrollToPosition(messageList.size() - 1);
+
+                    subscribeSocket();
                 }
             }
 
@@ -149,6 +155,32 @@ public class DriverChatActivity extends AppCompatActivity {
             if (t1.isAfter(t2)) return 1;
             else if (t1.isBefore(t2)) return -1;
             else return 0;
+        });
+    }
+
+    @SuppressLint("CheckResult")
+    private void subscribeSocket() {
+        Retrofit.stompClient.topic("/chat/" + Retrofit.sharedPreferences.getString("user_id", null) + "/" + user.getId())
+                .subscribe(topicMessage -> {
+
+            Log.d("TAG", topicMessage.getPayload());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            MessageReceivedDTO message = objectMapper.readValue(topicMessage.getPayload(), MessageReceivedDTO.class);
+
+            DriverChatActivity.this.messageList.add(message);
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    DriverChatActivity.this.sortMessages();
+                    DriverChatActivity.this.mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, user, driverId);
+                    DriverChatActivity.this.mMessageRecycler.setAdapter(mMessageAdapter);
+                    DriverChatActivity.this.recyclerView.scrollToPosition(messageList.size() - 1);
+                }
+            });
+
+
         });
     }
 
