@@ -101,8 +101,8 @@ public class DriverInboxActivity extends AppCompatActivity {
 
         // Order date descending
         messages.sort((message1, message2) -> {
-            LocalDateTime t1 = LocalDateTime.parse(message1.getTimeOfSending(), formatter);
-            LocalDateTime t2 = LocalDateTime.parse(message2.getTimeOfSending(), formatter);
+            LocalDateTime t1 = LocalDateTime.parse(message1.getTimeOfSending());
+            LocalDateTime t2 = LocalDateTime.parse(message2.getTimeOfSending());
             return t1.isBefore(t2) ? 1 : -1;
         });
         // Order support chats first
@@ -181,12 +181,13 @@ public class DriverInboxActivity extends AppCompatActivity {
                         // Getting the most recent message for display in chat preview
                         if (DriverInboxActivity.this.filteredRecentPerUser.containsKey(user.getId())) {
                             try {
-                                LocalDateTime currentMessageTime = LocalDateTime.parse(message.getTimeOfSending(), formatter);
-                                LocalDateTime mostRecentMessageTime = LocalDateTime.parse(DriverInboxActivity.this.filteredRecentPerUser.get(user.getId().longValue()).getTimeOfSending(), formatter);
+                                LocalDateTime currentMessageTime = LocalDateTime.parse(message.getTimeOfSending());
+                                LocalDateTime mostRecentMessageTime = LocalDateTime.parse(DriverInboxActivity.this.filteredRecentPerUser.get(user.getId().longValue()).getTimeOfSending());
                                 if (currentMessageTime.isAfter(mostRecentMessageTime)) {
                                     DriverInboxActivity.this.filteredRecentPerUser.put(user.getId().longValue(), message);
                                 }
                             } catch (DateTimeParseException ex) {
+                                Log.i("TAG", message.getTimeOfSending());
                                 DriverInboxActivity.this.filteredRecentPerUser.put(user.getId().longValue(), message);
                             }
                         } else {

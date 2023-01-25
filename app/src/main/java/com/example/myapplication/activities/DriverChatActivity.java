@@ -144,8 +144,8 @@ public class DriverChatActivity extends AppCompatActivity {
 
     private void sortMessages() {
         this.messageList.sort((message1, message2) -> {
-            LocalDateTime t1 = LocalDateTime.parse(message1.getTimeOfSending(), DriverInboxActivity.formatter);
-            LocalDateTime t2 = LocalDateTime.parse(message2.getTimeOfSending(), DriverInboxActivity.formatter);
+            LocalDateTime t1 = LocalDateTime.parse(message1.getTimeOfSending());
+            LocalDateTime t2 = LocalDateTime.parse(message2.getTimeOfSending());
             if (t1.isAfter(t2)) return 1;
             else if (t1.isBefore(t2)) return -1;
             else return 0;

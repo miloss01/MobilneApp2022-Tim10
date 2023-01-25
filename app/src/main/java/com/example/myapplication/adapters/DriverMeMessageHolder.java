@@ -6,7 +6,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.DriverInboxActivity;
 import com.example.myapplication.dto.MessageReceivedDTO;
+
+import java.time.LocalDateTime;
 
 public class DriverMeMessageHolder extends RecyclerView.ViewHolder {
 
@@ -21,6 +24,7 @@ public class DriverMeMessageHolder extends RecyclerView.ViewHolder {
 
     void bind(MessageReceivedDTO message) {
         tvMessage.setText(message.getMessage());
-        tvTime.setText(message.getTimeOfSending());
+        LocalDateTime t = LocalDateTime.parse(message.getTimeOfSending());
+        tvTime.setText(t.format(DriverInboxActivity.formatter));
     }
 }

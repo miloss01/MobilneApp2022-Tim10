@@ -16,11 +16,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activities.DriverInboxActivity;
 import com.example.myapplication.dto.MessageReceivedDTO;
 import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.dto.UserExpandedDTO;
 import com.example.myapplication.models.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +71,8 @@ public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
         }
 
         TextView tvTime = convertView.findViewById(R.id.textview_messagecell_time);
-        tvTime.setText(message.getTimeOfSending());
+        LocalDateTime t = LocalDateTime.parse(message.getTimeOfSending());
+        tvTime.setText(t.format(DriverInboxActivity.formatter));
 
         TextView tvSender = convertView.findViewById(R.id.textview_messagecell_sendername);
         Long userId = Objects.equals(driverId, message.getSenderId()) ? message.getReceiverId() : message.getSenderId();
