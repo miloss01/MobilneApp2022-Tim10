@@ -83,5 +83,6 @@
         <item>Additional preferences</item>
     </array>
     <string name="title_activity_driver_chat">DriverChatActivity</string>
+    <string name="support_chat">Support Chat</string>
 
 </resources>

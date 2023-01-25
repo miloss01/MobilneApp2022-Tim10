@@ -55,9 +55,11 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_driverinbox_supportChat"
+        android:layout_height="40dp"
         android:backgroundTint="@color/white"
-        android:text="Support Chat"
+        android:textSize="18sp"
+        android:text="@string/support_chat"
         android:gravity="left|center_vertical"
         android:textColor="@color/black"
         />

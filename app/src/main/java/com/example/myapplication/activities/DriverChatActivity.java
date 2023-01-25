@@ -19,6 +19,7 @@ import com.example.myapplication.dto.MessageReceivedDTO;
 import com.example.myapplication.dto.MessageResponseDTO;
 import com.example.myapplication.dto.MessageSentDTO;
 import com.example.myapplication.dto.PassengerDTO;
+import com.example.myapplication.dto.UserExpandedDTO;
 import com.example.myapplication.services.IAppUserService;
 import com.example.myapplication.tools.Retrofit;
 
@@ -34,9 +35,10 @@ public class DriverChatActivity extends AppCompatActivity {
     private RecyclerView mMessageRecycler;
     private DriverMessagesAdapter mMessageAdapter;
     private ArrayList<MessageReceivedDTO> messageList = new ArrayList<>();
-    private PassengerDTO passenger;
+    private UserExpandedDTO user;
     private Long driverId;
     private RecyclerView recyclerView;
+    private String messageType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +58,17 @@ public class DriverChatActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_driverchat);
 
         Intent i = getIntent();
-        if (i != null && i.hasExtra("PASSENGER") && i.hasExtra("DRIVER_ID")) {
-            this.passenger = (PassengerDTO) i.getSerializableExtra("PASSENGER");
+        if (i != null && i.hasExtra("USER") && i.hasExtra("DRIVER_ID") && i.hasExtra("MESSAGE_TYPE")) {
+            this.user = (UserExpandedDTO) i.getSerializableExtra("USER");
             this.driverId = i.getLongExtra("DRIVER_ID", 0);
+            this.messageType = i.getStringExtra("MESSAGE_TYPE");
+            getSupportActionBar().setTitle("Chat - " + user.getName() + " " + user.getSurname());
         }
-        getSupportActionBar().setTitle("Chat - " + passenger.getName() + " " + passenger.getSurname());
+//        else if (i != null && i.hasExtra("DRIVER_ID") && i.hasExtra("MESSAGE_TYPE") ) {
+//            this.driverId = i.getLongExtra("DRIVER_ID", 0);
+//            this.messageType = i.getStringExtra("MESSAGE_TYPE");
+//            getSupportActionBar().setTitle("Chat - SUPPORT");
+//        }
 
         IAppUserService appUserService = Retrofit.retrofit.create(IAppUserService.class);
         Call<MessageResponseDTO> messagesCall = appUserService.getMessages(this.driverId.intValue());
@@ -69,10 +77,10 @@ public class DriverChatActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageResponseDTO> call, Response<MessageResponseDTO> response) {
                 if (response.code() == 200 && response.body() != null) {
-                    filterMessagesWithPassenger(DriverChatActivity.this.passenger.getId(), response.body().getResults());
+                    filterMessagesWithPassenger(DriverChatActivity.this.user.getId().longValue(), response.body().getResults());
 
                     mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_driverchat);
-                    mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, passenger, driverId);
+                    mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, user, driverId);
                     mMessageRecycler.setLayoutManager(new LinearLayoutManager(DriverChatActivity.this));
                     mMessageRecycler.setAdapter(mMessageAdapter);
                     recyclerView.scrollToPosition(messageList.size() - 1);
@@ -92,10 +100,10 @@ public class DriverChatActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Call<MessageReceivedDTO> messagesCall = appUserService.sendMessageByUserId(
-                        passenger.getId().intValue(),
-                        new MessageSentDTO(passenger.getId(),
+                        user.getId().intValue(),
+                        new MessageSentDTO(user.getId().longValue(),
                             tvMessage.getText().toString(),
-                            "ride", 0L)
+                            DriverChatActivity.this.messageType, 0L)
                 );
                 messagesCall.enqueue(new Callback<MessageReceivedDTO>() {
                     @Override
@@ -109,6 +117,7 @@ public class DriverChatActivity extends AppCompatActivity {
                             sortMessages();
                             mMessageRecycler.setAdapter(mMessageAdapter);
                             recyclerView.scrollToPosition(messageList.size() - 1);
+                            tvMessage.setText("");
                         } else {
                             Log.d("DEBUG", "Error sending message" + response.code() + response.toString());
                         }

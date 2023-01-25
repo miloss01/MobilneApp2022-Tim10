@@ -1,5 +1,6 @@
 package com.example.myapplication.adapters;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.dto.MessageReceivedDTO;
 import com.example.myapplication.dto.PassengerDTO;
+import com.example.myapplication.dto.UserExpandedDTO;
+import com.example.myapplication.models.User;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +30,7 @@ public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
 
     private List<MessageReceivedDTO> messagesList;
     private final HashMap<Long, MessageReceivedDTO> filteredRecentPerUser = new HashMap<>();
-    private HashMap<Long, PassengerDTO> users = new HashMap<>();  // users interacted with
+    private HashMap<Long, UserExpandedDTO> users = new HashMap<>();  // users interacted with
     private final Long driverId;
 
     private static final String RIDE_COLOR = "#D3ADC3C6";
@@ -35,7 +39,7 @@ public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
     private static final String DEFAULT_COLOR = "#FFFFFFFF";
 
     public DriverInboxAdapter(Context context, int resource, ArrayList<MessageReceivedDTO> messages,
-                              HashMap<Long, PassengerDTO> users,
+                              HashMap<Long, UserExpandedDTO> users,
                               Long driverId) {
         super(context, resource, messages);
         this.messagesList = messages;
@@ -51,12 +55,18 @@ public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.driver_inbox_cell,
                     parent, false);
         }
-        Log.i("TAG", String.valueOf(message == null));
-        Log.i("TAG", message.getId().toString());
-        Log.i("TAG", message.getType());
 
         RelativeLayout background = convertView.findViewById(R.id.background_mesagecell);
         background.setBackgroundColor(Color.parseColor(getColorByMessageType(message.getType())));
+
+        if (message.getType().equals("support")) {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+            );
+            params.setMargins(0, 0, 0, 20);
+            background.setLayoutParams(params);
+        }
 
         TextView tvTime = convertView.findViewById(R.id.textview_messagecell_time);
         tvTime.setText(message.getTimeOfSending());
@@ -65,7 +75,7 @@ public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
         Long userId = Objects.equals(driverId, message.getSenderId()) ? message.getReceiverId() : message.getSenderId();
         tvSender.setText(users.get(userId).getName() + " " + users.get(userId).getSurname());
 
-        PassengerDTO user = this.users.get(userId);
+        UserExpandedDTO user = this.users.get(userId);
 
         TextView tvPreview = convertView.findViewById(R.id.textview_messagecell_preview);
         String prefix = Objects.equals(userId, message.getSenderId()) ? (user.getName() + " said: ") : "You: ";
