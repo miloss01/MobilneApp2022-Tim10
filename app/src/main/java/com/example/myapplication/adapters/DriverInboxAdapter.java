@@ -3,6 +3,7 @@ package com.example.myapplication.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
@@ -22,10 +24,15 @@ import java.util.Objects;
 
 public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
 
-    private final List<MessageReceivedDTO> messagesList;
+    private List<MessageReceivedDTO> messagesList;
     private final HashMap<Long, MessageReceivedDTO> filteredRecentPerUser = new HashMap<>();
     private HashMap<Long, PassengerDTO> users = new HashMap<>();  // users interacted with
     private final Long driverId;
+
+    private static final String RIDE_COLOR = "#D3ADC3C6";
+    private static final String PANIC_COLOR = "#FFFFE8C9";
+    private static final String SUPPORT_COLOR = "#FFE7EFD8";
+    private static final String DEFAULT_COLOR = "#FFFFFFFF";
 
     public DriverInboxAdapter(Context context, int resource, ArrayList<MessageReceivedDTO> messages,
                               HashMap<Long, PassengerDTO> users,
@@ -44,6 +51,12 @@ public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.driver_inbox_cell,
                     parent, false);
         }
+        Log.i("TAG", String.valueOf(message == null));
+        Log.i("TAG", message.getId().toString());
+        Log.i("TAG", message.getType());
+
+        RelativeLayout background = convertView.findViewById(R.id.background_mesagecell);
+        background.setBackgroundColor(Color.parseColor(getColorByMessageType(message.getType())));
 
         TextView tvTime = convertView.findViewById(R.id.textview_messagecell_time);
         tvTime.setText(message.getTimeOfSending());
@@ -73,4 +86,18 @@ public class DriverInboxAdapter extends ArrayAdapter<MessageReceivedDTO> {
 
         return convertView;
     }
+
+    private String getColorByMessageType(String type) {
+        switch (type) {
+            case "ride":
+                return RIDE_COLOR;
+            case "panic":
+                return PANIC_COLOR;
+            case "support":
+                return SUPPORT_COLOR;
+            default: return DEFAULT_COLOR;
+        }
+
+    }
+
 }
