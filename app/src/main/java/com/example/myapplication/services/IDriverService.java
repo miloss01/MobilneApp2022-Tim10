@@ -26,18 +26,21 @@ public interface IDriverService {
     @GET("driver/{id}/vehicle")
     Call<VehicleDTO> getVehicle(@Path("id") Integer id);
 
-    @GET("ride/report-ride-number/{driverId}/{from}/{to}")
+    @GET("statistics/report-ride-number/{driverId}/{from}/{to}")
     Call<ReportDTO> getRideNumReport(@Path("driverId") Integer driverId, @Path("from") String from, @Path("to") String to);
 
-    @GET("ride/report-distance/{driverId}/{from}/{to}")
+    @GET("statistics/report-distance/{driverId}/{from}/{to}")
     Call<ReportDTO> getDistanceReport(@Path("driverId") Integer driverId, @Path("from") String from, @Path("to") String to);
 
-    @GET("ride/statistic-month/{driverId}")
+    @GET("statistics/report-money/{driverId}/{from}/{to}")
+    Call<ReportDTO> getMoneyReport(@Path("driverId") Integer driverId, @Path("from") String from, @Path("to") String to);
+
+    @GET("statistics/statistic-month/{driverId}")
     Call<StatisticsDTO> getMonthStatistics(@Path("driverId") Integer driverId);
 
-    @GET("ride/statistic-day/{driverId}")
+    @GET("statistics/statistic-day/{driverId}")
     Call<StatisticsDTO> getDayStatistics(@Path("driverId") Integer driverId);
 
-    @GET("ride/statistic-year/{driverId}")
+    @GET("statistics/statistic-year/{driverId}")
     Call<StatisticsDTO> getYearStatistics(@Path("driverId") Integer driverId);
 }

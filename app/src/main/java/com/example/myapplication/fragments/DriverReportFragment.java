@@ -50,6 +50,9 @@ public class DriverReportFragment extends Fragment {
     private TextView averageKmTextView;
     private TextView totalRideTextView;
     private TextView averageRideTextView;
+    private TextView totalMoneyTextView;
+    private TextView averageMoneyTextView;
+    private BarChart moneyBarChart;
     private BarChart kmBarChart;
     private BarChart rideNumBarChart;
 
@@ -82,22 +85,18 @@ public class DriverReportFragment extends Fragment {
         averageKmTextView = view.findViewById(R.id.average_km_report);
         totalRideTextView = view.findViewById(R.id.total_ride_report);
         averageRideTextView = view.findViewById(R.id.average_ride_report);
+        totalMoneyTextView = view.findViewById(R.id.total_money_report);
+        averageMoneyTextView = view.findViewById(R.id.average_money_report);
+        moneyBarChart = view.findViewById(R.id.barChart_money);
         kmBarChart = view.findViewById(R.id.barChart_km);
         rideNumBarChart = view.findViewById(R.id.barChart_ride);
-        view.findViewById(R.id.report_driver).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initBarChart(kmBarChart);
-                initBarChart(rideNumBarChart);
-                generateReport();
-            }
-        });
         view.findViewById(R.id.report_driver).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isCorrectDate()) return;
                 initBarChart(kmBarChart);
                 initBarChart(rideNumBarChart);
+                initBarChart(moneyBarChart);
                 generateReport();
             }
         });
@@ -120,8 +119,37 @@ public class DriverReportFragment extends Fragment {
         Log.d("TAG", Retrofit.sharedPreferences.getString("user_id", null));
         getDataForNumGraph(fromDateStr, toDateStr);
         getdataForDistanceGraph(fromDateStr, toDateStr);
+        getdataForMoneyGraph(fromDateStr, toDateStr);
 //        fillChartWithData(kmBarChart, "Kilometers");
 //        fillChartWithData(rideNumBarChart, "Number of rides");
+    }
+
+    private void getdataForMoneyGraph(String fromDateStr, String toDateStr) {
+        IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Call<ReportDTO> reportKm = driverService.getMoneyReport(Integer.valueOf(Retrofit.sharedPreferences.getString("user_id", null)),
+                fromDateStr, toDateStr);
+        reportKm.enqueue(new Callback<ReportDTO>() {
+            @Override
+            public void onResponse(Call<ReportDTO> call, Response<ReportDTO> response) {
+                if (response.code() != 200){
+                    Snackbar.make(view, "No good" + response.code(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                ReportDTO reportDTO = response.body();
+                Log.d("TAG", String.valueOf(reportDTO));
+                assert reportDTO != null;
+                fillChartWithData(moneyBarChart, "Money", reportDTO.getValues());
+                totalMoneyTextView.setText("Total: " + reportDTO.getTotal());
+                averageMoneyTextView.setText("Average: " + reportDTO.getAverage());
+            }
+
+            @Override
+            public void onFailure(Call<ReportDTO> call, Throwable t) {
+                Snackbar.make(view, "No good nana", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     private void getdataForDistanceGraph(String fromDateStr, String toDateStr) {
