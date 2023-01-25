@@ -11,31 +11,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.DriverInboxAdapter;
-import com.example.myapplication.adapters.PassengerRideAdapter;
-import com.example.myapplication.dto.IsActiveDTO;
 import com.example.myapplication.dto.MessageReceivedDTO;
 import com.example.myapplication.dto.MessageResponseDTO;
 import com.example.myapplication.dto.PassengerDTO;
-import com.example.myapplication.dto.RideResponseDTO;
-import com.example.myapplication.models.Message;
-import com.example.myapplication.models.Ride;
 import com.example.myapplication.services.IAppUserService;
 import com.example.myapplication.services.IPassengerService;
-import com.example.myapplication.tools.InboxMokap;
 import com.example.myapplication.tools.Retrofit;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Objects;
 

@@ -1,17 +1,23 @@
 package com.example.myapplication.activities;
 
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.DriverMessagesAdapter;
 import com.example.myapplication.dto.MessageReceivedDTO;
 import com.example.myapplication.dto.MessageResponseDTO;
+import com.example.myapplication.dto.MessageSentDTO;
 import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.services.IAppUserService;
 import com.example.myapplication.tools.Retrofit;
@@ -30,16 +36,31 @@ public class DriverChatActivity extends AppCompatActivity {
     private ArrayList<MessageReceivedDTO> messageList = new ArrayList<>();
     private PassengerDTO passenger;
     private Long driverId;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_chat);
+
+        Toolbar toolbar = findViewById(R.id.driver_inbox_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        recyclerView = findViewById(R.id.recycler_driverchat);
+
         Intent i = getIntent();
         if (i != null && i.hasExtra("PASSENGER") && i.hasExtra("DRIVER_ID")) {
             this.passenger = (PassengerDTO) i.getSerializableExtra("PASSENGER");
             this.driverId = i.getLongExtra("DRIVER_ID", 0);
         }
+        getSupportActionBar().setTitle("Chat - " + passenger.getName() + " " + passenger.getSurname());
 
         IAppUserService appUserService = Retrofit.retrofit.create(IAppUserService.class);
         Call<MessageResponseDTO> messagesCall = appUserService.getMessages(this.driverId.intValue());
@@ -54,6 +75,7 @@ public class DriverChatActivity extends AppCompatActivity {
                     mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, passenger, driverId);
                     mMessageRecycler.setLayoutManager(new LinearLayoutManager(DriverChatActivity.this));
                     mMessageRecycler.setAdapter(mMessageAdapter);
+                    recyclerView.scrollToPosition(messageList.size() - 1);
                 }
             }
 
@@ -62,6 +84,44 @@ public class DriverChatActivity extends AppCompatActivity {
                 Log.d("DEBUG", "Error getting messages", t);
             }
         });
+
+        TextView tvMessage = findViewById(R.id.edit_driverchat_message);
+        Button sendButton = findViewById(R.id.btn_driverchat_send);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Call<MessageReceivedDTO> messagesCall = appUserService.sendMessageByUserId(
+                        passenger.getId().intValue(),
+                        new MessageSentDTO(passenger.getId(),
+                            tvMessage.getText().toString(),
+                            "ride", 0L)
+                );
+                messagesCall.enqueue(new Callback<MessageReceivedDTO>() {
+                    @Override
+                    public void onResponse(Call<MessageReceivedDTO> call, Response<MessageReceivedDTO> response) {
+                        if (response.code() == 200 && response.body() != null) {
+                            Log.i("TAG", response.body().getSenderId().toString() + " " + response.body().getReceiverId());
+                            DriverChatActivity.this.messageList.add(response.body());
+//                            mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_driverchat);
+//                            mMessageAdapter = new DriverMessagesAdapter(DriverChatActivity.this, messageList, passenger, driverId);
+//                            mMessageRecycler.setLayoutManager(new LinearLayoutManager(DriverChatActivity.this));
+                            sortMessages();
+                            mMessageRecycler.setAdapter(mMessageAdapter);
+                            recyclerView.scrollToPosition(messageList.size() - 1);
+                        } else {
+                            Log.d("DEBUG", "Error sending message" + response.code() + response.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MessageReceivedDTO> call, Throwable t) {
+                        Log.d("DEBUG", "Error sending message", t);
+                    }
+                });
+            }
+        });
+
     }
 
     private void filterMessagesWithPassenger(Long passengerId, ArrayList<MessageReceivedDTO> messages) {
@@ -70,10 +130,16 @@ public class DriverChatActivity extends AppCompatActivity {
                 this.messageList.add(message);
             }
         }
+        sortMessages();
+    }
+
+    private void sortMessages() {
         this.messageList.sort((message1, message2) -> {
             LocalDateTime t1 = LocalDateTime.parse(message1.getTimeOfSending(), DriverInboxActivity.formatter);
             LocalDateTime t2 = LocalDateTime.parse(message2.getTimeOfSending(), DriverInboxActivity.formatter);
-            return t1.isAfter(t2) ? 1 : -1;
+            if (t1.isAfter(t2)) return 1;
+            else if (t1.isBefore(t2)) return -1;
+            else return 0;
         });
     }
 

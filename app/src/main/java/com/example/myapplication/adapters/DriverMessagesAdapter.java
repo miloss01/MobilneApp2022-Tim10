@@ -13,7 +13,6 @@ import com.example.myapplication.dto.MessageReceivedDTO;
 import com.example.myapplication.dto.PassengerDTO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class DriverMessagesAdapter extends RecyclerView.Adapter {
@@ -46,7 +45,7 @@ public class DriverMessagesAdapter extends RecyclerView.Adapter {
         } else if (viewType == VIEW_MESSAGE_OTHER) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.driver_message_other_cell, parent, false);
-            return new DriverOtherMessageHolder(view);
+            return new DriverOtherMessageHolder(view, passenger);
         }
 
         return null;

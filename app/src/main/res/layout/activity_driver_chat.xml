@@ -53,9 +53,9 @@
             android:layout_marginStart="16dp"
             android:id="@+id/edit_driverchat_message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/button_driverchat_send"
+            android:layout_toStartOf="@+id/btn_driverchat_send"
             android:background="@android:color/transparent"
             android:hint="Enter Message"
             android:inputType="text"
@@ -63,7 +63,7 @@
             tools:ignore="Autofill" />
 
         <Button
-            android:id="@+id/button_driverchat_send"
+            android:id="@+id/btn_driverchat_send"
             android:layout_width="80dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"

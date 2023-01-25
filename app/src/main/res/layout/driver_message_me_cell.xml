@@ -17,8 +17,7 @@
         android:paddingStart="8dp"
         android:paddingTop="4dp"
         android:paddingEnd="8dp"
-        android:paddingBottom="4dp"
-        android:text="Date 2012"/>
+        android:paddingBottom="4dp"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_driverchat_message_me"

@@ -11,15 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dto.MessageReceivedDTO;
+import com.example.myapplication.dto.PassengerDTO;
 
 public class DriverOtherMessageHolder extends RecyclerView.ViewHolder {
 
     ImageView imgProfilePicture;
     TextView tvMessage, tvTime, tvName;
+    PassengerDTO passengerDTO;
 
-    DriverOtherMessageHolder(View itemView) {
+    DriverOtherMessageHolder(View itemView, PassengerDTO passenger) {
         super(itemView);
 
+        this.passengerDTO = passenger;
         imgProfilePicture = (ImageView) itemView.findViewById(R.id.image_driverchat_profile_other);
         tvName = (TextView) itemView.findViewById(R.id.tv_driverchat_user_other);
         tvMessage = (TextView) itemView.findViewById(R.id.tv_driverchat_message_other);
@@ -29,17 +32,18 @@ public class DriverOtherMessageHolder extends RecyclerView.ViewHolder {
     void bind(MessageReceivedDTO message) {
         tvMessage.setText(message.getMessage());
         tvTime.setText(message.getTimeOfSending());
+        tvName.setText(passengerDTO.getName() + " " + passengerDTO.getSurname());
 
-//        if (passenger.getProfilePicture() != null ) {
-//            if (!passenger.getProfilePicture().startsWith("data")) new RidePassengersAdapter.DownloadImageTask(imageView).execute(passenger.getProfilePicture());
-//            else {
-//                final String encodedString = passenger.getProfilePicture();
-//                final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",")  + 1);
-//                final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
-//                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-//                imageView.setImageBitmap(decodedBitmap);
-//            }
-//        }
+        if (passengerDTO.getProfilePicture() != null ) {
+            if (!passengerDTO.getProfilePicture().startsWith("data")) new RidePassengersAdapter.DownloadImageTask(imgProfilePicture).execute(passengerDTO.getProfilePicture());
+            else {
+                final String encodedString = passengerDTO.getProfilePicture();
+                final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",")  + 1);
+                final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                imgProfilePicture.setImageBitmap(decodedBitmap);
+            }
+        }
 
     }
 }

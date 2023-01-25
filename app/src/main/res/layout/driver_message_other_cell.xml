@@ -17,8 +17,7 @@
         android:paddingStart="8dp"
         android:paddingTop="4dp"
         android:paddingEnd="8dp"
-        android:paddingBottom="4dp"
-        android:text="Date 2012"/>
+        android:paddingBottom="4dp"/>
 
     <ImageView
         android:id="@+id/image_driverchat_profile_other"
@@ -82,11 +81,11 @@
         app:layout_constraintStart_toEndOf="@+id/card_driverchat_message_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="15dp"
+        android:paddingBottom="8dp"
         android:layout_marginLeft="5dp"
         android:text="Ti:me"
         android:textColor="#878787"
-        android:textSize="12sp"
+        android:textSize="15sp"
          />
 
 
