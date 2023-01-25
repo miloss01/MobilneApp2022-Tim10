@@ -18,6 +18,15 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="32">
+        <activity
+            android:name=".activities.DriverChatActivity"
+            android:exported="false"
+            android:label="@string/title_activity_driver_chat"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -33,7 +42,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".activities.RideCreationActivity"
             android:exported="false">
@@ -61,13 +69,6 @@
             android:name=".activities.DriverInboxActivity"
             android:exported="false"
             android:theme="@style/Theme.MyApplication.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".activities.PassengerRideDetailActivity"
-            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -155,31 +156,32 @@
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true"
-            android:label="LoginScreenActivity"></activity>
+            android:label="LoginScreenActivity" />
         <activity
             android:name=".activities.DriverMainActivity"
             android:exported="true"
             android:label="DriverMain"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activities.DriverRideHistoryActivity"
             android:exported="true"
             android:label="DriverRideHistory"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activities.RideDetailsActivity"
             android:exported="true"
             android:label="RideDetails"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service android:name=".service.PassengerInboxService" />
 
-        <receiver android:name=".receiver.AcceptRideNotificationReceiver" android:exported="false">
+        <receiver
+            android:name=".receiver.AcceptRideNotificationReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="AcceptRideNotificationReceiver" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

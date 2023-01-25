@@ -53,8 +53,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_weight="1"
-                android:src="@drawable/profilephoto1" />
+                android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/textview_passacc_name"

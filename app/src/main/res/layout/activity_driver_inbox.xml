@@ -21,6 +21,49 @@
         android:orientation="vertical">
     </LinearLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner_driverinbox_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btn_driverinbox_applyfilter"
+            />
+
+        <Button
+            android:layout_width="90dp"
+            android:id="@+id/btn_driverinbox_applyfilter"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:text="Apply filter"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/btn_driverinbox_supportChat"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/white"
+        android:textSize="18sp"
+        android:text="@string/support_chat"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/black"
+        />
+
     <ListView
         android:id="@+id/driver_inbox_view"
         android:layout_width="match_parent"

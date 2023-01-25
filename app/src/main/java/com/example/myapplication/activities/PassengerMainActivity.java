@@ -80,6 +80,12 @@ public class PassengerMainActivity extends AppCompatActivity {
 
         //if (gotNotification)  fillDataTime();
 
+        Intent i = getIntent();
+        if (i != null && i.hasExtra("DEPARTURE") && i.hasExtra("DESTINATION")) {
+            departure.setText(i.getStringExtra("DEPARTURE"));
+            destination.setText(i.getStringExtra("DESTINATION"));
+        }
+
         findViewById(R.id.pass_main_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,7 +344,8 @@ public class PassengerMainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_passenger_inbox) {
-            this.startActivity(new Intent(this, PassengerInboxActivity.class));
+//            this.startActivity(new Intent(this, PassengerInboxActivity.class));
+            this.startActivity(new Intent(PassengerMainActivity.this, DriverInboxActivity.class));
             return true;
         }
         if (id == R.id.action_passenger_logout) {

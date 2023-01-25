@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.GnssAntennaInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.myapplication.BuildConfig;
 import com.example.myapplication.R;
 import com.example.myapplication.dialogs.LocationDialog;
 import com.example.myapplication.dto.LocationDTO;
@@ -51,10 +53,26 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -410,6 +428,68 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
             map.addPolyline(opts);
         }
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("https://maps.googleapis.com/maps/api/distancematrix/json?origin=" + destinationDTO.getLatitude() + "," + destinationDTO.getLongitude() + "&destination=" + departureDTO.getLatitude() + "," + departureDTO.getLongitude() + "&units=imperial&mode=driving&key=&key=" + BuildConfig.MAPS_API_KEY)
+                .method("POST", body)
+                .build();
+        try {
+            okhttp3.Response response = client.newCall(request).execute();
+            Log.d("DEBUG", response.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        float[] results = new float[1];
+        Location.distanceBetween(departureDTO.getLatitude(), departureDTO.getLongitude(),
+                destinationDTO.getLatitude(), destinationDTO.getLongitude(), results);
+        Log.d("DEBUG", String.valueOf(results[0]));
+//        getDistance(departureDTO.getLatitude(), departureDTO.getLongitude(), destinationDTO.getLatitude(), destinationDTO.getLongitude());
+    }
+
+    public String getDistance(final double lat1, final double lon1, final double lat2, final double lon2) {
+        final String[] parsedDistance = new String[1];
+        final String[] response = new String[1];
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    URL url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric&mode=driving&key=" + BuildConfig.MAPS_API_KEY);
+                    Log.v("urldirection", url.toString());
+                    final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    InputStream in = new BufferedInputStream(conn.getInputStream());
+//                    response[0] = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+                    response[0] = new BufferedReader(
+                            new InputStreamReader(in, StandardCharsets.UTF_8))
+                            .lines()
+                            .collect(Collectors.joining("\n"));
+
+                    JSONObject jsonObject = new JSONObject(response[0]);
+                    JSONArray array = jsonObject.getJSONArray("routes");
+                    JSONObject routes = array.getJSONObject(0);
+                    JSONArray legs = routes.getJSONArray("legs");
+                    JSONObject steps = legs.getJSONObject(1);
+                    JSONObject distance = steps.getJSONObject("duration");
+                    parsedDistance[0] = distance.getString("text");
+
+                } catch (JSONException | IOException e) {
+                    Log.v("TAG", e.toString());
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.v("DistanceGoogleAPi", "Interrupted!" + e);
+            Thread.currentThread().interrupt();
+        }
+        Log.d("DEBUG", parsedDistance[0]);
+        return parsedDistance[0];
     }
 
     private String setMark(LocationDTO departureDTO, String tagName) {

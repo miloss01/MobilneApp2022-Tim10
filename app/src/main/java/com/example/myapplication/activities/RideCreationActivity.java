@@ -213,7 +213,8 @@ public class RideCreationActivity extends AppCompatActivity {
                 Long.parseLong(Retrofit.sharedPreferences.getString("user_id", null)),
                 Retrofit.sharedPreferences.getString("user_email", null)));
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        ride = new RideCreationDTO(departureDestinationLocations, passengers, setDate.format(dateTimeFormatter), vehicleType, babyTransport, petTransport, estimatedTime);
+        //TODO DODATI TIME I DISTANCE IZRACUNAVANJE CUURKO
+        ride = new RideCreationDTO(departureDestinationLocations, passengers, setDate.format(dateTimeFormatter), vehicleType, babyTransport, petTransport, estimatedTime, 3.0);
         System.out.println(ride);
 
         saveInBase();

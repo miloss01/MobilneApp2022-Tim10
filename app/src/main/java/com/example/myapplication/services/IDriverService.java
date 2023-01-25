@@ -3,6 +3,7 @@ package com.example.myapplication.services;
 import com.example.myapplication.dto.ChangeRequestDTO;
 import com.example.myapplication.dto.ReportDTO;
 import com.example.myapplication.dto.StatisticsDTO;
+import com.example.myapplication.dto.RideResponseDTO;
 import com.example.myapplication.dto.VehicleDTO;
 import com.example.myapplication.dto.DriverDTO;
 
@@ -11,7 +12,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface IDriverService {
     @GET("driver/{id}/vehicle")
@@ -43,4 +43,8 @@ public interface IDriverService {
 
     @GET("statistics/statistic-year/{driverId}")
     Call<StatisticsDTO> getYearStatistics(@Path("driverId") Integer driverId);
+
+    @GET("driver/{id}/ride")
+    Call<RideResponseDTO> getDriversRides(@Path("id") Integer id);
+
 }
