@@ -109,6 +109,20 @@
                 android:layout_marginStart="45dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/show_path" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estimated time"
+                android:layout_marginStart="45dp"
+
+                android:id="@+id/estimated_time"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:layout_marginStart="45dp"
+
+                android:id="@+id/estimated_price"/>
 
             <Button
                 android:id="@+id/open_ride_creation"

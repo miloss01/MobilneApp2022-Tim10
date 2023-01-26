@@ -1,5 +1,7 @@
 package com.example.myapplication.activities;
 
+import static java.lang.Math.round;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,20 +29,30 @@ import android.widget.TextView;
 
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
+import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
+import com.example.myapplication.dto.EstimatedDataRequestDTO;
+import com.example.myapplication.dto.EstimatedDataResponseDTO;
+import com.example.myapplication.dto.Estimation;
 import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.MessageSentDTO;
 import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.fragments.MapFragment;
+import com.example.myapplication.services.IPassengerService;
 import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 import io.reactivex.disposables.Disposable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
@@ -94,9 +106,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                             .setAction("Action", null).show();
                     return;
                 }
-                departureDTO.setAddress(departure.getText().toString());
-                destinationDTO.setAddress(destination.getText().toString());
-                mapFragment.drawRoute(departureDTO, destinationDTO);
+                updateMapAndEstimatedData();
             }
 
         });
@@ -235,6 +245,41 @@ public class PassengerMainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void updateMapAndEstimatedData() {
+        departureDTO.setAddress(departure.getText().toString());
+        destinationDTO.setAddress(destination.getText().toString());
+        Estimation estimation = mapFragment.drawRoute(departureDTO, destinationDTO);
+        List<DepartureDestinationLocationsDTO> locationss = new ArrayList<>();
+        locationss.add(new DepartureDestinationLocationsDTO(departureDTO, destinationDTO));
+        EstimatedDataRequestDTO estimatedDataRequestDTO = new EstimatedDataRequestDTO(locationss, "standard", true, true, estimation.getKm());
+        IPassengerService passengerService = Retrofit.retrofit.create(IPassengerService.class);
+        Call<EstimatedDataResponseDTO> call = passengerService.getEstimatedData(estimatedDataRequestDTO);
+        call.enqueue(new Callback<EstimatedDataResponseDTO>() {
+            @Override
+            public void onResponse(Call<EstimatedDataResponseDTO> call, Response<EstimatedDataResponseDTO> response) {
+                if (response.code() != 200) {
+                    Snackbar.make(view, "greska" + response.code(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                Log.e("DEBUG", "String.valueOf(estimatedDataResponseDTO)");
+                EstimatedDataResponseDTO estimatedDataResponseDTO = response.body();
+                Log.e("DEBUG", String.valueOf(estimatedDataResponseDTO));
+                TextView priceTextView = findViewById(R.id.estimated_price);
+                assert estimatedDataResponseDTO != null;
+                priceTextView.setText(String.format("Estimated price: %s din", String.valueOf(estimatedDataResponseDTO.getEstimatedCost())));
+                TextView timeTextView = findViewById(R.id.estimated_time);
+                timeTextView.setText(String.format("Estimated time: %s min", round(estimation.getTimeInMin())));
+            }
+
+            @Override
+            public void onFailure(Call<EstimatedDataResponseDTO> call, Throwable t) {
+                Snackbar.make(view, "lose si povezala!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     private void fillDataTime() {

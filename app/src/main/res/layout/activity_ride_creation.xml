@@ -44,7 +44,7 @@
         android:id="@+id/location_and_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -54,7 +54,7 @@
         <!--  YOUR_VIEWS -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="290dp"
             android:id="@+id/steper_map"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -139,6 +139,25 @@
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/hehe"
             app:layout_constraintLeft_toRightOf="@id/hehe" />
+
+        <TextView
+            android:id="@+id/estimated_time_stepper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/hehe"
+            app:layout_constraintLeft_toLeftOf="@id/hehe" />
+        <TextView
+            android:id="@+id/estimated_price_stepper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/estimated_time_stepper"
+            app:layout_constraintLeft_toRightOf="@id/estimated_time_stepper" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

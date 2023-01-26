@@ -35,6 +35,9 @@ import android.widget.Toast;
 import com.example.myapplication.BuildConfig;
 import com.example.myapplication.R;
 import com.example.myapplication.dialogs.LocationDialog;
+import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
+import com.example.myapplication.dto.EstimatedDataRequestDTO;
+import com.example.myapplication.dto.Estimation;
 import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.VehicleForMapDTO;
 import com.example.myapplication.dto.VehicleResponceDTO;
@@ -415,7 +418,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         //locationManager.removeUpdates(this);
     }
 
-    public void drawRoute(LocationDTO departureDTO, LocationDTO destinationDTO) {
+    public Estimation drawRoute(LocationDTO departureDTO, LocationDTO destinationDTO) {
         map.clear();
         //loadVehicles();
         String origin = setMark(departureDTO, "departure");
@@ -428,36 +431,33 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(5);
             map.addPolyline(opts);
         }
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "");
-        Request request = new Request.Builder()
-                .url("https://maps.googleapis.com/maps/api/distancematrix/json?origin=" + destinationDTO.getLatitude() + "," + destinationDTO.getLongitude() + "&destination=" + departureDTO.getLatitude() + "," + departureDTO.getLongitude() + "&units=imperial&mode=driving&key=&key=" + BuildConfig.MAPS_API_KEY)
-                .method("POST", body)
-                .build();
-        try {
-            okhttp3.Response response = client.newCall(request).execute();
-            Log.d("DEBUG", response.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        float[] results = new float[1];
-        Location.distanceBetween(departureDTO.getLatitude(), departureDTO.getLongitude(),
-                destinationDTO.getLatitude(), destinationDTO.getLongitude(), results);
-        Log.d("DEBUG", String.valueOf(results[0]));
-//        getDistance(departureDTO.getLatitude(), departureDTO.getLongitude(), destinationDTO.getLatitude(), destinationDTO.getLongitude());
+        return getDistance2(destinationDTO.getAddress(), departureDTO.getAddress());
+
     }
 
-    public String getDistance(final double lat1, final double lon1, final double lat2, final double lon2) {
+    public Estimation getDistance2(String address1, String address2) {
+        final Integer[] distance = new Integer[1];
+        final Integer[] duration = new Integer[1];
+        Log.e("DEBUG", "Usao je u ucitavanje");
         final String[] parsedDistance = new String[1];
         final String[] response = new String[1];
+        String key = BuildConfig.MAPS_API_KEY;
+        String origiin = address1.replace(" ", "+");
+        origiin = origiin.replace(",", "");
+        String destination = address2.replace(" ", "+");
+        destination = destination.replace(",", "");
+        String urlStr = String.format("https://maps.googleapis.com/maps/api/distancematrix/json" +
+                "?language=sr?&units=metric&mode=driving" +
+                "&origins=%s" +
+                "&destinations=%s" +
+                "&key=%s", origiin, destination, key);
+        Log.e("DEBUG", urlStr);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
-                    URL url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + lat1 + "," + lon1 + "&destination=" + lat2 + "," + lon2 + "&sensor=false&units=metric&mode=driving&key=" + BuildConfig.MAPS_API_KEY);
+                    Log.e("DEBUG", "Usao je u try");
+                    URL url = new URL(urlStr);
                     Log.v("urldirection", url.toString());
                     final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -467,14 +467,25 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                             new InputStreamReader(in, StandardCharsets.UTF_8))
                             .lines()
                             .collect(Collectors.joining("\n"));
+                    Log.e("DEBUG", "RESPONCEEEE");
+
 
                     JSONObject jsonObject = new JSONObject(response[0]);
-                    JSONArray array = jsonObject.getJSONArray("routes");
-                    JSONObject routes = array.getJSONObject(0);
-                    JSONArray legs = routes.getJSONArray("legs");
-                    JSONObject steps = legs.getJSONObject(1);
-                    JSONObject distance = steps.getJSONObject("duration");
-                    parsedDistance[0] = distance.getString("text");
+                    Log.e("DEBUG", jsonObject.toString());
+                    // {"destination_addresses":["Pasterova 4, Novi Sad, Serbia"],
+                    // "origin_addresses":["Pasterova 7, Novi Sad, Serbia"],
+                    // "rows":[{"elements":
+                    // [{"distance":{"text":"0.2 mi","value":308},
+                    // "duration":{"text":"1 min","value":73},"status":"OK"}]
+                    // }],
+                    // "status":"OK"}
+
+                    JSONObject row = jsonObject.getJSONArray("rows").getJSONObject(0);
+                    JSONObject element = row.getJSONArray("elements").getJSONObject(0);
+                    distance[0] = element.getJSONObject("distance").getInt("value");
+                    duration[0] = element.getJSONObject("duration").getInt("value");
+                    Log.e("DEBUG", String.valueOf(distance[0]));
+                    Log.e("DEBUG", String.valueOf(duration[0]));
 
                 } catch (JSONException | IOException e) {
                     Log.v("TAG", e.toString());
@@ -488,8 +499,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             Log.v("DistanceGoogleAPi", "Interrupted!" + e);
             Thread.currentThread().interrupt();
         }
-        Log.d("DEBUG", parsedDistance[0]);
-        return parsedDistance[0];
+        return new Estimation(distance[0] /1000.0, duration[0] /60.0);
     }
 
     private String setMark(LocationDTO departureDTO, String tagName) {
@@ -516,7 +526,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     }
 
     public void loadVehicles() {
-        Log.e("DEBUG", "Usao je u ucitavanje");
+//        Log.e("DEBUG", "Usao je u ucitavanje");
         IVehicleService vehicleService = Retrofit.retrofit.create(IVehicleService.class);
         Call<VehicleResponceDTO> vehicleResponce = vehicleService.getVehicles();
         vehicleResponce.enqueue(new Callback<VehicleResponceDTO>() {
