@@ -1,9 +1,14 @@
 package com.example.myapplication.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteLocationDTO {
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long id;
 
     private String favoriteName;
 
@@ -17,6 +22,18 @@ public class FavoriteLocationDTO {
 
     private boolean petTransport;
 
+    public FavoriteLocationDTO() {
+    }
+
+    public FavoriteLocationDTO(Long id, String favoriteName, List<DepartureDestinationLocationsDTO> locations, List<UserResponseDTO> passengers, String vehicleType, boolean babyTransport, boolean petTransport) {
+        this.id = id;
+        this.favoriteName = favoriteName;
+        this.locations = locations;
+        this.passengers = passengers;
+        this.vehicleType = vehicleType;
+        this.babyTransport = babyTransport;
+        this.petTransport = petTransport;
+    }
 
     public FavoriteLocationDTO(String favoriteName, List<DepartureDestinationLocationsDTO> locations, String vehicleType, boolean babyTransport, boolean petTransport) {
         this.favoriteName = favoriteName;
@@ -25,6 +42,14 @@ public class FavoriteLocationDTO {
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFavoriteName() {

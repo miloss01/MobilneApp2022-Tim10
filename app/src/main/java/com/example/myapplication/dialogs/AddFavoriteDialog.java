@@ -73,6 +73,7 @@ public class AddFavoriteDialog extends DialogFragment {
                             public void onFailure(Call<FavoriteLocationDTO> call, Throwable t) {
                                 try {
                                     Toast.makeText(parent, "Error when saving favorite location.", Toast.LENGTH_LONG).show();
+                                    System.out.println(t.getMessage());
                                 } catch (Exception exception) {
                                     System.out.println(exception.toString());
                                 }
