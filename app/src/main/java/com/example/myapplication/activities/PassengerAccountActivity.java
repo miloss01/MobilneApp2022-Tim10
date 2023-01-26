@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.RidePassengersAdapter;
+import com.example.myapplication.dialogs.DatePickerFragment;
 import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.fragments.FavoriteRoutesFragment;
 import com.example.myapplication.fragments.PassengerEditAccountFragment;
@@ -136,4 +138,25 @@ public class PassengerAccountActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void showPassengerDatePickerDialogFrom(View view) {
+        try {
+            TextView label = findViewById(R.id.tv_passengerstats_dateFrom);
+            DialogFragment newFragment = new DatePickerFragment(label);
+            newFragment.show(getSupportFragmentManager(), "datePicker");
+        } catch (Exception ex) {
+            Log.i("TAG", ex.toString());
+        }
+    }
+
+    public void showPassengerDatePickerDialogTo(View view) {
+        try {
+            TextView label = findViewById(R.id.tv_passengerstats_dateTo);
+            DialogFragment newFragment = new DatePickerFragment(label);
+            newFragment.show(getSupportFragmentManager(), "datePicker");
+        } catch (Exception ex) {
+            Log.i("TAG", ex.toString());
+        }
+    }
+
 }
