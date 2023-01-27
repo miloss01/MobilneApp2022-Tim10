@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -43,6 +44,7 @@ public class DriverInboxActivity extends AppCompatActivity {
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     public Spinner filterSpinner;
     public String filter = "all";
+    public String searchParameter = "";
 
 
     @Override
@@ -98,6 +100,7 @@ public class DriverInboxActivity extends AppCompatActivity {
         listView = findViewById(R.id.driver_inbox_view);
         ArrayList<MessageReceivedDTO> messages = new ArrayList<>(this.filteredRecentPerUser.values());
         messages = filterMessages(filter, messages);
+        messages = applySearch(messages);
 
         // Order date descending
         messages.sort((message1, message2) -> {
@@ -149,6 +152,16 @@ public class DriverInboxActivity extends AppCompatActivity {
             }
         });
 
+        Button searchButton = findViewById(R.id.btn_driverinbox_search);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText etSearch = findViewById(R.id.et_driverinbox_search);
+                DriverInboxActivity.this.searchParameter = etSearch.getText().toString().toLowerCase(Locale.ROOT);
+                if (!DriverInboxActivity.this.searchParameter.equals("")) createChats();
+            }
+        });
+
     }
 
     private ArrayList<MessageReceivedDTO> filterMessages(String filter, ArrayList<MessageReceivedDTO> messages) {
@@ -156,6 +169,20 @@ public class DriverInboxActivity extends AppCompatActivity {
         if (filter.equals("all")) return messages;
         for (MessageReceivedDTO message : messages) {
             if (message.getType().equals(filter)) filtered.add(message);
+        }
+        return filtered;
+    }
+
+    private ArrayList<MessageReceivedDTO> applySearch(ArrayList<MessageReceivedDTO> messages) {
+        ArrayList<MessageReceivedDTO> filtered = new ArrayList<>();
+        for (MessageReceivedDTO message : messages) {
+            Long userId;
+            if (!Objects.equals(message.getReceiverId(), DriverInboxActivity.this.personalId)) userId = message.getReceiverId();
+            else userId = message.getSenderId();
+            if (users.get(userId).getName().toLowerCase(Locale.ROOT).contains(DriverInboxActivity.this.searchParameter)
+              || users.get(userId).getSurname().toLowerCase(Locale.ROOT).contains(DriverInboxActivity.this.searchParameter)) {
+                filtered.add(message);
+            }
         }
         return filtered;
     }
