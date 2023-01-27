@@ -5,10 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.PassengerAccountActivity;
-import com.example.myapplication.dialogs.DatePickerFragment;
 import com.example.myapplication.dto.ReportDTO;
 import com.example.myapplication.services.IPassengerService;
 import com.example.myapplication.tools.Retrofit;
@@ -138,7 +135,6 @@ public class RideStatsFragment extends Fragment {
     private void generateReport() {
         String fromDateStr = dateFromTextView.getText().toString().substring("Selected: ".length()).trim();
         String toDateStr = dateToTextView.getText().toString().substring("Selected: ".length()).trim();
-        Log.d("TAG", Retrofit.sharedPreferences.getString("user_id", null));
         getDataForNumGraph(fromDateStr, toDateStr);
         getdataForDistanceGraph(fromDateStr, toDateStr);
         getDataForMoneyGraph(fromDateStr, toDateStr);
@@ -159,7 +155,6 @@ public class RideStatsFragment extends Fragment {
                     return;
                 }
                 ReportDTO reportDTO = response.body();
-                Log.d("TAG", String.valueOf(reportDTO));
                 assert reportDTO != null;
                 fillChartWithData(moneyBarChart, "Money", reportDTO.getValues());
                 totalMoneyTextView.setText("Total: " + reportDTO.getTotal());
@@ -187,7 +182,6 @@ public class RideStatsFragment extends Fragment {
                     return;
                 }
                 ReportDTO reportDTO = response.body();
-                Log.d("TAG", String.valueOf(reportDTO));
                 assert reportDTO != null;
                 fillChartWithData(kmBarChart, "Kilometers", reportDTO.getValues());
                 totalKmTextView.setText("Total: " + reportDTO.getTotal());
@@ -215,7 +209,6 @@ public class RideStatsFragment extends Fragment {
                     return;
                 }
                 ReportDTO reportDTO = response.body();
-                Log.d("TAG", String.valueOf(reportDTO));
                 assert reportDTO != null;
                 fillChartWithData(rideNumBarChart, "Number of rides", reportDTO.getValues());
                 totalRideTextView.setText(String.format("Total: %s", reportDTO.getTotal()));
@@ -248,7 +241,6 @@ public class RideStatsFragment extends Fragment {
 //        }
         float i = 1.1f;
         for (Map.Entry<String, Double> set: values.entrySet()){
-            Log.d("TAG", set.getKey());
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-MM", Locale.GERMAN);
             Date ah = null;
             Date pomoc = null;
@@ -260,7 +252,6 @@ public class RideStatsFragment extends Fragment {
             }
             float dateForXAxis = ah.getTime();
             dateForXAxis = dateForXAxis - pomoc.getTime();
-            Log.d("TAG", String.valueOf(dateForXAxis));
             BarEntry barEntry = new BarEntry(i, set.getValue().floatValue());
             i += 1;
             entries.add(barEntry);
