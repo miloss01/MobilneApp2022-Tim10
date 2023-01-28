@@ -155,6 +155,28 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             notificationManager.notify(9832, builder.build());
 
         });
+
+        Retrofit.stompClient.topic("/ride-notification-driver-withdrawal/" + Retrofit.sharedPreferences.getString("user_id", null)).subscribe(topicMessage -> {
+
+            Log.d("TAG", topicMessage.getPayload());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+                    .setContentTitle("Ride cancelled by passenger")
+                    .setContentText(messageSentDTO.getMessage())
+                    .setSmallIcon(R.drawable.ic_message_icon)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+            notificationManager.notify(9832, builder.build());
+
+            showAcceptedRide();
+        });
+
     }
 
     @Override
