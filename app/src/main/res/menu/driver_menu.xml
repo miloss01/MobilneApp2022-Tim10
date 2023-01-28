@@ -6,15 +6,15 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
+    <item android:id="@+id/driver_menu_account"
+        android:title="Account"
+        android:orderInCategory="300"
+        app:showAsAction="never" />
+
     <item android:id="@+id/driver_menu_inbox"
         android:title="Inbox"
         android:iconTint="@color/white"
         android:orderInCategory="200"
-        app:showAsAction="never" />
-
-    <item android:id="@+id/driver_menu_account"
-        android:title="Account"
-        android:orderInCategory="300"
         app:showAsAction="never" />
 
     <item android:id="@+id/driver_menu_notifications"

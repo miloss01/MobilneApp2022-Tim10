@@ -14,17 +14,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 
 import android.net.Uri;
-import android.text.TextUtils;
 
 import java.util.HashMap;
 
 public class NotificationProvider extends ContentProvider {
-    static final String PROVIDER_NAME = "com.example.myapplication.providers.NotificationProvider";
+    public static final String PROVIDER_NAME = "com.example.myapplication.providers.NotificationProvider";
     public static final String URL = "content://" + PROVIDER_NAME + "/notifications";
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     static final String _ID = "_id";
     public static final String MESSAGE = "message";
+    public static final String RECEIVER_ID = "receiver_id";
     public static final String TIME_OF_RECEIVING = "time";
 
     private static HashMap<String, String> NOTIFICATIONS_PROJECTION_MAP;
@@ -47,6 +47,7 @@ public class NotificationProvider extends ContentProvider {
             " CREATE TABLE " + NOTIFICATIONS_TABLE_NAME +
                     " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     " message TEXT NOT NULL, " +
+                    " receiver_id TEXT NOT NULL, " +
                     " time TEXT NOT NULL);";
 
 
@@ -62,7 +63,7 @@ public class NotificationProvider extends ContentProvider {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + NOTIFICATIONS_TABLE_NAME);
+//            db.execSQL("DROP TABLE IF EXISTS " + NOTIFICATIONS_TABLE_NAME);
             onCreate(db);
         }
     }
@@ -73,7 +74,7 @@ public class NotificationProvider extends ContentProvider {
         DatabaseHelper dbHelper = new DatabaseHelper(context);
 
         db = dbHelper.getWritableDatabase();
-        return (db == null)? false:true;
+        return db != null;
     }
 
     @Override
@@ -106,10 +107,6 @@ public class NotificationProvider extends ContentProvider {
                 break;
 
             default:
-        }
-
-        if (sortOrder == null || sortOrder.equals("")){
-            sortOrder = TIME_OF_RECEIVING;
         }
 
         Cursor c = qb.query(db,	projection,	selection,
@@ -158,5 +155,12 @@ public class NotificationProvider extends ContentProvider {
 //                throw new IllegalArgumentException("Unsupported URI: " + uri);
 //        }
         return null;
+    }
+
+    public void resetDatabase() {
+        db.close();
+        Context context = getContext();
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
+        db = dbHelper.getWritableDatabase();
     }
 }

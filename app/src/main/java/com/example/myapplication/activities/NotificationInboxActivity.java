@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.UserExpandedDTO;
 import com.example.myapplication.models.Notification;
 import com.example.myapplication.providers.NotificationProvider;
+import com.example.myapplication.services.AuthService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +33,7 @@ public class NotificationInboxActivity extends AppCompatActivity {
     private ArrayList<Notification> notifications = new ArrayList<>();
     private ListView listView;
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    private static String userId;
 
     SimpleCursorAdapter dataAdapter;
 
@@ -48,6 +52,8 @@ public class NotificationInboxActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        AuthService authService = new AuthService(this);
+        userId = authService.getUserData().get("user_id");
 
         setupData();
     }
@@ -55,21 +61,23 @@ public class NotificationInboxActivity extends AppCompatActivity {
     @SuppressLint("Range")
     private void setupData() {
 
-        ContentValues values = new ContentValues();
-        values.put(NotificationProvider.MESSAGE, "Test 1");
-
-        values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
-
-        Uri uri = getContentResolver().insert(
-                NotificationProvider.CONTENT_URI, values);
+        // wipe database data
+//        getApplicationContext().getContentResolver().delete(NotificationProvider.CONTENT_URI, null, null);
 
         Uri notifs = Uri.parse(NotificationProvider.URL);
         Cursor c = managedQuery(notifs, null, null, null, null);
 
         if (c.moveToFirst()) {
-            notifications.add(new Notification(c.getString(c.getColumnIndex(NotificationProvider.MESSAGE)),
-                    LocalDateTime.parse(c.getString(c.getColumnIndex(NotificationProvider.TIME_OF_RECEIVING)))));
-            } while (c.moveToNext());
+            if (c.getString(c.getColumnIndex(NotificationProvider.RECEIVER_ID)).equals(userId)) {
+                notifications.add(new Notification(c.getString(c.getColumnIndex(NotificationProvider.MESSAGE)),
+                        LocalDateTime.parse(c.getString(c.getColumnIndex(NotificationProvider.TIME_OF_RECEIVING)))));
+            }
+            } while (c.moveToNext()) {
+            if (c.getString(c.getColumnIndex(NotificationProvider.RECEIVER_ID)).equals(userId)) {
+                notifications.add(new Notification(c.getString(c.getColumnIndex(NotificationProvider.MESSAGE)),
+                        LocalDateTime.parse(c.getString(c.getColumnIndex(NotificationProvider.TIME_OF_RECEIVING)))));
+            }
+        };
 
 
 

@@ -519,7 +519,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                 ContentValues values = new ContentValues();
                 values.put(NotificationProvider.MESSAGE, text);
                 values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
-
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
                 Uri uri = getContentResolver().insert(
                         NotificationProvider.CONTENT_URI, values);
 

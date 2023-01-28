@@ -11,7 +11,9 @@ import androidx.core.app.NotificationManagerCompat;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.AlteredCharSequence;
@@ -30,6 +32,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.MessageSentDTO;
 import com.example.myapplication.dto.NotificationDTO;
+import com.example.myapplication.providers.NotificationProvider;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.fragments.MapFragment;
 import com.example.myapplication.tools.FragmentTransition;
@@ -38,6 +41,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
 import java.util.zip.Inflater;
 
 import io.reactivex.disposables.Disposable;
@@ -142,6 +146,13 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Driver started your ride");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
                 notificationManager.notify(1000, builder.build());
@@ -163,6 +174,14 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         //.setContentIntent(pendingIntent)
                         .setAutoCancel(true);
+
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Driver accepted your ride");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                 notificationManager.notify(1001, builder.build());
                 gotNotification = true;
@@ -176,6 +195,13 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(true);
 
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Driver arrived at departure place");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
                 notificationManager.notify(5683, builder.build());
@@ -188,6 +214,13 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setSmallIcon(R.drawable.ic_message_icon)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(true);
+
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Ride cancelled");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
@@ -346,6 +379,10 @@ public class PassengerMainActivity extends AppCompatActivity {
         if (id == R.id.action_passenger_inbox) {
 //            this.startActivity(new Intent(this, PassengerInboxActivity.class));
             this.startActivity(new Intent(PassengerMainActivity.this, DriverInboxActivity.class));
+            return true;
+        }
+        if (id == R.id.action_passenger_notifications) {
+            this.startActivity(new Intent(PassengerMainActivity.this, NotificationInboxActivity.class));
             return true;
         }
         if (id == R.id.action_passenger_logout) {
