@@ -144,7 +144,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
-                    .setContentTitle("You have received message.")
+                    .setContentTitle("New message")
                     .setContentText(messageSentDTO.getMessage())
                     .setSmallIcon(R.drawable.ic_message_icon)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -243,7 +243,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         Log.d("TAG", i + " od " + path.size());
                     }
                 },
-                2000);
+                1000);
     }
 
     private void startSimulation() {
