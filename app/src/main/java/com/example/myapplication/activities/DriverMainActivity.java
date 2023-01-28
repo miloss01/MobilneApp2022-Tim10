@@ -6,8 +6,10 @@ import android.app.Activity;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -45,6 +47,7 @@ import com.example.myapplication.fragments.DriverActiveRideFragment;
 import com.example.myapplication.fragments.DriverNoRideFragment;
 import com.example.myapplication.dto.UserDTO;
 import com.example.myapplication.models.User;
+import com.example.myapplication.providers.NotificationProvider;
 import com.example.myapplication.receiver.AcceptRideNotificationReceiver;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IDriverService;
@@ -73,6 +76,7 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,6 +193,10 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
         if (id == R.id.driver_menu_inbox) {
             Intent intent1 = new Intent(this, DriverInboxActivity.class);
             this.startActivity(intent1);
+            return true;
+        }
+        if (id == R.id.driver_menu_notifications) {
+            this.startActivity(new Intent(this, NotificationInboxActivity.class));
             return true;
         }
         if (id == R.id.driver_logout_account) {
@@ -507,6 +515,14 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                                 "DENY", replyPendingIntent)
                                 .addRemoteInput(remoteInput)
                                 .build();
+
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, text);
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(text))

@@ -19,6 +19,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="32">
         <activity
+            android:name=".activities.NotificationInboxActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.DriverChatActivity"
             android:exported="false"
             android:label="@string/title_activity_driver_chat"
@@ -182,6 +190,10 @@
                 <action android:name="AcceptRideNotificationReceiver" />
             </intent-filter>
         </receiver>
+
+        <provider android:name=".providers.NotificationProvider"
+            android:authorities="com.example.myapplication.providers.NotificationProvider" />
+
     </application>
 
 </manifest>

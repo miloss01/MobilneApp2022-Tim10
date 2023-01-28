@@ -17,6 +17,11 @@
         android:orderInCategory="300"
         app:showAsAction="never" />
 
+    <item android:id="@+id/driver_menu_notifications"
+        android:title="Notifications"
+        android:orderInCategory="300"
+        app:showAsAction="never" />
+
     <item android:id="@+id/driver_logout_account"
         android:title="Logout"
         android:orderInCategory="300"
