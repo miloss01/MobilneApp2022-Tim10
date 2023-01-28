@@ -6,31 +6,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.example.myapplication.activities.LoginActivity;
-import com.example.myapplication.activities.PassengerInboxActivity;
 import com.example.myapplication.activities.SplashScreenActivity;
-import com.example.myapplication.fragments.MapFragment;
-import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.View;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
-import ua.naiksoftware.stomp.Stomp;
-import ua.naiksoftware.stomp.StompClient;
 
 public class MainActivity extends AppCompatActivity {
 

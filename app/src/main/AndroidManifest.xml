@@ -145,14 +145,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.PassengerInboxActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MyApplication.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true"
             android:label="Spashscreen"
@@ -180,8 +172,6 @@
             android:exported="true"
             android:label="RideDetails"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-        <service android:name=".service.PassengerInboxService" />
 
         <receiver
             android:name=".receiver.AcceptRideNotificationReceiver"

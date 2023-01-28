@@ -4,7 +4,6 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.example.myapplication.R;
-import com.example.myapplication.activities.PassengerAccountActivity;
-import com.example.myapplication.activities.PassengerInboxActivity;
 import com.example.myapplication.activities.PassengerMainActivity;
-import com.example.myapplication.dto.FavoriteLocationDTO;
 import com.example.myapplication.dto.FavoriteLocationResponseDTO;
-import com.example.myapplication.fragments.FavoriteRoutesFragment;
-import com.example.myapplication.models.Ride;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.Retrofit;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import retrofit2.Call;

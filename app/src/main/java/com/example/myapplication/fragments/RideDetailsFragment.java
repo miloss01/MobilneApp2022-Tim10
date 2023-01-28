@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,15 +25,10 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.DriverInboxActivity;
-import com.example.myapplication.activities.DriverMainActivity;
-import com.example.myapplication.activities.PassengerInboxActivity;
 import com.example.myapplication.activities.PassengerMainActivity;
-import com.example.myapplication.activities.RideDetailsActivity;
 import com.example.myapplication.adapters.RidePassengersAdapter;
 import com.example.myapplication.dialogs.AddFavoriteDialog;
 import com.example.myapplication.dialogs.MakeReviewDialog;
-import com.example.myapplication.dialogs.PanicDialog;
-import com.example.myapplication.dialogs.QuickMessageDialog;
 import com.example.myapplication.dto.DriverDTO;
 import com.example.myapplication.dto.DriverReviewResponseDTO;
 import com.example.myapplication.dto.PassengerDTO;
@@ -42,7 +36,6 @@ import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.RideReviewDTO;
 import com.example.myapplication.dto.UserDTO;
 import com.example.myapplication.dto.VehicleReviewResponseDTO;
-import com.example.myapplication.services.IAppUserService;
 import com.example.myapplication.services.IDriverService;
 import com.example.myapplication.services.IPassengerService;
 import com.example.myapplication.services.IReviewService;
@@ -191,7 +184,7 @@ public class RideDetailsFragment extends Fragment implements OnMapReadyCallback 
                 messageBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(getActivity(), PassengerInboxActivity.class));
+                        startActivity(new Intent(getActivity(), DriverInboxActivity.class));
                     }
                 });
 
