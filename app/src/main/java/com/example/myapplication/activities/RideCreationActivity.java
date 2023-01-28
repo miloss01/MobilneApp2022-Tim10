@@ -56,6 +56,7 @@ public class RideCreationActivity extends AppCompatActivity {
     private int currentStep = 0;
     private int estimatedTimeInMin = 0;
     private double estimatedDistance = 0.0;
+    private double estimatedPrice = 0.0;
     private RideCreationDTO ride;
     private StepView stepView;
     private EditText departure;
@@ -158,6 +159,8 @@ public class RideCreationActivity extends AppCompatActivity {
                 }
                 EstimatedDataResponseDTO estimatedDataResponseDTO = response.body();
                 TextView priceTextView = findViewById(R.id.estimated_price_stepper);
+                assert estimatedDataResponseDTO != null;
+                estimatedPrice = estimatedDataResponseDTO.getEstimatedCost().doubleValue();
                 priceTextView.setText(String.format("Estimated price: %s din", estimatedDataResponseDTO.getEstimatedCost()));
                 TextView timeTextView = findViewById(R.id.estimated_time_stepper);
                 timeTextView.setText(String.format("Estimated time: %s min", round(estimation.getTimeInMin())));
@@ -255,9 +258,9 @@ public class RideCreationActivity extends AppCompatActivity {
                 Long.parseLong(Retrofit.sharedPreferences.getString("user_id", null)),
                 Retrofit.sharedPreferences.getString("user_email", null)));
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        //TODO DODATI TIME I DISTANCE IZRACUNAVANJE CUURKO
-        ride = new RideCreationDTO(departureDestinationLocations, passengers, setDate.format(dateTimeFormatter), vehicleType, babyTransport, petTransport, estimatedTimeInMin, estimatedDistance);
-        System.out.println(ride);
+        //TODO
+        ride = new RideCreationDTO(departureDestinationLocations, passengers, setDate.format(dateTimeFormatter), vehicleType, babyTransport, petTransport, estimatedTimeInMin, estimatedDistance, estimatedPrice);
+        Log.e("DEBUG", String.valueOf(ride));
 
         saveInBase();
     }
@@ -273,6 +276,7 @@ public class RideCreationActivity extends AppCompatActivity {
                             .setAction("Action", null).show();
                 if (response.code() != 200)
                     return;
+                Log.e("TAG", "USAO u 200 za ride");
                 RideDTO rideDTO = response.body();
                 Log.d("TAG", String.valueOf(rideDTO == null));
                 if (rideDTO == null) {

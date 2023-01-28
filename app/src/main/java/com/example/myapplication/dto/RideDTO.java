@@ -23,10 +23,20 @@ public class RideDTO implements Serializable {
     private RejectionDTO rejection;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String scheduleTime;
+    @JsonInclude(JsonInclude.Include. NON_NULL)
+    private Double distance;
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
 
     public RideDTO() {}
 
-    public RideDTO(Long id, ArrayList<DepartureDestinationLocationsDTO> locations, String startTime, String endTime, int totalCost, UserDTO driver, ArrayList<UserDTO> passengers, int estimatedTimeInMinutes, String vehicleType, boolean babyTransport, boolean petTransport, String status, RejectionDTO rejection, String scheduleTime) {
+    public RideDTO(Long id, ArrayList<DepartureDestinationLocationsDTO> locations, String startTime, String endTime, int totalCost, UserDTO driver, ArrayList<UserDTO> passengers, int estimatedTimeInMinutes, String vehicleType, boolean babyTransport, boolean petTransport, String status, RejectionDTO rejection, String scheduleTime, Double distance) {
         this.id = id;
         this.locations = locations;
         this.startTime = startTime;
@@ -41,6 +51,7 @@ public class RideDTO implements Serializable {
         this.status = status;
         this.rejection = rejection;
         this.scheduleTime = scheduleTime;
+        this.distance = distance;
     }
 
     public Long getId() {

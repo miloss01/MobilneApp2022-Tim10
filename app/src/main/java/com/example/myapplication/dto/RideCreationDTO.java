@@ -11,6 +11,15 @@ public class RideCreationDTO {
     private boolean petTransport;
     private int estimatedTimeMinutes;
     private Double distance;
+    private Double price;
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
     public Double getDistance() {
         return distance;
@@ -23,7 +32,7 @@ public class RideCreationDTO {
     public RideCreationDTO() {
     }
 
-    public RideCreationDTO(ArrayList<DepartureDestinationLocationsDTO> locations, ArrayList<UserDTO> passengers, String startTime, String vehicleType, boolean babyTransport, boolean petTransport, int estimatedTimeMinutes, Double distance) {
+    public RideCreationDTO(ArrayList<DepartureDestinationLocationsDTO> locations, ArrayList<UserDTO> passengers, String startTime, String vehicleType, boolean babyTransport, boolean petTransport, int estimatedTimeMinutes, Double distance, Double price) {
         this.locations = locations;
         this.passengers = passengers;
         this.startTime = startTime;
@@ -32,6 +41,7 @@ public class RideCreationDTO {
         this.petTransport = petTransport;
         this.estimatedTimeMinutes = estimatedTimeMinutes;
         this.distance = distance;
+        this.price = price;
     }
 
     public ArrayList<DepartureDestinationLocationsDTO> getLocations() {
@@ -100,6 +110,8 @@ public class RideCreationDTO {
                 ", babyTransport=" + babyTransport +
                 ", petTransport=" + petTransport +
                 ", estimatedTimeMinutes=" + estimatedTimeMinutes +
+                ", distance=" + distance +
+                ", price=" + price +
                 '}';
     }
 }

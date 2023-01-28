@@ -203,6 +203,19 @@ public class PassengerMainActivity extends AppCompatActivity {
 
                 notificationManager.notify(5684, builder.build());
             }
+//            if (notificationDTO.getReason().equals("END_RIDE")) {
+//
+//                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+//                        .setContentTitle("Ride ended.")
+//                        .setContentText(notificationDTO.getMessage())
+//                        .setSmallIcon(R.drawable.ic_message_icon)
+//                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                        .setAutoCancel(true);
+//
+//                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//
+//                notificationManager.notify(5683, builder.build());
+//            }
         });
 
         Retrofit.stompClient.topic("/ride-notification-message/" + passengerId).subscribe(topicMessage -> {
