@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.example.myapplication.dto.ErrorMessage;
+import com.fasterxml.jackson.core.JsonParseException;
 
 import java.io.IOException;
 
@@ -25,10 +26,7 @@ public class ErrorInterceptor implements Interceptor {
         if (response.code() == 500) {
             Log.d("TAG", "Server error");
         } else if (response.code() == 400 || response.code() == 404) {
-            ErrorMessage errorMessage = (ErrorMessage) Retrofit.retrofit.responseBodyConverter(
-                            ErrorMessage.class, ErrorMessage.class.getAnnotations())
-                    .convert(response.body());
-            Log.d("TAG", errorMessage.toString());
+            Log.d("TAG", response.body().string());
         }
 
         return response;

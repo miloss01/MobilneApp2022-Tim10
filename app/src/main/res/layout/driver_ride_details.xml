@@ -15,11 +15,11 @@
         app:titleTextColor="@color/white">
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/driver_ride_details_image"
-        android:layout_width="wrap_content"
-        android:layout_height="213dp"
-        android:src="@drawable/examplemap" />
+<!--    <ImageView-->
+<!--        android:id="@+id/driver_ride_details_image"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="213dp"-->
+<!--        android:src="@drawable/examplemap" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,38 +71,6 @@
                 android:textSize="18sp"/>
 
             <TextView
-                android:id="@+id/textview_ridedetails_adr1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="→ Ulica U. Ulica 189, Novi Sad"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/textview_ridedetails_adr2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="→ Ulica U. Ulica 189, Novi Sad"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/textview_ridedetails_adr3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="→ Ulica U. Ulica 189, Novi Sad"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/textview_ridedetails_adr4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="→ Ulica U. Ulica 189, Novi Sad"
-                android:textSize="16sp"/>
-
-            <TextView
                 android:id="@+id/textview_ridedetails_endaddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -129,15 +97,15 @@
                 android:textStyle="bold"
                 android:layout_weight="9" />
 
-            <TextView
-                android:id="@+id/textview_ridedetails_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:text="14.7 km"
-                android:textAlignment="textEnd"
-                android:layout_weight="1" />
+<!--            <TextView-->
+<!--                android:id="@+id/textview_ridedetails_distance"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:text="14.7 km"-->
+<!--                android:textAlignment="textEnd"-->
+<!--                android:layout_weight="1" />-->
 
         </LinearLayout>
 
@@ -149,238 +117,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20sp"
-        android:layout_marginVertical="10sp"
+        android:layout_marginTop="10sp"
+        android:id="@+id/textview_ridedetails_passengers"
         android:text="Passengers (5)"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="15sp" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:orientation="vertical"
+            android:id="@+id/driver_ride_details_linear"
             android:padding="10sp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10sp"
-                        android:layout_weight=".3"
-                        android:src="@drawable/profilephoto1" />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10sp"-->
+<!--                android:orientation="vertical">-->
 
-                    <TextView
-                        android:id="@+id/comment1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10sp"
-                        android:layout_weight=".5"
-                        android:text="Some kind of a really mean comment (⭐ 3.3)"
-                        android:textSize="12sp">
-                    </TextView>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="Passenger email"/>-->
 
-                    <Button
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".2"
-                        android:padding="0sp"
-                        android:text="✉"
-                        android:textColor="@color/black"
-                        android:textSize="25sp">
-                    </Button>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Vehicle review: nesto, ocena"/>-->
 
-                </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Driver review: nesto, ocena"/>-->
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10sp"
-                        android:layout_weight=".3"
-                        android:src="@drawable/profilephoto1" />
-
-                    <TextView
-                        android:id="@+id/comment2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10sp"
-                        android:layout_weight=".5"
-                        android:text="Some kind of a really mean comment (⭐ 3.3)"
-                        android:textSize="12sp">
-                    </TextView>
-
-                    <Button
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".2"
-                        android:padding="0sp"
-                        android:text="✉"
-                        android:textColor="@color/black"
-                        android:textSize="25sp">
-                    </Button>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10sp"
-                        android:layout_weight=".3"
-                        android:src="@drawable/profilephoto1" />
-
-                    <TextView
-                        android:id="@+id/comment3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10sp"
-                        android:layout_weight=".5"
-                        android:text="Some kind of a really mean comment (⭐ 3.3)"
-                        android:textSize="12sp">
-                    </TextView>
-
-                    <Button
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".2"
-                        android:padding="0sp"
-                        android:text="✉"
-                        android:textColor="@color/black"
-                        android:textSize="25sp">
-                    </Button>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10sp"
-                        android:layout_weight=".3"
-                        android:src="@drawable/profilephoto1" />
-
-                    <TextView
-                        android:id="@+id/comment4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10sp"
-                        android:layout_weight=".5"
-                        android:text="Some kind of a really mean comment (⭐ 3.3)"
-                        android:textSize="12sp">
-                    </TextView>
-
-                    <Button
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".2"
-                        android:padding="0sp"
-                        android:text="✉"
-                        android:textColor="@color/black"
-                        android:textSize="25sp">
-                    </Button>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="10sp"
-                        android:layout_weight=".3"
-                        android:src="@drawable/profilephoto1" />
-
-                    <TextView
-                        android:id="@+id/comment5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10sp"
-                        android:layout_weight=".5"
-                        android:text="Some kind of a really mean comment (⭐ 3.3)"
-                        android:textSize="12sp">
-                    </TextView>
-
-                    <Button
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".2"
-                        android:padding="0sp"
-                        android:text="✉"
-                        android:textColor="@color/black"
-                        android:textSize="25sp">
-                    </Button>
-
-                </LinearLayout>
-
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
 
         </LinearLayout>
+
     </ScrollView>
 
 

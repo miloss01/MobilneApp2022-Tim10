@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="16dp">
+
+    <TextView
+        android:id="@+id/tv_driverchat_date_other"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"/>
+
+    <ImageView
+        android:id="@+id/image_driverchat_profile_other"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_driverchat_date_other"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_driverchat_user_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Other User"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/image_driverchat_profile_other"
+        app:layout_constraintTop_toBottomOf="@+id/tv_driverchat_date_other" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_driverchat_message_other"
+        app:layout_constraintStart_toEndOf="@+id/image_driverchat_profile_other"
+        app:layout_constraintTop_toBottomOf="@+id/tv_driverchat_user_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="#E4E4E4"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        >
+
+        <LinearLayout
+            android:id="@+id/layout_driverchat_container_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_driverchat_message_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="260dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:paddingRight="12dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="Message"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/tv_driverchat_timestamp_other"
+        app:layout_constraintBottom_toBottomOf="@+id/card_driverchat_message_other"
+        app:layout_constraintStart_toEndOf="@+id/card_driverchat_message_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:layout_marginLeft="5dp"
+        android:text="Ti:me"
+        android:textColor="#878787"
+        android:textSize="15sp"
+         />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

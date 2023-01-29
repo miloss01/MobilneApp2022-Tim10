@@ -1,5 +1,7 @@
 package com.example.myapplication.activities;
 
+import static java.lang.Math.round;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +13,9 @@ import androidx.core.app.NotificationManagerCompat;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.AlteredCharSequence;
@@ -27,20 +31,32 @@ import android.widget.TextView;
 
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
+import com.example.myapplication.dto.DepartureDestinationLocationsDTO;
+import com.example.myapplication.dto.EstimatedDataRequestDTO;
+import com.example.myapplication.dto.EstimatedDataResponseDTO;
+import com.example.myapplication.dto.Estimation;
 import com.example.myapplication.dto.LocationDTO;
 import com.example.myapplication.dto.MessageSentDTO;
 import com.example.myapplication.dto.NotificationDTO;
+import com.example.myapplication.providers.NotificationProvider;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.fragments.MapFragment;
+import com.example.myapplication.services.IPassengerService;
 import com.example.myapplication.tools.FragmentTransition;
 import com.example.myapplication.tools.Retrofit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 import io.reactivex.disposables.Disposable;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
@@ -80,6 +96,12 @@ public class PassengerMainActivity extends AppCompatActivity {
 
         //if (gotNotification)  fillDataTime();
 
+        Intent i = getIntent();
+        if (i != null && i.hasExtra("DEPARTURE") && i.hasExtra("DESTINATION")) {
+            departure.setText(i.getStringExtra("DEPARTURE"));
+            destination.setText(i.getStringExtra("DESTINATION"));
+        }
+
         findViewById(R.id.pass_main_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,9 +110,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                             .setAction("Action", null).show();
                     return;
                 }
-                departureDTO.setAddress(departure.getText().toString());
-                destinationDTO.setAddress(destination.getText().toString());
-                mapFragment.drawRoute(departureDTO, destinationDTO);
+                updateMapAndEstimatedData();
             }
 
         });
@@ -136,6 +156,13 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Driver started your ride");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
                 notificationManager.notify(1000, builder.build());
@@ -157,6 +184,14 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         //.setContentIntent(pendingIntent)
                         .setAutoCancel(true);
+
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Driver accepted your ride");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
                 notificationManager.notify(1001, builder.build());
                 gotNotification = true;
@@ -169,6 +204,13 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setSmallIcon(R.drawable.ic_message_icon)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(true);
+
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Driver arrived at departure place");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
@@ -183,10 +225,30 @@ public class PassengerMainActivity extends AppCompatActivity {
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(true);
 
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Ride cancelled");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
                 notificationManager.notify(5684, builder.build());
             }
+//            if (notificationDTO.getReason().equals("END_RIDE")) {
+//
+//                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+//                        .setContentTitle("Ride ended.")
+//                        .setContentText(notificationDTO.getMessage())
+//                        .setSmallIcon(R.drawable.ic_message_icon)
+//                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                        .setAutoCancel(true);
+//
+//                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//
+//                notificationManager.notify(5683, builder.build());
+//            }
         });
 
         Retrofit.stompClient.topic("/ride-notification-message/" + passengerId).subscribe(topicMessage -> {
@@ -197,7 +259,7 @@ public class PassengerMainActivity extends AppCompatActivity {
             MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
-                    .setContentTitle("You have received message.")
+                    .setContentTitle("New message.")
                     .setContentText(messageSentDTO.getMessage())
                     .setSmallIcon(R.drawable.ic_message_icon)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -229,6 +291,41 @@ public class PassengerMainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void updateMapAndEstimatedData() {
+        departureDTO.setAddress(departure.getText().toString());
+        destinationDTO.setAddress(destination.getText().toString());
+        Estimation estimation = mapFragment.drawRoute(departureDTO, destinationDTO);
+        List<DepartureDestinationLocationsDTO> locationss = new ArrayList<>();
+        locationss.add(new DepartureDestinationLocationsDTO(departureDTO, destinationDTO));
+        EstimatedDataRequestDTO estimatedDataRequestDTO = new EstimatedDataRequestDTO(locationss, "standard", true, true, estimation.getKm());
+        IPassengerService passengerService = Retrofit.retrofit.create(IPassengerService.class);
+        Call<EstimatedDataResponseDTO> call = passengerService.getEstimatedData(estimatedDataRequestDTO);
+        call.enqueue(new Callback<EstimatedDataResponseDTO>() {
+            @Override
+            public void onResponse(Call<EstimatedDataResponseDTO> call, Response<EstimatedDataResponseDTO> response) {
+                if (response.code() != 200) {
+                    Snackbar.make(view, "greska" + response.code(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+                Log.e("DEBUG", "String.valueOf(estimatedDataResponseDTO)");
+                EstimatedDataResponseDTO estimatedDataResponseDTO = response.body();
+                Log.e("DEBUG", String.valueOf(estimatedDataResponseDTO));
+                TextView priceTextView = findViewById(R.id.estimated_price);
+                assert estimatedDataResponseDTO != null;
+                priceTextView.setText(String.format("Estimated price: %s din", String.valueOf(estimatedDataResponseDTO.getEstimatedCost())));
+                TextView timeTextView = findViewById(R.id.estimated_time);
+                timeTextView.setText(String.format("Estimated time: %s min", round(estimation.getTimeInMin())));
+            }
+
+            @Override
+            public void onFailure(Call<EstimatedDataResponseDTO> call, Throwable t) {
+                Snackbar.make(view, "lose si povezala!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     private void fillDataTime() {
@@ -338,7 +435,12 @@ public class PassengerMainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_passenger_inbox) {
-            this.startActivity(new Intent(this, PassengerInboxActivity.class));
+//            this.startActivity(new Intent(this, PassengerInboxActivity.class));
+            this.startActivity(new Intent(PassengerMainActivity.this, DriverInboxActivity.class));
+            return true;
+        }
+        if (id == R.id.action_passenger_notifications) {
+            this.startActivity(new Intent(PassengerMainActivity.this, NotificationInboxActivity.class));
             return true;
         }
         if (id == R.id.action_passenger_logout) {

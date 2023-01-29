@@ -1,6 +1,8 @@
 package com.example.myapplication.dto;
 
-public class UserExpandedDTO {
+import java.io.Serializable;
+
+public class UserExpandedDTO implements Serializable {
     private Integer id;
     private String name;
     private String surname;

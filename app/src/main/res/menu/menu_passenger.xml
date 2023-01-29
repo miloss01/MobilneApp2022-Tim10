@@ -18,6 +18,11 @@
         android:title="@string/inbox"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_passenger_notifications"
+        android:orderInCategory="100"
+        android:title="Notifications"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_passenger_logout"
         android:orderInCategory="100"
         android:title="Logout"
