@@ -115,7 +115,7 @@ public class RideDetailsFragment extends Fragment implements OnMapReadyCallback 
         tvDestination.setText(ride.getLocations().get(0).getDestination().getAddress());
 
         TextView tvDistance = (TextView) view.findViewById(R.id.textview_ridedetails_distance);
-        tvDistance.setText(ride.getDistance().toString() + " km");
+        tvDistance.setText(String.format("%,.1f", ride.getDistance()) + "km");
 
         displayReviews(view);
 

@@ -4,6 +4,7 @@ import com.example.myapplication.dto.EstimatedDataRequestDTO;
 import com.example.myapplication.dto.EstimatedDataResponseDTO;
 import com.example.myapplication.dto.PassengerDTO;
 import com.example.myapplication.dto.PassengerRequestDTO;
+import com.example.myapplication.dto.ReportDTO;
 import com.example.myapplication.dto.RideDTO;
 import com.example.myapplication.dto.RideResponseDTO;
 
@@ -27,5 +28,15 @@ public interface IPassengerService {
 
     @POST("unregisteredUser")
     Call<EstimatedDataResponseDTO> getEstimatedData(@Body EstimatedDataRequestDTO estimatedDataRequestDTO);
+
+    @GET("statistics/passenger-report-ride-number/{passengerId}/{from}/{to}")
+    Call<ReportDTO> getRideNumReport(@Path("passengerId") Integer passengerId, @Path("from") String from, @Path("to") String to);
+
+    @GET("statistics/passenger-report-distance/{passengerId}/{from}/{to}")
+    Call<ReportDTO> getDistanceReport(@Path("passengerId") Integer passengerId, @Path("from") String from, @Path("to") String to);
+
+    @GET("statistics/passenger-report-money/{passengerId}/{from}/{to}")
+    Call<ReportDTO> getMoneyReport(@Path("passengerId") Integer passengerId, @Path("from") String from, @Path("to") String to);
+
 
 }

@@ -26,6 +26,9 @@ public interface IDriverService {
     @GET("driver/{id}/vehicle")
     Call<VehicleDTO> getVehicle(@Path("id") Integer id);
 
+    @GET("driver/{id}/ride")
+    Call<RideResponseDTO> getDriversRides(@Path("id") Integer id);
+
     @GET("statistics/report-ride-number/{driverId}/{from}/{to}")
     Call<ReportDTO> getRideNumReport(@Path("driverId") Integer driverId, @Path("from") String from, @Path("to") String to);
 
@@ -44,7 +47,5 @@ public interface IDriverService {
     @GET("statistics/statistic-year/{driverId}")
     Call<StatisticsDTO> getYearStatistics(@Path("driverId") Integer driverId);
 
-    @GET("driver/{id}/ride")
-    Call<RideResponseDTO> getDriversRides(@Path("id") Integer id);
 
 }
