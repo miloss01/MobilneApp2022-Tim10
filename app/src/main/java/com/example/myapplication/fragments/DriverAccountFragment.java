@@ -131,6 +131,8 @@ public class DriverAccountFragment extends Fragment {
                 if (response.code() != 200) {
                     Snackbar.make(view, "Bad parameters for request", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    Log.i("DEBUG", response.message() + " " + response.code());
+                    Log.i("DEBUG", response.toString());
 
                 }else Snackbar.make(view, "Change request sent", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
