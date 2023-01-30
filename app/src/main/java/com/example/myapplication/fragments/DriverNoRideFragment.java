@@ -22,7 +22,9 @@ import com.example.myapplication.R;
 import com.example.myapplication.activities.DriverMainActivity;
 import com.example.myapplication.dialogs.PanicDialog;
 import com.example.myapplication.dto.IsActiveDTO;
+import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IAppUserService;
+import com.example.myapplication.services.IAuthService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.Retrofit;
 
@@ -66,7 +68,11 @@ public class DriverNoRideFragment extends Fragment {
         Switch toggle = getView().findViewById(R.id.driver_main_toggle);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AuthService authService = new AuthService(getActivity());
+                if (isChecked) authService.startWorkingTime();
+                else authService.endWorkingTime();
                 changeActiveFlag(isChecked, toggle);
+
             }
         });
 

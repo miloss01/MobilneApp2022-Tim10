@@ -6,10 +6,12 @@ import com.example.myapplication.dto.StatisticsDTO;
 import com.example.myapplication.dto.RideResponseDTO;
 import com.example.myapplication.dto.VehicleDTO;
 import com.example.myapplication.dto.DriverDTO;
+import com.example.myapplication.dto.WorkingHourDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -47,5 +49,7 @@ public interface IDriverService {
     @GET("statistics/statistic-year/{driverId}")
     Call<StatisticsDTO> getYearStatistics(@Path("driverId") Integer driverId);
 
+    @POST("driver/{id}/working-hour")
+    Call<WorkingHourDTO> saveWorkingHour(@Path("id") Integer id, @Body WorkingHourDTO workingHourDTO);
 
 }
