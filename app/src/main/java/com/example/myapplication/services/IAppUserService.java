@@ -28,5 +28,8 @@ public interface IAppUserService {
     @GET("user/1")
     Call<UserExpandedDTO> getById(@Query("id") Integer id);
 
+    @GET("user/activeFlag/{id}")
+    Call<IsActiveDTO> getActiveFlag(@Path("id") Integer id);
+
 }
 

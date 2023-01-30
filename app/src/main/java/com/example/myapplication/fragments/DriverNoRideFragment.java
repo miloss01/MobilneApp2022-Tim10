@@ -76,6 +76,26 @@ public class DriverNoRideFragment extends Fragment {
             }
         });
 
+        IAppUserService appUserService = Retrofit.retrofit.create(IAppUserService.class);
+        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+        Call<IsActiveDTO> getCall = appUserService.getActiveFlag(Integer.valueOf(driverId));
+
+        getCall.enqueue(new Callback<IsActiveDTO>() {
+            @Override
+            public void onResponse(Call<IsActiveDTO> call, Response<IsActiveDTO> response) {
+                TextView t = getView().findViewById(R.id.driver_main_label_active);
+                if (response.body().isActive()) toggle.setChecked(true);
+                else toggle.setChecked(false);
+            }
+
+            @Override
+            public void onFailure(Call<IsActiveDTO> call, Throwable t) {
+                Toast.makeText(getContext(),
+                        "Couldn't get active status", Toast.LENGTH_SHORT).show();
+                Log.d("DEBUG", "Error getting active status", t);
+            }
+        });
+
         Button refresh = getView().findViewById(R.id.driver_main_noRide_refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
