@@ -271,6 +271,10 @@ public class RideCreationActivity extends AppCompatActivity {
         reservation.enqueue(new Callback<RideDTO>() {
             @Override
             public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                Log.d("TAG", String.valueOf(response.body()));
+                if (response.code() == 400)
+                    Snackbar.make(stepView, "Cannot create a ride while you have one already pending!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 if (response.code() == 204)
                     Snackbar.make(stepView, "No vehicles available", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -292,7 +296,7 @@ public class RideCreationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RideDTO> call, Throwable t) {
                 Log.d("TAG", "greska");
-                Snackbar.make(stepView, "Cannot create a ride while you have one already pending!", Snackbar.LENGTH_LONG)
+                Snackbar.make(stepView, "Cannot create a ride!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
