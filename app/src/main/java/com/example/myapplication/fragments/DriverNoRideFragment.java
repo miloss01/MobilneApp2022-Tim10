@@ -22,7 +22,9 @@ import com.example.myapplication.R;
 import com.example.myapplication.activities.DriverMainActivity;
 import com.example.myapplication.dialogs.PanicDialog;
 import com.example.myapplication.dto.IsActiveDTO;
+import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IAppUserService;
+import com.example.myapplication.services.IAuthService;
 import com.example.myapplication.services.IRideService;
 import com.example.myapplication.tools.Retrofit;
 
@@ -66,7 +68,31 @@ public class DriverNoRideFragment extends Fragment {
         Switch toggle = getView().findViewById(R.id.driver_main_toggle);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AuthService authService = new AuthService(getActivity());
+                if (isChecked) authService.startWorkingTime();
+                else authService.endWorkingTime();
                 changeActiveFlag(isChecked, toggle);
+
+            }
+        });
+
+        IAppUserService appUserService = Retrofit.retrofit.create(IAppUserService.class);
+        String driverId = Retrofit.sharedPreferences.getString("user_id", null);
+        Call<IsActiveDTO> getCall = appUserService.getActiveFlag(Integer.valueOf(driverId));
+
+        getCall.enqueue(new Callback<IsActiveDTO>() {
+            @Override
+            public void onResponse(Call<IsActiveDTO> call, Response<IsActiveDTO> response) {
+                TextView t = getView().findViewById(R.id.driver_main_label_active);
+                if (response.body().isActive()) toggle.setChecked(true);
+                else toggle.setChecked(false);
+            }
+
+            @Override
+            public void onFailure(Call<IsActiveDTO> call, Throwable t) {
+                Toast.makeText(getContext(),
+                        "Couldn't get active status", Toast.LENGTH_SHORT).show();
+                Log.d("DEBUG", "Error getting active status", t);
             }
         });
 

@@ -1,6 +1,8 @@
 package com.example.myapplication.dto;
 
-public class PassengerDTO {
+import java.io.Serializable;
+
+public class PassengerDTO implements Serializable {
 
     private Long id;
     private String name;

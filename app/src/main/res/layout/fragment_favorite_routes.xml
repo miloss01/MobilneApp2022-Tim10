@@ -2,65 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="800dp"
     tools:context=".fragments.FavoriteRoutesFragment"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/passenger_favorites_listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:orientation="vertical"
-        android:layout_marginTop="20dp"
-
-        android:layout_marginBottom="500dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginStart="20dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Fifth Avenue 123, NY, NY"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@android:color/darker_gray"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginStart="20dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="Temerinski put 123, Novi Sad" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginStart="20dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="St James Street 25, NY, NY"
-            />
-
-    </LinearLayout>
-
-
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

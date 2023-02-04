@@ -2,11 +2,14 @@ package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.dialogs.DatePickerFragment;
 import com.example.myapplication.fragments.DriverMainAccountFragment;
 import com.example.myapplication.tools.FragmentTransition;
 
@@ -28,5 +31,17 @@ public class DriverAccountActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    public void showDatePickerDialogFrom(View v) {
+        TextView proba = findViewById(R.id.fromDateLabel);
+        DialogFragment newFragment = new DatePickerFragment(proba);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    public void showDatePickerDialogTo(View v) {
+        TextView proba = findViewById(R.id.toDateLabel);
+        DialogFragment newFragment = new DatePickerFragment(proba);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 }

@@ -4,6 +4,7 @@ import static java.security.AccessController.getContext;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import com.example.myapplication.dto.IsActiveDTO;
 import com.example.myapplication.dto.NotificationDTO;
 import com.example.myapplication.dto.ReasonDTO;
 import com.example.myapplication.dto.RideDTO;
+import com.example.myapplication.providers.NotificationProvider;
 import com.example.myapplication.services.IAuthService;
 import com.example.myapplication.services.IDriverService;
 import com.example.myapplication.services.IRideService;
@@ -48,6 +50,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,6 +131,13 @@ public class PassengerCurrentRide extends AppCompatActivity implements OnMapRead
                         .setSmallIcon(R.drawable.ic_message_icon)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(true);
+
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, "Driver ended your ride");
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, passengerId);
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
 
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 

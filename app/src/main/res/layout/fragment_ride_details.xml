@@ -14,10 +14,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="10dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="213dp"
-                android:src="@drawable/examplemap" />
+
+            <fragment
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/passenger_ride_details_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,7 +92,7 @@
                     android:layout_margin="10dp">
 
                     <TextView
-                        android:id="@+id/textview_ridedetails_startaddress"
+                        android:id="@+id/textview_ridedetails_departure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -95,7 +100,7 @@
                         android:textSize="18sp"/>
 
                     <TextView
-                        android:id="@+id/textview_ridedetails_endaddress"
+                        android:id="@+id/textview_ridedetails_destination"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -135,6 +140,16 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@string/driver"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="-20dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,14 +160,14 @@
                     android:id="@+id/img_ridedetails_driverphoto"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/profilephoto1" />
+                    android:layout_gravity="center" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginStart="20dp">
+
 
                     <TextView
                         android:id="@+id/textview_ridedetails_drivername"
@@ -164,27 +179,21 @@
 
                     <Button
                         android:id="@+id/btn_ridedetails_contactdriver"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:text="@string/contact_driver"
                         android:layout_gravity="center"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         android:padding="5dp"
-                        android:backgroundTint="@color/cardview_dark_background"
+                        android:paddingLeft="0dp"
+                        android:backgroundTint="@color/white"
+                        android:textColor="@color/black"
                         />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_ridedetails_rating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:padding="5dp"
-                android:text="@string/rating"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -199,26 +208,45 @@
                     android:textColor="@color/black"
                     android:text="@string/passengers" />
 
-                <HorizontalScrollView
+                <ListView
+                    android:id="@+id/ridedetails_passengersList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_margin="10dp">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/profilephoto1" />
-                    </LinearLayout>
-
-                </HorizontalScrollView>
+                    android:layout_height="130dp"
+                    android:divider="@android:color/black"
+                    android:dividerHeight="0.5sp"/>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Reviews"
+                android:layout_marginLeft="30dp"/>
+            <Button
+                android:id="@+id/btn_ridedetails_rating"
+                android:layout_width="350dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:padding="5dp"
+                android:text="Leave a rating"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:id="@+id/ridedetails_reviewsLayout"
+                android:padding="10sp"
+                android:layout_marginLeft="30dp">
+            </LinearLayout>
+
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

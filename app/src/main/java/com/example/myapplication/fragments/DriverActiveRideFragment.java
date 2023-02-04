@@ -1,7 +1,6 @@
 package com.example.myapplication.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activities.DriverMainActivity;
-import com.example.myapplication.adapters.DriverActiveRidePassengersAdapter;
+import com.example.myapplication.adapters.RidePassengersAdapter;
 import com.example.myapplication.dialogs.PanicDialog;
 import com.example.myapplication.dialogs.QuickMessageDialog;
 import com.example.myapplication.dto.PassengerDTO;
@@ -149,9 +148,9 @@ public class DriverActiveRideFragment extends Fragment {
                     PassengerDTO passengerDTO = response.body();
                     passengers.add(passengerDTO);
 
-                    DriverActiveRidePassengersAdapter adapter = new DriverActiveRidePassengersAdapter(
+                    RidePassengersAdapter adapter = new RidePassengersAdapter(
                             getActivity(),
-                            R.layout.driver_active_ride_passenger_cell,
+                            R.layout.ridedetails_passenger_cell,
                             passengers);
                     listView.setAdapter(adapter);
 
@@ -196,10 +195,7 @@ public class DriverActiveRideFragment extends Fragment {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         Log.d("TAG", "Ride ended");
                         getActivity().finish();
-                        getActivity().overridePendingTransition(0, 0);
                         startActivity(new Intent(getActivity(), DriverMainActivity.class));
-                        getActivity().overridePendingTransition(0, 0);
-
                     }
 
                     @Override

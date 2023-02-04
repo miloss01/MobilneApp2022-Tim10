@@ -5,120 +5,179 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.RideStatsFragment">
+    tools:context=".fragments.RideStatsFragment"
+    android:padding="20dp">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:orientation="vertical"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-
-        android:layout_marginBottom="250dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="20dp"
-            >
+            android:orientation="vertical">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="8"
-                android:inputType="date"
-                android:hint="Date from"/>
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="8"
-                android:hint="Date to"
-                android:inputType="date" />
-
-
-
-        </LinearLayout>
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="See stats"
-            android:textAlignment="center"
-            android:textSize="22sp"
-            android:padding="8dp"
-            android:backgroundTint="@color/cardview_dark_background"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="20dp"
-            >
             <LinearLayout
+                android:paddingTop="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="75dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_passengerstats_dateFrom"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:autofillHints="11.11.2022."
+                    android:onClick="showPassengerDatePickerDialogFrom"
+                    android:ems="10"
+                    android:text="Date from"
+                    />
+
+                <Button
+                    android:id="@+id/btn_passengerstats_dateTo"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:onClick="showPassengerDatePickerDialogTo"
+                    android:ems="10"
+                    android:text="Date to" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:paddingTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_passengerstats_dateFrom"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:autofillHints="11.11.2022."
+                    android:ems="10"
+                    android:text=""
+                    />
+
+                <TextView
+                    android:id="@+id/tv_passengerstats_dateTo"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:ems="10"
+                    android:text="" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_passengerstats_generate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Generate report" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Kilometers driven"
+                    android:textSize="20sp"
                     android:textColor="@color/black"
-                    android:text="Total sum spent"
-                    android:layout_weight="9" />
+                    android:layout_marginTop="15dp"
+                    android:textStyle="bold"/>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart_passengerstats_km"
+                    android:layout_height="200dp"
+                    android:layout_width="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tv_passengerstats_totalKm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Total: "
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
+                <TextView
+                    android:id="@+id/tv_passengerstats_avgKm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Average: "
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="$186.4"
-                    android:textAlignment="textEnd"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
+                    android:layout_gravity="left"
+                    android:text="Money spent"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp"/>
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart_passengerstats_money"
+                    android:layout_height="200dp"
+                    android:layout_width="match_parent"/>
                 <TextView
+                    android:id="@+id/tv_passengerstats_totalMoney"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="22sp"
-                    android:textColor="@color/cardview_dark_background"
-                    android:text="Average per day"
-                    android:layout_weight="9" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Total: "
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
+                <TextView
+                    android:id="@+id/tv_passengerstats_avgMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Average: "
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="$6.5"
-                    android:textAlignment="textEnd"
-                    android:textSize="20sp"/>
+                    android:layout_gravity="left"
+                    android:text="Realized rides"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart_passengerstats_ride"
+                    android:layout_height="200dp"
+                    android:layout_width="match_parent"/>
+                <TextView
+                    android:id="@+id/tv_passengerstats_totalRide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Total: "
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
+                <TextView
+                    android:id="@+id/tv_passengerstats_avgRide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="Average: "
+                    android:textColor="@color/black"
+                    android:layout_marginTop="15dp"/>
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@android:color/darker_gray"/>
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="match_parent"
-                android:layout_height="273dp"
-                android:src="@drawable/examplegraph" />
 
         </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>

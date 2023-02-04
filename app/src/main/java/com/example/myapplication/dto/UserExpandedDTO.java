@@ -1,6 +1,8 @@
 package com.example.myapplication.dto;
 
-public class UserExpandedDTO {
+import java.io.Serializable;
+
+public class UserExpandedDTO implements Serializable {
     private Integer id;
     private String name;
     private String surname;
@@ -76,5 +78,18 @@ public class UserExpandedDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "UserExpandedDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", profilePicture='" + profilePicture.substring(0, 10) + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

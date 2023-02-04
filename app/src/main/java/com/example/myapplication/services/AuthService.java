@@ -18,8 +18,11 @@ import com.example.myapplication.activities.PassengerMainActivity;
 import com.example.myapplication.dto.IsActiveDTO;
 import com.example.myapplication.dto.LoginDTO;
 import com.example.myapplication.dto.TokenResponseDTO;
+import com.example.myapplication.dto.WorkingHourDTO;
 import com.example.myapplication.tools.Retrofit;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +64,8 @@ public class AuthService {
 
                 changeActiveFlag(true);
 
+                startWorkingTime();
+
                 redirect();
             }
 
@@ -97,6 +102,7 @@ public class AuthService {
     }
 
     public void logout() {
+        endWorkingTime();
         changeActiveFlag(false);
     }
 
@@ -164,6 +170,66 @@ public class AuthService {
             }
         });
 
+    }
+
+    public void startWorkingTime() {
+        String role = Retrofit.sharedPreferences.getString("user_role", null);
+        Log.i("TAG", "role is: " + role);
+        if (role.equals("DRIVER")) {
+
+            IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+
+            WorkingHourDTO workingHourDTO = new WorkingHourDTO();
+            workingHourDTO.setStart(LocalDateTime.now().toString());
+            Call<WorkingHourDTO> addCall = driverService.saveWorkingHour(
+                    Integer.parseInt( Retrofit.sharedPreferences.getString("user_id", null)), workingHourDTO);
+            addCall.enqueue(new Callback<WorkingHourDTO>() {
+                @Override
+                public void onResponse(Call<WorkingHourDTO> call, Response<WorkingHourDTO> response) {
+                    if (response.code() != 200) {
+                        Log.d("TAG", "Response error saving working hour");
+                        Log.d("TAG", response.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<WorkingHourDTO> call, Throwable t) {
+                    System.out.println(t.getMessage());
+                    Log.d("TAG", "Error saving working hour", t);
+                }
+            });
+
+        }
+    }
+
+    public void endWorkingTime() {
+        String role = Retrofit.sharedPreferences.getString("user_role", null);
+        Log.i("TAG", "role is: " + role);
+        if (role.equals("DRIVER")) {
+
+            IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+
+            WorkingHourDTO workingHourDTO = new WorkingHourDTO();
+            workingHourDTO.setEnd(LocalDateTime.now().toString());
+            Call<WorkingHourDTO> addCall = driverService.saveWorkingHour(
+                    Integer.parseInt( Retrofit.sharedPreferences.getString("user_id", null)), workingHourDTO);
+            addCall.enqueue(new Callback<WorkingHourDTO>() {
+                @Override
+                public void onResponse(Call<WorkingHourDTO> call, Response<WorkingHourDTO> response) {
+                    if (response.code() != 200) {
+                        Log.d("TAG", "Response error saving working hour");
+                        Log.d("TAG", response.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<WorkingHourDTO> call, Throwable t) {
+                    System.out.println(t.getMessage());
+                    Log.d("TAG", "Error saving working hour", t);
+                }
+            });
+
+        }
     }
 
 }

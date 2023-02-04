@@ -6,8 +6,10 @@ import android.app.Activity;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -45,6 +47,7 @@ import com.example.myapplication.fragments.DriverActiveRideFragment;
 import com.example.myapplication.fragments.DriverNoRideFragment;
 import com.example.myapplication.dto.UserDTO;
 import com.example.myapplication.models.User;
+import com.example.myapplication.providers.NotificationProvider;
 import com.example.myapplication.receiver.AcceptRideNotificationReceiver;
 import com.example.myapplication.services.AuthService;
 import com.example.myapplication.services.IDriverService;
@@ -73,6 +76,7 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,7 +144,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
-                    .setContentTitle("You have received message.")
+                    .setContentTitle("New message")
                     .setContentText(messageSentDTO.getMessage())
                     .setSmallIcon(R.drawable.ic_message_icon)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -151,6 +155,28 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
             notificationManager.notify(9832, builder.build());
 
         });
+
+//        Retrofit.stompClient.topic("/ride-notification-driver-withdrawal/" + Retrofit.sharedPreferences.getString("user_id", null)).subscribe(topicMessage -> {
+//
+//            Log.d("TAG", topicMessage.getPayload());
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            MessageSentDTO messageSentDTO = objectMapper.readValue(topicMessage.getPayload(), MessageSentDTO.class);
+//
+//            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
+//                    .setContentTitle("Ride cancelled by passenger")
+//                    .setContentText(messageSentDTO.getMessage())
+//                    .setSmallIcon(R.drawable.ic_message_icon)
+//                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                    .setAutoCancel(true);
+//
+//            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//
+//            notificationManager.notify(9832, builder.build());
+//
+//            showAcceptedRide();
+//        });
+
     }
 
     @Override
@@ -189,6 +215,10 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
         if (id == R.id.driver_menu_inbox) {
             Intent intent1 = new Intent(this, DriverInboxActivity.class);
             this.startActivity(intent1);
+            return true;
+        }
+        if (id == R.id.driver_menu_notifications) {
+            this.startActivity(new Intent(this, NotificationInboxActivity.class));
             return true;
         }
         if (id == R.id.driver_logout_account) {
@@ -235,7 +265,7 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                         Log.d("TAG", i + " od " + path.size());
                     }
                 },
-                2000);
+                1000);
     }
 
     private void startSimulation() {
@@ -434,7 +464,6 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
 
 
                 VehicleDTO vehicle = response.body();
-//                Log.d("TAG", "Vehicle for map: " + VehicleDTO);
                 transitionToNoRideFragment();
 
                 if (vehicle == null) return;
@@ -508,6 +537,14 @@ public class DriverMainActivity extends AppCompatActivity implements OnMapReadyC
                                 "DENY", replyPendingIntent)
                                 .addRemoteInput(remoteInput)
                                 .build();
+
+                ContentValues values = new ContentValues();
+                values.put(NotificationProvider.MESSAGE, text);
+                values.put(NotificationProvider.TIME_OF_RECEIVING, String.valueOf(LocalDateTime.now()));
+                values.put(NotificationProvider.RECEIVER_ID, authService.getUserData().get("user_id"));
+                Uri uri = getContentResolver().insert(
+                        NotificationProvider.CONTENT_URI, values);
+
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "NOTIFICATION_CHANNEL")
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(text))

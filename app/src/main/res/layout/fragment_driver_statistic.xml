@@ -50,21 +50,28 @@
             android:id="@+id/acceptance"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Acceptance rate 80%"
+            android:text=""
             android:textColor="@color/black"
             android:layout_marginTop="15dp"/>
         <TextView
             android:id="@+id/working_h"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Working hours 80%"
+            android:text=""
             android:textColor="@color/black"
             android:layout_marginTop="15dp"/>
         <TextView
             android:id="@+id/incoome"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Income 80%"
+            android:text=""
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:id="@+id/kilometers_stat"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text=""
             android:textColor="@color/black"
             android:layout_marginTop="15dp"/>
 

@@ -2,9 +2,8 @@
 <resources>
     <string-array name="spiner_pass_inbox_options">
         <item>All</item>
-        <item>Drive</item>
+        <item>Ride</item>
         <item>Support</item>
-        <item>Panic</item>
     </string-array>
 
     <string-array name="spiner_vehicle_type">

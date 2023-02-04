@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
-    android:orientation="horizontal">
+    android:layout_height="240dp"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:paddingRight="20dp">
+
+    <Button
+        android:id="@+id/btn_favroutecell_delete"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/white"
+        android:layout_gravity="end"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/delete"
+        />
 
     <TextView
         android:id="@+id/textview_favroutecell_name"
@@ -10,7 +24,43 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_marginStart="20dp"
+        android:layout_marginBottom="5dp"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:text="@string/address"
         />
-</RelativeLayout>
+
+    <TextView
+        android:id="@+id/textview_favroutecell_departure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginStart="35dp"
+        android:textColor="@color/black"
+        android:text="@string/address"
+        />
+
+    <TextView
+        android:id="@+id/textview_favroutecell_destination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginStart="35dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/black"
+        android:text="@string/address"
+        />
+
+    <Button
+        android:id="@+id/btn_favroutecell_rideAgain"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"
+        android:layout_gravity="end"
+        android:text="@string/ride_again"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="10dp"
+        />
+
+</LinearLayout>

@@ -1,12 +1,12 @@
 package com.example.myapplication.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,35 +20,40 @@ import com.example.myapplication.R;
 import com.example.myapplication.dto.PassengerDTO;
 
 import java.io.InputStream;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
-public class DriverActiveRidePassengersAdapter extends ArrayAdapter<PassengerDTO> {
+public class RidePassengersAdapter extends ArrayAdapter<PassengerDTO> {
 
     ArrayList<PassengerDTO> passengersList;
+    public boolean forHistoryView = false;
 
-    public DriverActiveRidePassengersAdapter(Context context, int resource, List<PassengerDTO> passengerDTOS) {
+    public RidePassengersAdapter(Context context, int resource, List<PassengerDTO> passengerDTOS) {
         super(context, resource, passengerDTOS);
         this.passengersList = (ArrayList<PassengerDTO>) passengerDTOS;
-        Log.i("TAG", "tu smo u konstruktoru Adaptera");
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         PassengerDTO passengerDTO = passengersList.get(position);
-        Log.i("TAG", "tu smo u getView");
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.driver_active_ride_passenger_cell,
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.ridedetails_passenger_cell,
                     parent, false);
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.driver_active_ride_passengerImage);
-        new DownloadImageTask(imageView).execute(passengerDTO.getProfilePicture());
-
+        if (passengerDTO.getProfilePicture() != null) {
+            if (!passengerDTO.getProfilePicture().startsWith("data")) new RidePassengersAdapter.DownloadImageTask(imageView).execute(passengerDTO.getProfilePicture());
+            else {
+                final String encodedString = passengerDTO.getProfilePicture();
+                final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",")  + 1);
+                final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                imageView.setImageBitmap(decodedBitmap);
+            }
+        }
         TextView name = (TextView) convertView.findViewById(R.id.driver_active_ride_passengerName);
         name.setText(passengerDTO.getName() + " " + passengerDTO.getSurname());
 
@@ -57,12 +62,11 @@ public class DriverActiveRidePassengersAdapter extends ArrayAdapter<PassengerDTO
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                Log.d("DEBUG", "calling passenger with id: " + passengerDTO.getId() + " their number: " + passengerDTO.getTelephoneNumber());
                 intent.setData(Uri.parse("tel:" + passengerDTO.getTelephoneNumber()));
                 getContext().startActivity(intent);
             }
         });
-
+        if (forHistoryView) callBtn.setVisibility(View.INVISIBLE);
         return convertView;
     }
 
@@ -72,7 +76,7 @@ public class DriverActiveRidePassengersAdapter extends ArrayAdapter<PassengerDTO
     }
 
 
-    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
