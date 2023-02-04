@@ -401,9 +401,10 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(loc).zoom(14).build();
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.24619939901454, 19.85162169815072), 15));
+//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.24619939901454, 19.85162169815072), 15));
         this.loadVehicles();
     }
 

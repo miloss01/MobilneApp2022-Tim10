@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -92,20 +93,27 @@ public class DriverAccountFragment extends Fragment {
         view.findViewById(R.id.driver_send_change_request).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImageView iv1 = driverImageView;
-                iv1.buildDrawingCache();
-                Bitmap bitmap = iv1.getDrawingCache();
+//                ImageView iv1 = driverImageView;
+//                iv1.buildDrawingCache();
+//                Bitmap bitmap = iv1.getDrawingCache();
+//
+//                ByteArrayOutputStream stream=new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+//                byte[] image=stream.toByteArray();
+////                System.out.println("byte array:"+image);
+//
+//                String img_str = "data:image/bmp;base64," + Base64.encodeToString(image, 0);
+//                Log.d("DEBUG","string:"+img_str);
 
-                ByteArrayOutputStream stream=new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
-                byte[] image=stream.toByteArray();
-                System.out.println("byte array:"+image);
-
-                String img_str = "data:image/bmp;base64," + Base64.encodeToString(image, 0);
-                Log.d("DEBUG","string:"+img_str);
-
+                BitmapDrawable drawable = (BitmapDrawable) driverImageView.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream); // bm is the bitmap object
+                byte[] b = outputStream.toByteArray();
+                String encodeString = Base64.encodeToString(b, Base64.NO_WRAP);
+//                requestDTO.setProfilePicture("data:image/jpeg;base64," + encodeString);
                 UserExpandedDTO driver = new UserExpandedDTO(id, nameEditText.getText().toString(),
-                        lastNameEditText.getText().toString(), img_str,
+                        lastNameEditText.getText().toString(), "data:image/jpeg;base64," + encodeString,
                         phoneEditText.getText().toString(), emailEditText.getText().toString(),
                         addressEditText.getText().toString());
                 vehicleForSaving.setModel(modelEditText.getText().toString());
@@ -124,6 +132,7 @@ public class DriverAccountFragment extends Fragment {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         ChangeRequestDTO changeRequestDTO = new ChangeRequestDTO(driver, vehicleForSaving, LocalDateTime.now().format(dateTimeFormatter));
         IDriverService driverService = Retrofit.retrofit.create(IDriverService.class);
+        Log.e("DEBUG", changeRequestDTO.toString());
         Call<ChangeRequestDTO> request = driverService.updateChangeRequest(id, changeRequestDTO);
         request.enqueue(new Callback<ChangeRequestDTO>() {
             @Override
@@ -131,6 +140,8 @@ public class DriverAccountFragment extends Fragment {
                 if (response.code() != 200) {
                     Snackbar.make(view, "Bad parameters for request", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    Log.i("DEBUG", response.message() + " " + response.code());
+                    Log.i("DEBUG", response.toString());
 
                 }else Snackbar.make(view, "Change request sent", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

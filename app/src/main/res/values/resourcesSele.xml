@@ -4,7 +4,6 @@
         <item>All</item>
         <item>Ride</item>
         <item>Support</item>
-        <item>Panic</item>
     </string-array>
 
     <string-array name="spiner_vehicle_type">

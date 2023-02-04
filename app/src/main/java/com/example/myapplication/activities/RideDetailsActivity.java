@@ -59,6 +59,8 @@ public class RideDetailsActivity extends AppCompatActivity {
         destination.setText("END: " + rideDTO.getLocations().get(0).getDestination().getAddress());
         TextView price = (TextView) v.findViewById(R.id.textview_ridedetails_price);
         price.setText("+" + rideDTO.getTotalCost() + " din");
+        TextView distance = (TextView) v.findViewById(R.id.textview_ridedetails_distance);
+        distance.setText(rideDTO.getDistance() + "km");
         TextView passengersText = (TextView) v.findViewById(R.id.textview_ridedetails_passengers);
         passengersText.setText("Passengers (" + rideDTO.getPassengers().size() + ")");
         for (UserDTO passenger : rideDTO.getPassengers())

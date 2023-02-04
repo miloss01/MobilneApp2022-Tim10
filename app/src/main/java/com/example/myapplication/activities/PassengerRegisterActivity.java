@@ -62,7 +62,7 @@ public class PassengerRegisterActivity extends AppCompatActivity {
                     return;
                 }
                 IUserService userService = Retrofit.retrofit.create(IUserService.class);
-                Call<PassengerResponseDTO> passengerResponse = userService.savePassenger(new PassengerRequestDTO(name, lastname, "", phoneNum, email, adress, password));
+                Call<PassengerResponseDTO> passengerResponse = userService.savePassenger(new PassengerRequestDTO(name, lastname, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjHieQ1mLP58cYukiwN3058e6Y7RkVSix33ZJfZZwjzg&s", phoneNum, email, adress, password));
                 passengerResponse.enqueue(new Callback<PassengerResponseDTO>() {
                     @Override
                     public void onResponse(Call<PassengerResponseDTO> call, Response<PassengerResponseDTO> response) {
